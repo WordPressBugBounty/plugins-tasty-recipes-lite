@@ -1,0 +1,41 @@
+/* Seasoned Pro
+--------------------------------------------- */
+body {
+	color: #515555;
+	font-family: "Rubik", sans-serif;
+	font-size: 100%;
+	letter-spacing: 0.3px;
+	line-height: 1.875;
+	margin: 0;
+}
+
+a {
+	color: #ba4d2f;
+	text-decoration: none;
+}
+
+p {
+	margin: 0 0 30px;
+	padding: 0;
+}
+
+h1,
+h2,
+h3 {
+	font-family: "Karma", Helvetica, Arial, sans-serif;
+	font-weight: 300;
+	line-height: 1.3;
+	margin: 0 0 10px;
+}
+
+h1 {
+	font-size:2em; 
+}
+
+h2 {
+	font-size:1.625em; 
+}
+
+h3 {
+	font-size:1.375em; 
+}

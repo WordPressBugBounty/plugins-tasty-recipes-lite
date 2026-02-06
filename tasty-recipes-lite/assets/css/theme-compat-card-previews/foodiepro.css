@@ -1,0 +1,34 @@
+/* Foodie Pro
+--------------------------------------------- */
+body {
+	color: #010101;
+	font-family: "Muli", Arial, Helvetica, sans-serif;
+	font-size: 100%;
+	font-weight: 300;
+	letter-spacing: 0.5px;
+	line-height: 1.8;
+}
+
+h1,
+h2,
+h3 {
+	font-family: "Karla", Arial, Helvetica, sans-serif;
+	font-weight: 700;
+	letter-spacing: 3px;
+	line-height: 1.3;
+	margin: 37px 0 21px;
+	padding: 0;
+	text-transform: uppercase;
+}
+
+h1 {
+	font-size: 2em;
+}
+
+h2 {
+	font-size: 1.625em;
+}
+
+h3 {
+	font-size: 1.375em;
+}

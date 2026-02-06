@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="5 5 54 50" width="18" height="17">
+	<defs>
+		<linearGradient id="tasty-recipes-clip-0">
+			<stop stop-opacity="1" offset="0%" stop-color="currentColor"></stop>
+			<stop stop-opacity="0" offset="0%"></stop>
+		</linearGradient>
+		<linearGradient id="tasty-recipes-clip-10">
+			<stop stop-opacity="1" offset="10%" stop-color="currentColor"></stop>
+			<stop stop-opacity="0" offset="0%"></stop>
+		</linearGradient>
+		<linearGradient id="tasty-recipes-clip-20">
+			<stop stop-opacity="1" offset="20%" stop-color="currentColor"></stop>
+			<stop stop-opacity="0" offset="0%"></stop>
+		</linearGradient>
+		<linearGradient id="tasty-recipes-clip-30">
+			<stop stop-opacity="1" offset="30%" stop-color="currentColor"></stop>
+			<stop stop-opacity="0" offset="0%"></stop>
+		</linearGradient>
+		<linearGradient id="tasty-recipes-clip-40">
+			<stop stop-opacity="1" offset="40%" stop-color="currentColor"></stop>
+			<stop stop-opacity="0" offset="0%"></stop>
+		</linearGradient>
+		<linearGradient id="tasty-recipes-clip-50">
+			<stop stop-opacity="1" offset="50%" stop-color="currentColor"></stop>
+			<stop stop-opacity="0" offset="0%"></stop>
+		</linearGradient>
+		<linearGradient id="tasty-recipes-clip-60">
+			<stop stop-opacity="1" offset="60%" stop-color="currentColor"></stop>
+			<stop stop-opacity="0" offset="0%"></stop>
+		</linearGradient>
+		<linearGradient id="tasty-recipes-clip-70">
+			<stop stop-opacity="1" offset="70%" stop-color="currentColor"></stop>
+			<stop stop-opacity="0" offset="0%"></stop>
+		</linearGradient>
+		<linearGradient id="tasty-recipes-clip-80">
+			<stop stop-opacity="1" offset="80%" stop-color="currentColor"></stop>
+			<stop stop-opacity="0" offset="0%"></stop>
+		</linearGradient>
+		<linearGradient id="tasty-recipes-clip-90">
+			<stop stop-opacity="1" offset="90%" stop-color="currentColor"></stop>
+			<stop stop-opacity="0" offset="0%"></stop>
+		</linearGradient>
+	</defs>
+	<path d="m46.296296 51.906272-14.379945-9.431623-14.413639 9.380051 4.52636-16.590672-13.375018-10.80959 17.177389-.821975 6.147423-16.0607456 6.08985 16.0826626 17.174335.883504-13.413655 10.761608z" stroke="currentColor" stroke-width="2.5"/>
+</svg>

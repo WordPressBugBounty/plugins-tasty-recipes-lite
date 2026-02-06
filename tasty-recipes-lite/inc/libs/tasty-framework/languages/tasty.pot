@@ -1,0 +1,470 @@
+# Copyright (C) 2026 WP Tasty team
+# This file is distributed under the GPLv2 or later (license.txt)..
+msgid ""
+msgstr ""
+"Project-Id-Version: Tasty Framework 1.1.10\n"
+"Report-Msgid-Bugs-To: https://wptasty.com/support\n"
+"Last-Translator: support@wptasty.com\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-01-12T16:59:34+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.11.0\n"
+"X-Domain: tasty\n"
+
+#. Plugin Name of the plugin
+#: tasty-framework.php
+msgid "Tasty Framework"
+msgstr ""
+
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+#: tasty-framework.php
+msgid "https://wptasty.com/"
+msgstr ""
+
+#. Description of the plugin
+#: tasty-framework.php
+msgid "Common functionality between all WP Tasty plugins."
+msgstr ""
+
+#. Author of the plugin
+#: tasty-framework.php
+msgid "WP Tasty team"
+msgstr ""
+
+#. translators: %s: Server IP address.
+#: inc/Abstracts/APIClient.php:114
+msgid "Something went wrong while activating your license. <a href=\"https://www.wptasty.com/contact-us\"> Please contact support</a> and share the server IP address %s with our team so we can investigate."
+msgstr ""
+
+#: inc/Abstracts/PluginInstaller.php:269
+msgid "Failed to read file content."
+msgstr ""
+
+#: inc/Abstracts/PluginInstaller.php:278
+msgid "Failed to write to new file."
+msgstr ""
+
+#: inc/Abstracts/PluginInstaller.php:482
+#: inc/Admin/License/Manager.php:423
+#: inc/Admin/License/Manager.php:461
+msgid "That's not a valid license."
+msgstr ""
+
+#: inc/Admin/Inbox/APIClient.php:62
+msgid "No messages found."
+msgstr ""
+
+#: inc/Admin/License/APIClient.php:42
+msgid "No plugins are associated with that license or it does not exist."
+msgstr ""
+
+#: inc/Admin/License/APIClient.php:160
+msgid "Unknown error"
+msgstr ""
+
+#. translators: the plugin name.
+#: inc/Admin/License/EDDUpdater.php:364
+msgid "There is a new version of %1$s available."
+msgstr ""
+
+#: inc/Admin/License/EDDUpdater.php:370
+msgid "Contact your network administrator to install the update."
+msgstr ""
+
+#. translators: 1: opening anchor tag, do not translate 2. the new plugin version 3. closing anchor tag, do not translate.
+#: inc/Admin/License/EDDUpdater.php:375
+msgid "%1$sView version %2$s details%3$s."
+msgstr ""
+
+#. translators: 1: changelog url, do not translate 2: new version 3: closing a tag, do not translate 4:upgrade plugin button, do not translate 5: closing a tag, do not translate
+#: inc/Admin/License/EDDUpdater.php:385
+msgid "%1$sView version %2$s details%3$s or %4$supdate now%5$s."
+msgstr ""
+
+#: inc/Admin/License/EDDUpdater.php:396
+msgid "Update now."
+msgstr ""
+
+#: inc/Admin/License/EDDUpdater.php:642
+msgid "You do not have permission to install plugin updates"
+msgstr ""
+
+#: inc/Admin/License/EDDUpdater.php:642
+#: inc/Admin/Pages/Dashboard.php:195
+msgid "Error"
+msgstr ""
+
+#: inc/Admin/License/Manager.php:115
+msgid "All Plugins"
+msgstr ""
+
+#: inc/Admin/License/Manager.php:181
+msgid "Can't download plugin, please reach out to our support."
+msgstr ""
+
+#: inc/Admin/License/Manager.php:188
+msgid "Downloaded and activated successfully."
+msgstr ""
+
+#: inc/Admin/License/Manager.php:210
+msgid "Activated successfully."
+msgstr ""
+
+#: inc/Admin/License/Manager.php:232
+msgid "Deactivated successfully."
+msgstr ""
+
+#: inc/Admin/License/Manager.php:261
+msgid "License was removed successfully."
+msgstr ""
+
+#. translators: %s Plugin name.
+#: inc/Admin/License/Manager.php:361
+msgid "%s is almost ready. Click the \"Enter License\" button above to continue."
+msgstr ""
+
+#: inc/Admin/License/Manager.php:389
+msgid "The license was not saved."
+msgstr ""
+
+#: inc/Admin/License/Manager.php:406
+#: inc/Admin/License/Manager.php:503
+msgid "That's not a valid plugin."
+msgstr ""
+
+#: inc/Admin/License/Manager.php:413
+#: inc/Admin/License/Manager.php:478
+msgid "Can't connect to the WP Tasty server. Please try again later."
+msgstr ""
+
+#. translators: %1$s Error message.
+#: inc/Admin/License/Manager.php:416
+msgid "Error: %1$s"
+msgstr ""
+
+#: inc/Admin/License/Manager.php:520
+msgid "Not authorized!"
+msgstr ""
+
+#: inc/Admin/Menu.php:100
+msgid "WP Tasty Dashboard"
+msgstr ""
+
+#: inc/Admin/Menu.php:101
+#: inc/Admin/Menu.php:106
+#: inc/Admin/Menu.php:280
+msgid "Dashboard"
+msgstr ""
+
+#: inc/Admin/Menu.php:138
+#: inc/Admin/Pages/Dashboard.php:496
+msgid "Upgrade"
+msgstr ""
+
+#: inc/Admin/Pages/Dashboard.php:90
+msgid "Get all our plugins for 25 websites for one low price ($926 value)"
+msgstr ""
+
+#: inc/Admin/Pages/Dashboard.php:103
+msgid "Get This Deal"
+msgstr ""
+
+#: inc/Admin/Pages/Dashboard.php:190
+msgid "Active"
+msgstr ""
+
+#: inc/Admin/Pages/Dashboard.php:191
+msgid "Installed"
+msgstr ""
+
+#: inc/Admin/Pages/Dashboard.php:192
+msgid "Not installed"
+msgstr ""
+
+#: inc/Admin/Pages/Dashboard.php:193
+msgid "No License"
+msgstr ""
+
+#: inc/Admin/Pages/Dashboard.php:194
+msgid "Expired"
+msgstr ""
+
+#: inc/Admin/Pages/Dashboard.php:221
+#: inc/Admin/Pages/Dashboard.php:346
+msgid "Learn more"
+msgstr ""
+
+#: inc/Admin/Pages/Dashboard.php:241
+msgid "Get a license"
+msgstr ""
+
+#: inc/Admin/Pages/Dashboard.php:277
+msgid "Remove license"
+msgstr ""
+
+#: inc/Admin/Pages/Dashboard.php:291
+msgid "Settings"
+msgstr ""
+
+#: inc/Admin/Pages/Dashboard.php:320
+msgid "Upgrade plan"
+msgstr ""
+
+#: inc/Admin/Pages/Dashboard.php:351
+msgid "Activate plugin"
+msgstr ""
+
+#: inc/Admin/Pages/Dashboard.php:380
+msgid "Deactivate"
+msgstr ""
+
+#: inc/Admin/Pages/Dashboard.php:411
+msgid "Download"
+msgstr ""
+
+#: inc/Admin/Pages/Dashboard.php:430
+msgid "Activate"
+msgstr ""
+
+#: inc/Admin/Pages/Dashboard.php:460
+msgid "Renew"
+msgstr ""
+
+#: inc/Admin/Sales/APIClient.php:97
+msgid "No sales found."
+msgstr ""
+
+#: inc/Main.php:182
+#: inc/Main.php:191
+#: inc/Traits/Singleton.php:42
+#: inc/Traits/Singleton.php:51
+msgid "Don't try again!"
+msgstr ""
+
+#: inc/Utils/Common.php:85
+#: assets/library/form/TabletSaveButton.jsx:27
+msgid "Save Changes"
+msgstr ""
+
+#: inc/Utils/HumanTimeDiff.php:155
+msgid "year"
+msgstr ""
+
+#: inc/Utils/HumanTimeDiff.php:156
+msgid "years"
+msgstr ""
+
+#: inc/Utils/HumanTimeDiff.php:160
+msgid "month"
+msgstr ""
+
+#: inc/Utils/HumanTimeDiff.php:161
+msgid "months"
+msgstr ""
+
+#: inc/Utils/HumanTimeDiff.php:165
+msgid "week"
+msgstr ""
+
+#: inc/Utils/HumanTimeDiff.php:166
+msgid "weeks"
+msgstr ""
+
+#: inc/Utils/HumanTimeDiff.php:170
+msgid "day"
+msgstr ""
+
+#: inc/Utils/HumanTimeDiff.php:171
+msgid "days"
+msgstr ""
+
+#: inc/Utils/HumanTimeDiff.php:175
+msgid "hour"
+msgstr ""
+
+#: inc/Utils/HumanTimeDiff.php:176
+msgid "hours"
+msgstr ""
+
+#: inc/Utils/HumanTimeDiff.php:180
+msgid "minute"
+msgstr ""
+
+#: inc/Utils/HumanTimeDiff.php:181
+msgid "minutes"
+msgstr ""
+
+#: inc/Utils/HumanTimeDiff.php:185
+msgid "second"
+msgstr ""
+
+#: inc/Utils/HumanTimeDiff.php:186
+msgid "seconds"
+msgstr ""
+
+#: templates/Admin/dashboard-modal.php:19
+#: templates/Admin/dashboard.php:24
+msgid "Enter License Key"
+msgstr ""
+
+#: templates/Admin/dashboard-modal.php:24
+msgid "Activating a plugin, requires a valid license. If you have one, please fill in the form below."
+msgstr ""
+
+#: templates/Admin/dashboard-modal.php:29
+msgid "Select Plugin"
+msgstr ""
+
+#: templates/Admin/dashboard-modal.php:32
+#: templates/Admin/dashboard-modal.php:34
+msgid "Add a valid license first"
+msgstr ""
+
+#: templates/Admin/dashboard-modal.php:40
+msgid "License Key"
+msgstr ""
+
+#: templates/Admin/dashboard-modal.php:46
+msgid "Activate License"
+msgstr ""
+
+#: templates/Admin/dashboard-modal.php:55
+msgid "License Saved"
+msgstr ""
+
+#: templates/Admin/dashboard-modal.php:60
+msgid "After activating your plugin license, you must download the plugin before you can use it. Here are the steps:"
+msgstr ""
+
+#: templates/Admin/dashboard-modal.php:62
+msgid "Download plugin files"
+msgstr ""
+
+#: templates/Admin/dashboard-modal.php:63
+msgid "Upload plugin"
+msgstr ""
+
+#: templates/Admin/dashboard-modal.php:64
+msgid "Activate and install it"
+msgstr ""
+
+#: templates/Admin/dashboard-modal.php:65
+msgid "Enjoy! 🎉"
+msgstr ""
+
+#: templates/Admin/dashboard-modal.php:70
+msgid "Just one more step and you’ll be ready to start."
+msgstr ""
+
+#: templates/Admin/dashboard-modal.php:74
+msgid "Thanks for choosing WP Tasty. Enjoy!"
+msgstr ""
+
+#: templates/Admin/dashboard-modal.php:81
+msgid "Download Plugin"
+msgstr ""
+
+#: templates/Admin/dashboard-modal.php:86
+msgid "Activate Plugin"
+msgstr ""
+
+#: templates/Admin/dashboard-modal.php:90
+msgid "Close"
+msgstr ""
+
+#: templates/Admin/dashboard.php:19
+msgid "Licensing"
+msgstr ""
+
+#: templates/Admin/dashboard.php:67
+msgid "Refresh the page in 1 minute. If the problem continues, please reach out to support."
+msgstr ""
+
+#: templates/Admin/dashboard.php:121
+msgid "all access"
+msgstr ""
+
+#: templates/Admin/dashboard.php:124
+msgid "Save"
+msgstr ""
+
+#: templates/Admin/header.php:28
+msgid "Support & Documentation"
+msgstr ""
+
+#: templates/Admin/inbox-banner.php:16
+#: templates/Admin/inbox-message.php:26
+msgid "Dismiss"
+msgstr ""
+
+#. translators: %s: Time stamp
+#: templates/Admin/inbox-message.php:17
+msgid "%s ago"
+msgstr ""
+
+#: templates/Admin/inbox.php:19
+msgid "Inbox"
+msgstr ""
+
+#: templates/Admin/inbox.php:25
+msgid "Dismissed"
+msgstr ""
+
+#: templates/Admin/inbox.php:39
+msgid "No messages"
+msgstr ""
+
+#: templates/Admin/inbox.php:40
+msgid "You don't have any messages"
+msgstr ""
+
+#: templates/Admin/inbox.php:42
+msgid "Good news! No notifications at the moment."
+msgstr ""
+
+#. translators: %1$s Plugin name.
+#: templates/Admin/Notices/license-empty.php:17
+msgid "%1$s is almost ready."
+msgstr ""
+
+#: templates/Admin/Notices/license-empty.php:21
+msgid "Enter your license to continue."
+msgstr ""
+
+#. translators: %s is the plugin name.
+#: templates/Admin/Notices/license-invalid.php:18
+msgid "<strong>To enable updates and support for %s</strong> enter a valid license"
+msgstr ""
+
+#: templates/Admin/Notices/license-invalid.php:29
+msgid "Think you've reached this message in error?"
+msgstr ""
+
+#. translators: %1$s Opening anchor tag, %1$s Closing anchor tag.
+#: templates/Admin/Notices/license-invalid.php:34
+msgid "%1$sSubmit a support ticket%2$s, and we'll do our best to help out."
+msgstr ""
+
+#: assets/library/form/ShareASaleInput.jsx:15
+msgid "ShareASale Affiliate ID"
+msgstr ""
+
+#: assets/library/form/ShareASaleInput.jsx:23
+msgid "<affiliateLink>Apply for the affiliate program</affiliateLink>, or <findIdLink>find your affiliate ID</findIdLink>."
+msgstr ""
+
+#: assets/library/PremiumLock.jsx:19
+msgid "Premium"
+msgstr ""
+
+#: assets/library/PremiumModal.jsx:15
+msgid "This is a premium feature. Consider upgrading to a paid plan to get this and more great features."
+msgstr ""
+
+#: assets/library/PremiumModal.jsx:28
+msgid "Upgrade Now"
+msgstr ""
