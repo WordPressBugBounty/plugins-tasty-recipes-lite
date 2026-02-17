@@ -20,6 +20,7 @@ export const InputField = ( {
 			helper={ helper }
 			onClick={ onClick }
 			variant={ variant }
+			{...props}
 		>
 			<input
 				id={ id }

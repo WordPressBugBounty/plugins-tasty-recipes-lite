@@ -96,8 +96,24 @@ class Recipe_Explorer {
 			return '';
 		}
 
+		$button  = '<button type="button"';
+		$button .= ' class="tasty-button tasty-button-pink tasty-recipes-add-new-item"';
+		$button .= ' id="tasty-create-recipe"';
+		$button .= ' data-recipe-type="recipe">';
+		$button .= esc_html__( 'Create Recipe', 'tasty-recipes-lite' );
+		$button .= '</button>';
+
+		/**
+		 * Filters the "Add New" button HTML in the recipe explorer.
+		 *
+		 * @since 1.2.2
+		 *
+		 * @param string $button The button HTML.
+		 */
+		$button = apply_filters( 'tasty_recipes_recipe_explorer_add_new_button', $button );
+
 		$html  = '<p class="tasty-tabs-buttons">';
-		$html .= '<a class="tasty-button tasty-button-pink" id="tasty-create-recipe" href="#">' . esc_html__( 'Create Recipe', 'tasty-recipes-lite' ) . '</a>';
+		$html .= $button;
 
 		return $html;
 	}
@@ -224,9 +240,9 @@ class Recipe_Explorer {
 			return $columns;
 		}
 	
-		$columns['title']        = esc_html__( 'Recipe Title', 'tasty-recipes-lite' );
+		$columns['title']        = esc_html__( 'Title', 'tasty-recipes-lite' );
 		$columns['rating']       = esc_html__( 'Rating', 'tasty-recipes-lite' );
-		$columns['recipe-post']  = esc_html__( "Recipe's post", 'tasty-recipes-lite' );
+		$columns['recipe-post']  = esc_html__( 'Linked Post', 'tasty-recipes-lite' );
 		$columns['last-updated'] = esc_html__( 'Last updated', 'tasty-recipes-lite' );
 
 		// Hidden columns by default.
@@ -242,7 +258,14 @@ class Recipe_Explorer {
 			unset( $columns['date'] );
 		}
 
-		return $columns;
+		/**
+		 * Filters the Recipe Explorer columns.
+		 *
+		 * @since 1.2.2
+		 *
+		 * @param array $columns The columns array.
+		 */
+		return apply_filters( 'tasty_recipes_explorer_columns', $columns );
 	}
 
 	/**
@@ -308,6 +331,18 @@ class Recipe_Explorer {
 				$author_id = $post->post_author;
 				$author    = get_userdata( (int) $author_id );
 				echo esc_html( $author ? $author->display_name : '—' );
+				break;
+
+			default:
+				/**
+				 * Fires when rendering a custom column in the Recipe Explorer.
+				 *
+				 * @since 1.2.2
+				 *
+				 * @param string $column_name The column name.
+				 * @param int    $recipe_id   The recipe ID.
+				 */
+				do_action( 'tasty_recipes_explorer_custom_column', $column_name, $recipe_id );
 				break;
 		}
 	}
@@ -496,16 +531,30 @@ class Recipe_Explorer {
 			wp_send_json_error();
 		}
 
+		// Set the parent post for the recipe.
+		$recipe->add_parent_post( $post_id );
+
 		$recipe_title = ! empty( $recipe->get_title() ) ? $recipe->get_title() : __( 'The', 'tasty-recipes-lite' );
 
-		$message  = '<h3>' . esc_html__( 'Post created!', 'tasty-recipes-lite' ) . '</h3>';
-		$message .= '<p>';
-		$message .= sprintf(
+		$success_message = sprintf(
 			/* translators: %s: recipe title */
 			__( '%s recipe has been embedded successfully.', 'tasty-recipes-lite' ),
 			esc_html( $recipe_title )
 		);
-		$message .= '</p>';
+
+		/**
+		 * Filters the success message after creating a post with a recipe.
+		 *
+		 * @since 1.2.2
+		 *
+		 * @param string $success_message The success message.
+		 * @param int    $recipe_id       The recipe ID.
+		 * @param string $recipe_title    The recipe title.
+		 */
+		$success_message = apply_filters( 'tasty_recipes_create_post_success_message', $success_message, $params['recipe_id'], $recipe_title );
+
+		$message  = '<h3>' . esc_html__( 'Post created!', 'tasty-recipes-lite' ) . '</h3>';
+		$message .= '<p>' . esc_html( $success_message ) . '</p>';
 		$message .= '<p><a style="color: #ED4996;" href="' . esc_url( get_edit_post_link( $post_id ) ) . '">' . esc_html__( 'Go to Post', 'tasty-recipes-lite' ) . '</a></p>';
 		
 		$js_messagebox->add( 'success', $message );
@@ -530,7 +579,16 @@ class Recipe_Explorer {
 			wp_send_json_error( __( 'Recipe not found', 'tasty-recipes-lite' ) );
 		}
 
-		wp_send_json_success( $recipe->to_json() );
+		/**
+		 * Filters the recipe JSON data returned by the API and allows extending the recipe data with additional fields.
+		 *
+		 * @since 1.2.2
+		 *
+		 * @param array $recipe_json The recipe JSON data.
+		 */
+		$recipe_json = apply_filters( 'tasty_recipes_shortcode_response_recipe_json', $recipe->to_json() );
+
+		wp_send_json_success( $recipe_json );
 	}
 
 	/**
@@ -631,16 +689,42 @@ class Recipe_Explorer {
 			)
 		);
 
+		// Set the parent post for the recipe.
+		$recipe->add_parent_post( $post_id );
+
 		$recipe_title = ! empty( $recipe->get_title() ) ? $recipe->get_title() : __( 'The recipe', 'tasty-recipes-lite' );
 
-		$message  = '<h3>' . esc_html__( 'Recipe embedded!', 'tasty-recipes-lite' ) . '</h3>';
-		$message .= '<p>';
-		$message .= sprintf(
+		$success_heading = __( 'Recipe embedded!', 'tasty-recipes-lite' );
+
+		$success_message = sprintf(
 			/* translators: %s: recipe title */
 			__( '%s recipe has been embedded successfully.', 'tasty-recipes-lite' ),
 			esc_html( $recipe_title )
 		);
-		$message .= '</p>';
+
+		/**
+		 * Filters the success heading after embedding a recipe.
+		 *
+		 * @since 1.2.2
+		 *
+		 * @param string $success_heading The success heading.
+		 * @param int    $recipe_id       The recipe ID.
+		 */
+		$success_heading = apply_filters( 'tasty_recipes_embed_success_heading', $success_heading, $params['recipe_id'] );
+
+		/**
+		 * Filters the success message after embedding a recipe.
+		 *
+		 * @since 1.2.2
+		 *
+		 * @param string $success_message The success message.
+		 * @param int    $recipe_id       The recipe ID.
+		 * @param string $recipe_title    The recipe title.
+		 */
+		$success_message = apply_filters( 'tasty_recipes_embed_success_message', $success_message, $params['recipe_id'], $recipe_title );
+
+		$message  = '<h3>' . esc_html( $success_heading ) . '</h3>';
+		$message .= '<p>' . esc_html( $success_message ) . '</p>';
 		$message .= '<p><a style="color: #ED4996;" href="' . get_edit_post_link( $post_id ) . '">' . esc_html__( 'Go to Recipe', 'tasty-recipes-lite' ) . '</a></p>';
 		
 		$js_messagebox->add( 'success', $message );
@@ -660,10 +744,30 @@ class Recipe_Explorer {
 	private static function generate_recipe_content( $recipe_id ) {
 		$recipe = Recipe::get_by_id( $recipe_id );
 
-		$content = '[wp-tasty id="' . $recipe_id . '"]';
+		$shortcode = '[wp-tasty id="' . $recipe_id . '"]';
+
+		/**
+		 * Filters the shortcode used for embedding recipes.
+		 *
+		 * @since 1.2.2
+		 *
+		 * @param string $shortcode The shortcode string.
+		 * @param object $recipe    The recipe object.
+		 */
+		$content = apply_filters( 'tasty_recipes_recipe_shortcode', $shortcode, $recipe );
 
 		if ( function_exists( 'use_block_editor_for_post_type' ) && use_block_editor_for_post_type( 'post' ) ) {
-			$content = Block_Editor::get_block_for_recipe( $recipe );
+			$block = Block_Editor::get_block_for_recipe( $recipe );
+
+			/**
+			 * Filters the block content used for embedding recipes and allows changing the block type based on the recipe.
+			 *
+			 * @since 1.2.2
+			 *
+			 * @param string $block  The block content string.
+			 * @param object $recipe The recipe object.
+			 */
+			$content = apply_filters( 'tasty_recipes_recipe_block', $block, $recipe );
 		}
 
 		return $content;
@@ -720,6 +824,14 @@ class Recipe_Explorer {
 
 			$actions['delete'] = $button;
 		}
+
+		// Filters the post row actions and allows adding custom actions to the post row actions.
+		$actions = apply_filters(
+			'tasty_recipes_post_row_actions',
+			$actions,
+			$post,
+			$parent_post_id
+		);
 
 		return $actions;
 	}
@@ -899,6 +1011,15 @@ class Recipe_Explorer {
 				Utils::get_param( 'author' )
 			);
 		}
+
+		/**
+		 * Fires after the default recipe explorer filters have been applied and allows adding custom query filters to the recipe explorer.
+		 *
+		 * @since 1.2.2
+		 *
+		 * @param \WP_Query $query The query object.
+		 */
+		do_action( 'tasty_recipes_explorer_filter_query', $query );
 
 		return $query;
 	}

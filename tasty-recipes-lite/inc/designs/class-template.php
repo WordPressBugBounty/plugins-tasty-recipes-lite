@@ -44,6 +44,10 @@ class Template {
 			'fresh'          => Fresh::instance(),
 			'elegant'        => Elegant::instance(),
 			'modern-compact' => Modern_Compact::instance(),
+			'snap-2-0'       => Snap_2_0::instance(),
+			'bold-2-0'       => Bold_2_0::instance(),
+			'fresh-2-0'      => Fresh_2_0::instance(),
+			'elegant-2-0'    => Elegant_2_0::instance(),
 		);
 
 		self::$template_objects = (array) apply_filters( 'tasty_recipes_template_objects', $template_objects );
@@ -59,7 +63,7 @@ class Template {
 	public static function get_all_templates( $parts = array() ) {
 		self::set_template_objects();
 
-		$templates = [];
+		$templates = array();
 		if ( empty( self::$template_objects ) ) {
 			return $templates;
 		}
@@ -80,6 +84,19 @@ class Template {
 		}
 
 		return $templates;
+	}
+
+	/**
+	 * Get all template objects.
+	 * 
+	 * @since 1.2.2
+	 * 
+	 * @return array
+	 */
+	public static function get_all_template_objects() {
+		self::set_template_objects();
+
+		return self::$template_objects;
 	}
 
 	/**
@@ -199,6 +216,7 @@ class Template {
 		}
 
 		$get_template               = Utils::get_param( 'template', 'sanitize_key' );
+		$get_variation              = Utils::get_param( 'variation', 'sanitize_key' );
 		$get_star_ratings_style     = Utils::get_param( 'star_ratings_style', 'sanitize_key' );
 		$get_nutrifox_display_style = Utils::get_param( 'nutrifox_display_style', 'sanitize_key' );
 
@@ -206,14 +224,16 @@ class Template {
 		$star_ratings_style     = ! empty( $get_star_ratings_style ) && in_array( $get_star_ratings_style, array( 'solid', 'outline' ), true ) ? $get_star_ratings_style : null;
 		$show_nutrifox          = ! empty( $get_nutrifox_display_style ) && in_array( $get_nutrifox_display_style, array( 'label', 'card' ), true );
 		$nutrifox_display_style = $show_nutrifox ? $get_nutrifox_display_style : null;
+		$variation              = ! empty( $get_variation ) ? absint( $get_variation ) : false;
 
-		$styles  = ! empty( $custom_design ) ? Shortcodes::get_styles_as_string( $custom_design ) : '';
+		$styles  = ! empty( $custom_design ) ? Shortcodes::get_styles_as_string( $custom_design, $variation ) : '';
 		$styles .= Assets::get_css_vars();
 		$styles .= Utils::get_contents( 'assets/dist/recipe-card-preview.css', 'path' );
 
 		$template        = 'recipe/tasty-recipes';
 		$template_object = self::get_object_by_name( $custom_design );
-		$custom_path     = $template_object->get_template_path();
+		$custom_path     = $template_object->get_template_path( $variation );
+
 		if ( file_exists( $custom_path ) ) {
 			$template = $custom_path;
 		}
@@ -226,7 +246,18 @@ class Template {
 			$styles .= Utils::get_contents( $compat_file );
 		}
 
-		$recipe      = new \stdClass();
+		$recipe      = new class() {
+			/**
+			 * Get a placeholder ID for preview context.
+			 *
+			 * @since 1.2.2
+			 *
+			 * @return int
+			 */
+			public function get_id() {
+				return 0;
+			}
+		};
 		$recipe_json = array();
 
 		if ( 'card' === $nutrifox_display_style ) {
@@ -360,6 +391,7 @@ class Template {
 			'second_button'                 => Shortcodes::get_card_button( $recipe, 'second', $custom_design ),
 			'template'                      => $custom_design,
 			'template_object'               => ! empty( $template_object ) ? $template_object : false,
+			'variation'                     => $variation,
 		);
 		/**
 		 * Filter the template vars for the recipe card preview.
@@ -532,5 +564,32 @@ class Template {
 			),
 			$template
 		);
+	}
+
+	/**
+	 * Get the heading name for the template.
+	 * 
+	 * @since 1.2.2
+	 *
+	 * @param string $name The name of the heading.
+	 * @param object $recipe_object The recipe object.
+	 *
+	 * @return string
+	 */
+	public static function get_heading_name( $name, $recipe_object ) {
+		$defaults = array(
+			'description'  => __( 'Description', 'tasty-recipes-lite' ),
+			'ingredients'  => __( 'Ingredients', 'tasty-recipes-lite' ),
+			'instructions' => __( 'Instructions', 'tasty-recipes-lite' ),
+			'equipment'    => __( 'Equipment', 'tasty-recipes-lite' ),
+			'notes'        => __( 'Notes', 'tasty-recipes-lite' ),
+			'nutrition'    => __( 'Nutrition', 'tasty-recipes-lite' ),
+		);
+
+		if ( ! isset( $defaults[ $name ] ) ) {
+			return '';
+		}
+
+		return apply_filters( 'tasty_recipes_get_heading_name', $defaults[ $name ], $name, $recipe_object );
 	}
 }

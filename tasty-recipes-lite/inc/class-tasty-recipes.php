@@ -5,9 +5,11 @@
  * @package Tasty_Recipes
  */
 
+use Tasty_Recipes\Block_Editor;
 use Tasty_Recipes\MetaBox;
 use Tasty_Recipes\Onboarding_Wizard;
 use Tasty_Recipes\Recipe_Explorer;
+use Tasty_Recipes\Shortcodes;
 
 /**
  * Base controller class for the plugin.
@@ -93,6 +95,15 @@ class Tasty_Recipes {
 	const ENABLE_TAXONOMY_LINKS_OPTION = 'tasty_recipes_enable_taxonomy_links';
 
 	/**
+	 * Option name for storing the installed plugin version.
+	 *
+	 * @since 1.2.2
+	 *
+	 * @var string
+	 */
+	const PLUGIN_VERSION_OPTION = 'tasty_recipes_plugin_version';
+
+	/**
 	 * Option name for the powered by link.
 	 *
 	 * @var string
@@ -167,6 +178,13 @@ class Tasty_Recipes {
 	 * @var string
 	 */
 	const COPY_TO_CLIPBOARD_OPTION = 'tasty_recipes_copy_to_clipboard';
+
+	/**
+	 * Option name for the template variation.
+	 *
+	 * @var string
+	 */
+	const TEMPLATE_VARIATION_OPTION = 'tasty_recipes_template_variation';
 
 	/**
 	 * Option name for the improved keys notice dismissal.
@@ -262,10 +280,11 @@ class Tasty_Recipes {
 	private function setup_actions() {
 		// Bootstrap.
 		Tasty_Recipes\Assets::load_hooks();
-		Tasty_Recipes\Shortcodes::load_hooks();
+		Shortcodes::load_hooks();
 		Tasty_Recipes\Quick_Links::load_hooks();
 		add_action( 'init', array( 'Tasty_Recipes\Block_Editor', 'action_init_register' ) );
 		add_action( 'init', array( 'Tasty_Recipes\Content_Model', 'init_post_type' ) );
+		add_action( 'init', array( __CLASS__, 'maybe_flush_rewrite_rules_on_update' ), 20 );
 		add_action( 'tasty_recipes_process_thumbnails', array( 'Tasty_Recipes\Content_Model', 'action_tasty_recipes_process_thumbnails' ) );
 		add_action( 'rest_api_init', array( 'Tasty_Recipes\Recipe_Explorer', 'action_rest_api_init' ) );
 		add_action( 'rest_api_init', array( 'Tasty_Recipes\Onboarding_Wizard', 'register_api_routes' ) );
@@ -449,12 +468,43 @@ class Tasty_Recipes {
 		if ( ! $post ) {
 			return false;
 		}
-		if ( false !== stripos( $post->post_content, '[' . Tasty_Recipes\Shortcodes::RECIPE_SHORTCODE ) ) {
-			return true;
+
+		/**
+		 * Filters the shortcode tags to check for when determining if a post has a recipe.
+		 *
+		 * @since 1.2.2
+		 *
+		 * @param array $shortcode_tags Array of shortcode tags to check for.
+		 */
+		$shortcode_tags = apply_filters(
+			'tasty_recipes_has_recipe_shortcode_tags',
+			array( Shortcodes::RECIPE_SHORTCODE )
+		);
+
+		/**
+		 * Filters the block types to check for when determining if a post has a recipe.
+		 *
+		 * @since 1.2.2
+		 *
+		 * @param array $block_types Array of block types to check for.
+		 */
+		$block_types = apply_filters(
+			'tasty_recipes_has_recipe_block_types',
+			array( Block_Editor::RECIPE_BLOCK_TYPE )
+		);
+
+		foreach ( $shortcode_tags as $shortcode_tag ) {
+			if ( false !== stripos( $post->post_content, '[' . $shortcode_tag ) ) {
+				return true;
+			}
 		}
-		if ( false !== stripos( $post->post_content, '<!-- wp:' . Tasty_Recipes\Block_Editor::RECIPE_BLOCK_TYPE . ' ' ) ) {
-			return true;
+
+		foreach ( $block_types as $block_type ) {
+			if ( false !== stripos( $post->post_content, '<!-- wp:' . $block_type . ' ' ) ) {
+				return true;
+			}
 		}
+
 		return false;
 	}
 
@@ -529,23 +579,37 @@ class Tasty_Recipes {
 		);
 		$options  = array_merge( $defaults, $options );
 
+		/**
+		 * Filters the shortcode tags to search for when finding recipes in content.
+		 *
+		 * @since 1.2.2
+		 *
+		 * @param array $shortcode_tags Array of shortcode tags to search for.
+		 */
+		$shortcode_tags = apply_filters(
+			'tasty_recipes_content_shortcode_tags',
+			array( Shortcodes::RECIPE_SHORTCODE )
+		);
+
 		$recipes = array();
-		if ( preg_match_all( '#\[' . Tasty_Recipes\Shortcodes::RECIPE_SHORTCODE . '(.+)\]#Us', $content, $matches ) ) {
-			foreach ( $matches[0] as $i => $shortcode ) {
-				$atts = shortcode_parse_atts( $matches[1][ $i ] );
-				if ( empty( $atts['id'] ) ) {
-					continue;
-				}
+		foreach ( $shortcode_tags as $shortcode_tag ) {
+			if ( preg_match_all( '#\[' . $shortcode_tag . '(.+)\]#Us', $content, $matches ) ) {
+				foreach ( $matches[0] as $i => $shortcode ) {
+					$atts = shortcode_parse_atts( $matches[1][ $i ] );
+					if ( empty( $atts['id'] ) ) {
+						continue;
+					}
 
-				if ( false === $options['disable-json-ld']
-					&& in_array( 'disable-json-ld', $atts, true ) ) {
-					continue;
-				}
+					if ( false === $options['disable-json-ld']
+						&& in_array( 'disable-json-ld', $atts, true ) ) {
+						continue;
+					}
 
-				if ( ! empty( $options['full-result'] ) ) {
-					$recipes[] = $atts;
-				} else {
-					$recipes[] = (int) $atts['id'];
+					if ( ! empty( $options['full-result'] ) ) {
+						$recipes[] = $atts;
+					} else {
+						$recipes[] = (int) $atts['id'];
+					}
 				}
 			}
 		}
@@ -573,9 +637,21 @@ class Tasty_Recipes {
 	 * @return void
 	 */
 	public static function recursively_search_blocks( $blocks, $options, &$recipes ) {
+		/**
+		 * Filters the block types to search for when finding recipes in content.
+		 *
+		 * @since 1.2.2
+		 *
+		 * @param array $block_types Array of block types to search for.
+		 */
+		$block_types = apply_filters(
+			'tasty_recipes_content_block_types',
+			array( Block_Editor::RECIPE_BLOCK_TYPE )
+		);
+
 		foreach ( $blocks as $untyped_block ) {
 			$block = (array) $untyped_block;
-			if ( ! empty( $block['blockName'] ) && Tasty_Recipes\Block_Editor::RECIPE_BLOCK_TYPE === $block['blockName'] ) {
+			if ( ! empty( $block['blockName'] ) && in_array( $block['blockName'], $block_types, true ) ) {
 				/**
 				 * Filter to disable the use of custom schema for a block.
 				 *
@@ -681,9 +757,11 @@ class Tasty_Recipes {
 	/**
 	 * Gets the customization options for Tasty Recipes.
 	 *
+	 * @param bool $raw Whether to return raw settings without defaults.
+	 *
 	 * @return array
 	 */
-	public static function get_customization_settings() {
+	public static function get_customization_settings( $raw = false ) {
 		/**
 		 * Filter the default customization settings.
 		 * 
@@ -715,6 +793,10 @@ class Tasty_Recipes {
 			$defaults,
 			(array) get_option( self::CUSTOMIZATION_OPTION, array() )
 		);
+
+		if ( $raw ) {
+			return $settings;
+		}
 
 		/**
 		 * Filter the customization settings.
@@ -894,5 +976,24 @@ class Tasty_Recipes {
 			// We refresh the permalinks this way because using the flush_rewrite_rules function is against WP VIP.
 			delete_option( 'rewrite_rules' );
 		}
+	}
+
+	/**
+	 * Flush rewrite rules once when upgrading from a version prior to the
+	 * taxonomy `public` argument fix.
+	 *
+	 * @since 1.2.2
+	 *
+	 * @return void
+	 */
+	public static function maybe_flush_rewrite_rules_on_update() {
+		$stored_version = get_option( self::PLUGIN_VERSION_OPTION, '0' );
+
+		if ( version_compare( $stored_version, '1.2.1', '>' ) ) {
+			return;
+		}
+
+		delete_option( 'rewrite_rules' );
+		update_option( self::PLUGIN_VERSION_OPTION, TASTY_RECIPES_LITE_VERSION );
 	}
 }

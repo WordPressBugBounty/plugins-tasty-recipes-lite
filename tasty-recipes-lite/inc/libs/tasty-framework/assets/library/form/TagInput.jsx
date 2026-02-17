@@ -101,6 +101,7 @@ export const TagInput = ( {
 			helper={ helper }
 			onClick={ onClick }
 			variant={ variant }
+			{...props}
 		>
 			<div
 				ref={ containerRef }

@@ -238,11 +238,11 @@ class CLI {
 	 */
 	public function get_post_recipes( $args, $assoc_args ) {
 
-		if ( isset( $args ) ) {
-			$posts = array_map( 'get_post', $args );
-		} else {
+		if ( empty( $args ) ) {
 			WP_CLI::error( 'Please specify a post ID.' );
 		}
+
+		$posts = array_map( 'get_post', $args );
 
 		$results = array();
 

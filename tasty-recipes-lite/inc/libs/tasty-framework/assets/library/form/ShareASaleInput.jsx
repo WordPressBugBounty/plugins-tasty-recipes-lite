@@ -9,6 +9,7 @@ export const ShareASaleInput = ( {
 	setValue,
 	variant = 'side-label',
 	disabled = false,
+	...props
 } ) => {
 	return (
 		<TextInput
@@ -19,6 +20,7 @@ export const ShareASaleInput = ( {
 			setValue={ setValue }
 			disabled={ disabled }
 			variant={ variant }
+			{...props}
 			helper={ createInterpolateElement(
 				__(
 					'<affiliateLink>Apply for the affiliate program</affiliateLink>, or <findIdLink>find your affiliate ID</findIdLink>.',

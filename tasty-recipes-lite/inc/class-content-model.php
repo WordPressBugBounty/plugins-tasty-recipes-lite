@@ -111,12 +111,25 @@ class Content_Model {
 	 * @return array
 	 */
 	public static function get_taxonomy_definitions() { // phpcs:ignore SlevomatCodingStandard.Functions.FunctionLength.FunctionLength
-		return array(
+		$definitions = array(
 			'tasty_recipe_category' => self::get_taxonomy_definition( __( 'category', 'tasty-recipes-lite' ), __( 'Categories', 'tasty-recipes-lite' ) ),
 			'tasty_recipe_method'   => self::get_taxonomy_definition( __( 'method', 'tasty-recipes-lite' ), __( 'Methods', 'tasty-recipes-lite' ) ),
 			'tasty_recipe_cuisine'  => self::get_taxonomy_definition( __( 'cuisine', 'tasty-recipes-lite' ), __( 'Cuisines', 'tasty-recipes-lite' ) ),
 			'tasty_recipe_diet'     => self::get_taxonomy_definition( __( 'diet', 'tasty-recipes-lite' ), __( 'Diets', 'tasty-recipes-lite' ) ),
 		);
+
+		/**
+		 * Filters the taxonomy definitions for the recipe post type.
+		 *
+		 * Allows adding or modifying taxonomy definitions that will be registered
+		 * on the tasty_recipe post type. Each definition should include an 'args'
+		 * key compatible with register_taxonomy().
+		 *
+		 * @since 1.2.2
+		 *
+		 * @param array $definitions Taxonomy definitions keyed by taxonomy name.
+		 */
+		return apply_filters( 'tasty_recipes_taxonomy_definitions', $definitions );
 	}
 
 	/**
@@ -176,7 +189,7 @@ class Content_Model {
 					'not_found'                  => sprintf( __( 'No %s found', 'tasty-recipes-lite' ), $plural ),
 				),
 				'hierarchical'       => false,
-				'public'             => true,
+				'public'             => $has_archive,
 				'publicly_queryable' => $has_archive,
 				'show_ui'            => true,
 				'show_admin_column'  => false,
@@ -220,7 +233,7 @@ class Content_Model {
 	 * @return array
 	 */
 	public static function get_default_taxonomy_terms() {
-		return array(
+		$defaults = array(
 			'tasty_recipe_category' => array(
 				'Breakfast',
 				'Lunch',
@@ -265,6 +278,18 @@ class Content_Model {
 				'Pescatarian',
 			),
 		);
+
+		/**
+		 * Filters the default taxonomy terms.
+		 *
+		 * Allows adding default terms for additional taxonomies.
+		 * Terms are inserted once and protected from deletion.
+		 *
+		 * @since 1.2.2
+		 *
+		 * @param array $defaults Default terms keyed by taxonomy name.
+		 */
+		return apply_filters( 'tasty_recipes_default_taxonomy_terms', $defaults );
 	}
 
 	/**

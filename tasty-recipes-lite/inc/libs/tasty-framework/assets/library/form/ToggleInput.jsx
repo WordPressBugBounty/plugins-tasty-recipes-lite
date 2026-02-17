@@ -13,6 +13,7 @@ export const ToggleInput = ( {
 	offValue = 'no',
 	helper = '',
 	onClick = () => {},
+	...props
 } ) => {
 	const [ isChecked, setIsChecked ] = useState( () => {
 		return disabled ? false : value === onValue;
@@ -31,6 +32,7 @@ export const ToggleInput = ( {
 			helper={ helper }
 			onClick={ onClick }
 			variant={ variant }
+			{...props}
 		>
 			{ /* eslint-disable-next-line jsx-a11y/label-has-associated-control */ }
 			<label className="tasty-toggle-container">

@@ -1,5 +1,6 @@
 export * from './form/ColorInput.jsx';
 export * from './form/FormField.jsx';
+export * from './form/FormFieldNotice.jsx';
 export * from './form/InputField.jsx';
 export * from './form/NumberInput.jsx';
 export * from './form/SelectInput.jsx';

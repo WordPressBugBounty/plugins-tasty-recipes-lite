@@ -269,13 +269,13 @@ class Quick_Links {
 		if ( in_array( 'jump', $should_prepend_jump_to, true ) ) {
 			$links['jump'] = '<a class="tasty-recipes-jump-link tasty-recipes-scrollto' . esc_attr( $btn_class ) . '" ' .
 				'href="#tasty-recipes-' . esc_attr( $recipe_id ) . '-jump-target">' .
-				esc_html__( 'Jump to Recipe', 'tasty-recipes-lite' ) .
+				self::get_label_value( 'jump', $recipe_id ) .
 				'</a>';
 		}
 		if ( in_array( 'print', $should_prepend_jump_to, true ) ) {
 			$links['print'] = '<a class="tasty-recipes-print-link' . esc_attr( $btn_class ) . '" ' .
 				'href="' . esc_url( tasty_recipes_get_print_url( $post->ID, $recipe_id ) ) . '"' . $open_new . ' target="_blank">' .
-				esc_html__( 'Print Recipe', 'tasty-recipes-lite' ) .
+				self::get_label_value( 'print', $recipe_id ) .
 				'</a>';
 		}
 
@@ -341,5 +341,29 @@ class Quick_Links {
 	 */
 	public static function quick_links_classes( $classes ) {
 		return apply_filters( 'tasty_recipes_quick_links_class', $classes );
+	}
+
+	/**
+	 * Get the label for the jump to recipe link.
+	 *
+	 * @since 1.2.2
+	 *
+	 * @param string $type       The type of link.
+	 * @param int    $recipe_id  The recipe ID.
+	 *
+	 * @return string
+	 */
+	public static function get_label_value( $type, $recipe_id = null ) {
+		$labels = array(
+			'jump'   => esc_html__( 'Jump to Recipe', 'tasty-recipes-lite' ),
+			'print'  => esc_html__( 'Print Recipe', 'tasty-recipes-lite' ),
+			'rating' => esc_html__( 'Leave a Review', 'tasty-recipes-lite' ),
+		);
+
+		if ( ! isset( $labels[ $type ] ) ) {
+			return '';
+		}
+
+		return apply_filters( 'tasty_recipes_quick_links_label', $labels[ $type ], $type, $recipe_id );
 	}
 }

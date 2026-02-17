@@ -25,6 +25,26 @@
 			$('.tasty-recipes-modal-close', container).on('click', $.proxy( function(){
 				this.close( false );
 			}, this ));
+
+			// Listen for label updates from the React form.
+			document.addEventListener( 'tasty-recipes-editor-labels-update', function( event ) {
+				const detail = event.detail;
+				if ( ! detail ) {
+					return;
+				}
+
+				container.attr( 'data-recipe-type', detail.recipeType );
+
+				if ( detail.modalTitles ) {
+					$( '.tasty-recipes-frame-title .tasty-recipes-state-creating', container ).text( detail.modalTitles.create );
+					$( '.tasty-recipes-frame-title .tasty-recipes-state-editing', container ).text( detail.modalTitles.edit );
+				}
+
+				if ( detail.buttonLabels ) {
+					$( '.tasty-recipes-button-insert', container ).text( detail.buttonLabels.create );
+					$( '.tasty-recipes-button-update', container ).text( detail.buttonLabels.edit );
+				}
+			} );
 		},
 
 		/**

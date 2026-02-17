@@ -167,10 +167,13 @@ class Settings {
 		];
 
 		$design_settings = [
-			Tasty_Recipes::CUSTOMIZATION_OPTION => [
+			Tasty_Recipes::CUSTOMIZATION_OPTION      => [
 				'sanitize_callback' => array( __CLASS__, 'sanitize_customization_option' ),
 			],
-			Tasty_Recipes::TEMPLATE_OPTION      => $sanitize_title,
+			Tasty_Recipes::TEMPLATE_OPTION           => $sanitize_title,
+			Tasty_Recipes::TEMPLATE_VARIATION_OPTION => [
+				'sanitize_callback' => 'absint',
+			],
 		];
 
 		/**
@@ -311,8 +314,17 @@ class Settings {
 		$debug      = Utils::sanitize_get_key( 'debug' );
 		$tabs       = array();
 
+		/**
+		 * Filters the recipes tab label and allows changing the label based on enabled features.
+		 *
+		 * @since 1.2.2
+		 *
+		 * @param string $label The tab label.
+		 */
+		$recipes_label = apply_filters( 'tasty_recipes_settings_recipes_tab_label', __( 'Recipes', 'tasty-recipes-lite' ) );
+
 		$add_link = array(
-			'recipes'    => __( 'Recipes', 'tasty-recipes-lite' ),
+			'recipes'    => $recipes_label,
 			'design'     => __( 'Design', 'tasty-recipes-lite' ),
 			'settings'   => __( 'Settings', 'tasty-recipes-lite' ),
 			'converters' => __( 'Converters', 'tasty-recipes-lite' ),

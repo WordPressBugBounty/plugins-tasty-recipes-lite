@@ -601,9 +601,14 @@ class Editor {
 		}
 
 		if ( ! $post ) {
+			$recipe_post = get_post( $recipe->get_id() );
+
+			// Include recipe_type in the response for the embed modal.
+			$recipe_post->recipe_type = isset( $post_recipe['recipe_type'] ) ? sanitize_text_field( $post_recipe['recipe_type'] ) : 'recipe';
+
 			wp_send_json_success(
 				array(
-					'recipe' => get_post( $recipe->get_id() ),
+					'recipe' => $recipe_post,
 				)
 			);
 		}
@@ -965,7 +970,7 @@ class Editor {
 					'label'     => $existing_term->name,
 					'id'        => $existing_term->term_id,
 					'count'     => $existing_term->count,
-					'isDefault' => Content_Model::is_default_term( $existing_term->name, $taxonomy ),
+					'isDefault' => Content_Model::is_default_term( $existing_term->term_id, $taxonomy ),
 				)
 			);
 		}
@@ -984,7 +989,7 @@ class Editor {
 				'label'     => $term->name,
 				'id'        => $term->term_id,
 				'count'     => $term->count,
-				'isDefault' => Content_Model::is_default_term( $term->name, $taxonomy ),
+				'isDefault' => Content_Model::is_default_term( $term->term_id, $taxonomy ),
 			)
 		);
 	}
@@ -1020,7 +1025,7 @@ class Editor {
 			);
 		}
 
-		if ( Content_Model::is_default_term( $term->name, $taxonomy ) ) {
+		if ( Content_Model::is_default_term( $id, $taxonomy ) ) {
 			return new \WP_Error(
 				'default_term',
 				__( 'Cannot edit default terms.', 'tasty-recipes-lite' ),
@@ -1048,7 +1053,7 @@ class Editor {
 				'label'     => $updated_term->name,
 				'id'        => $updated_term->term_id,
 				'count'     => $updated_term->count,
-				'isDefault' => Content_Model::is_default_term( $updated_term->name, $taxonomy ),
+				'isDefault' => Content_Model::is_default_term( $updated_term->term_id, $taxonomy ),
 			)
 		);
 	}
@@ -1083,7 +1088,7 @@ class Editor {
 			);
 		}
 
-		if ( Content_Model::is_default_term( $term->name, $taxonomy ) ) {
+		if ( Content_Model::is_default_term( $id, $taxonomy ) ) {
 			return new \WP_Error(
 				'default_term',
 				__( 'Cannot delete default terms.', 'tasty-recipes-lite' ),

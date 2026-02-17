@@ -104,20 +104,31 @@ class Assets {
 				);
 			}
 
+			$explorer_data = array(
+				'emptyStateImage' => plugins_url( 'assets/images/empty-state-image.png', TASTY_RECIPES_LITE_FILE ),
+				'filters'         => array(
+					'rating'   => Recipe_Explorer::get_unique_filter_values( 'rating' ),
+					'cuisine'  => Recipe_Explorer::get_unique_filter_values( 'cuisine' ),
+					'method'   => Recipe_Explorer::get_unique_filter_values( 'method' ),
+					'category' => Recipe_Explorer::get_unique_filter_values( 'category' ),
+					'diet'     => Recipe_Explorer::get_unique_filter_values( 'diet' ),
+					'author'   => $users,
+				),
+			);
+
+			/**
+			 * Filters the explorer page data and allows extending the data passed to the explorer page JavaScript.
+			 *
+			 * @since 1.2.2
+			 *
+			 * @param array $explorer_data The explorer page data.
+			 */
+			$explorer_data = apply_filters( 'tasty_recipes_explorer_page_data', $explorer_data );
+
 			wp_localize_script(
 				'tasty-recipes-explorer-page',
 				'tastyRecipesExplorerPage',
-				array(
-					'emptyStateImage' => plugins_url( 'assets/images/empty-state-image.png', TASTY_RECIPES_LITE_FILE ),
-					'filters'         => array(
-						'rating'   => Recipe_Explorer::get_unique_filter_values( 'rating' ),
-						'cuisine'  => Recipe_Explorer::get_unique_filter_values( 'cuisine' ),
-						'method'   => Recipe_Explorer::get_unique_filter_values( 'method' ),
-						'category' => Recipe_Explorer::get_unique_filter_values( 'category' ),
-						'diet'     => Recipe_Explorer::get_unique_filter_values( 'diet' ),
-						'author'   => $users,
-					),
-				)
+				$explorer_data
 			);
 
 			wp_enqueue_style(
@@ -242,11 +253,12 @@ class Assets {
 		return apply_filters(
 			'tasty_recipes_design_tab_options',
 			array(
-				'allTemplates'             => Template::get_all_templates(),
+				'allTemplates'             => Template::get_all_templates( array( 'object' ) ),
 				'recipeCardPreviewUrlBase' => $recipe_card_preview_url_base,
 				'template'                 => get_option( Tasty_Recipes::TEMPLATE_OPTION, '' ),
 				'template_parts'           => array( 'name', 'design_opts' ),
-				'customization'            => Tasty_Recipes::get_filtered_customization_settings(),
+				'variation'                => get_option( Tasty_Recipes::TEMPLATE_VARIATION_OPTION, 1 ),
+				'customization'            => Tasty_Recipes::get_customization_settings( true ),
 				'locked'                   => Template::get_locked_templates(),
 			)
 		);
@@ -474,6 +486,15 @@ class Assets {
 			$blocks_data['editorNotices'] = Editor::get_converter_messages( $post_id );
 		}
 
+		/**
+		 * Filter the block editor data before it's localized.
+		 *
+		 * @since 1.2.2
+		 *
+		 * @param array $blocks_data The block editor data.
+		 */
+		$blocks_data = apply_filters( 'tasty_recipes_block_editor_data', $blocks_data );
+
 		wp_localize_script( 'tasty-recipes-block-editor', 'tastyRecipesBlockEditor', $blocks_data );
 
 		self::action_wp_head();
@@ -529,19 +550,32 @@ class Assets {
 		do_action( 'tasty_recipes_editor_after_video_url' );
 		$after_video_url_markup = ob_get_clean();
 
+		$editor_data = array(
+			'pluginURL'              => plugins_url( '', __DIR__ ),
+			'after_video_url_markup' => $after_video_url_markup,
+			'defaultRecipeType'      => 'recipe',
+			'attributes'             => array(
+				'cooking'   => $cooking_attributes,
+				'nutrition' => $nutrition_attributes,
+			),
+		);
+
+		// Add additional keys needed by the editor.
+		$editor_data['improvedKeysNoticeDismissed'] = get_option( \Tasty_Recipes::IMPROVED_KEYS_NOTICE_DISMISSED_OPTION, false );
+		$editor_data['modifyNonce']                 = wp_create_nonce( 'tasty_recipes_modify_recipe' );
+
+		/**
+		 * Filters the recipe editor data sent to the client.
+		 *
+		 * @since 1.2.2
+		 *
+		 * @param array $editor_data Editor data.
+		 */
+		$editor_data = apply_filters( 'tasty_recipes_recipe_editor_data', $editor_data );
 		wp_localize_script(
 			'tasty-recipes-recipe-editor',
 			'tastyRecipesRecipeEditorData',
-			array(
-				'pluginURL'                   => plugins_url( '', __DIR__ ),
-				'after_video_url_markup'      => $after_video_url_markup,
-				'improvedKeysNoticeDismissed' => get_option( \Tasty_Recipes::IMPROVED_KEYS_NOTICE_DISMISSED_OPTION, false ),
-				'modifyNonce'                 => wp_create_nonce( 'tasty_recipes_modify_recipe' ),
-				'attributes'                  => array(
-					'cooking'   => $cooking_attributes,
-					'nutrition' => $nutrition_attributes,
-				),
-			)
+			$editor_data
 		);
 		$time = filemtime( dirname( __DIR__ ) . '/assets/js/editor-modal.js' );
 		wp_register_script(

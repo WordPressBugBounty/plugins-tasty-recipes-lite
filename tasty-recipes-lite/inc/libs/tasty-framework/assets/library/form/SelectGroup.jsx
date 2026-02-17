@@ -7,6 +7,7 @@ export const SelectGroup = ( {
 	groupHelper = '',
 	selects,
 	onClick = () => {},
+	...props
 } ) => {
 	return (
 		<FormField
@@ -15,6 +16,7 @@ export const SelectGroup = ( {
 			helper={ groupHelper }
 			className="tasty-select-group"
 			onClick={ onClick }
+			{...props}
 		>
 			{ selects.map( ( select ) => (
 				<SelectInput

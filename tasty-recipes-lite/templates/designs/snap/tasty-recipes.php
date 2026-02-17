@@ -94,7 +94,7 @@ if ( '.svg' === $ext ) {
 							if ( isset( $icons[ $key ] ) ) {
 								if ( '.svg' === $ext ) {
 									?>
-									<svg viewBox="0 0 24 24" class="detail-icon" aria-hidden="true"><use xlink:href="#tasty-recipes-<?php echo esc_attr( $icons[ $key ] ); ?>" data-tasty-recipes-customization="icon-color.color"></use></svg>
+									<svg viewBox="0 0 24 24" class="detail-icon" aria-hidden="true"><use href="#tasty-recipes-<?php echo esc_attr( $icons[ $key ] ); ?>" data-tasty-recipes-customization="icon-color.color"></use></svg>
 									<?php
 								} else {
 									?>
@@ -110,7 +110,7 @@ if ( '.svg' === $ext ) {
 						$other_details .= '<li class="' . esc_attr( $detail['class'] ) . '"><span class="tasty-recipes-label" data-tasty-recipes-customization="detail-label-color.color">';
 						if ( isset( $icons[ $key ] ) ) {
 							if ( '.svg' === $ext ) {
-								$other_details .= '<svg viewBox="0 0 24 24" class="detail-icon" aria-hidden="true" data-tasty-recipes-customization="icon-color.color"><use xlink:href="#tasty-recipes-' . esc_attr( $icons[ $key ] ) . '"></use></svg>';
+								$other_details .= '<svg viewBox="0 0 24 24" class="detail-icon" aria-hidden="true" data-tasty-recipes-customization="icon-color.color"><use href="#tasty-recipes-' . esc_attr( $icons[ $key ] ) . '"></use></svg>';
 							} else {
 								$other_details .= '<img nopin="nopin" data-pin-nopin="1" class="detail-icon" src="' . esc_url( plugins_url( 'images/' . $icons[ $key ] . $ext, __FILE__ ) ) . '">';
 							}
@@ -132,7 +132,7 @@ if ( '.svg' === $ext ) {
 		<div class="tasty-recipes-ingredients">
 			<div class="tasty-recipes-ingredients-header">
 				<div class="tasty-recipes-ingredients-clipboard-container">
-					<h3 data-tasty-recipes-customization="h3-color.color h3-transform.text-transform"><?php esc_html_e( 'Ingredients', 'tasty-recipes-lite' ); ?></h3>
+					<h3 data-tasty-recipes-customization="h3-color.color h3-transform.text-transform"><?php echo esc_html( Tasty_Recipes\Designs\Template::get_heading_name( 'ingredients', $recipe ) ); ?></h3>
 					<?php if ( $copy_ingredients ) : ?>
 						<?php Utils::kses( $copy_ingredients, true ); ?>
 					<?php endif; ?>
@@ -165,7 +165,7 @@ if ( '.svg' === $ext ) {
 		?>
 	<div class="tasty-recipes-instructions">
 		<div class="tasty-recipes-instructions-header">
-			<h3 data-tasty-recipes-customization="h3-color.color h3-transform.text-transform"><?php esc_html_e( 'Instructions', 'tasty-recipes-lite' ); ?></h3>
+			<h3 data-tasty-recipes-customization="h3-color.color h3-transform.text-transform"><?php echo esc_html( Tasty_Recipes\Designs\Template::get_heading_name( 'instructions', $recipe ) ); ?></h3>
 			<?php if ( ! empty( $recipe_instructions_has_video ) ) : ?>
 			<div class="tasty-recipes-video-toggle-container">
 				<label for="tasty-recipes-video-toggle"><?php esc_html_e( 'Video', 'tasty-recipes-lite' ); ?></label>
@@ -195,14 +195,14 @@ if ( '.svg' === $ext ) {
 	if ( ! empty( $recipe_equipment ) ) :
 		?>
 		<div class="tasty-recipes-equipment">
-			<h3 data-tasty-recipes-customization="h3-color.color h3-transform.text-transform"><?php esc_html_e( 'Equipment', 'tasty-recipes-lite' ); ?></h3>
+			<h3 data-tasty-recipes-customization="h3-color.color h3-transform.text-transform"><?php echo esc_html( Tasty_Recipes\Designs\Template::get_heading_name( 'equipment', $recipe ) ); ?></h3>
 			<?php Utils::kses( $recipe_equipment, true ); ?>
 		</div>
 	<?php endif; ?>
 
 	<?php if ( ! empty( $recipe_notes ) && isset( $print_view_options['notes'] ) ) : ?>
 		<div class="tasty-recipes-notes" data-tasty-recipes-customization="secondary-color.background-color">
-			<h3 data-tasty-recipes-customization="h3-color.color h3-transform.text-transform"><?php esc_html_e( 'Notes', 'tasty-recipes-lite' ); ?></h3>
+			<h3 data-tasty-recipes-customization="h3-color.color h3-transform.text-transform"><?php echo esc_html( Tasty_Recipes\Designs\Template::get_heading_name( 'notes', $recipe ) ); ?></h3>
 			<div class="tasty-recipes-notes-body" data-tasty-recipes-customization="body-color.color">
 				<?php Utils::kses( $recipe_notes, true ); ?>
 			</div>
@@ -226,7 +226,7 @@ if ( '.svg' === $ext ) {
 
 	<?php if ( ! empty( $recipe_nutrition ) && isset( $print_view_options['nutrition'] ) ) : ?>
 		<div class="tasty-recipes-nutrition">
-			<h3 data-tasty-recipes-customization="h3-color.color h3-transform.text-transform"><?php esc_html_e( 'Nutrition', 'tasty-recipes-lite' ); ?></h3>
+			<h3 data-tasty-recipes-customization="h3-color.color h3-transform.text-transform"><?php echo esc_html( Tasty_Recipes\Designs\Template::get_heading_name( 'nutrition', $recipe ) ); ?></h3>
 			<ul>
 				<?php foreach ( $recipe_nutrition as $nutrition ) : ?>
 					<li><strong class="tasty-recipes-label" data-tasty-recipes-customization="body-color.color"><?php echo esc_html( $nutrition['label'] ); ?>:</strong> <?php Utils::kses( $nutrition['value'], true ); ?></li>

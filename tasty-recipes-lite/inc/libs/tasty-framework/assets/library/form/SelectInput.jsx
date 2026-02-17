@@ -15,6 +15,7 @@ export const SelectInput = ( {
 	grouped = false,
 	onClick = () => {},
 	variant = 'side-label',
+	...props
 } ) => {
 	const customOptions = [
 		...options.filter( ( option ) => option.selected ),
@@ -76,6 +77,7 @@ export const SelectInput = ( {
 				helper={ helper }
 				onClick={ onClick }
 				variant={ variant }
+				{...props}
 			>
 				{ selectElement }
 			</FormField>

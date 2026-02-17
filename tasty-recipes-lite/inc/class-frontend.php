@@ -98,7 +98,7 @@ class Frontend {
 			$recipe_rating_icons  = Ratings::get_rendered_rating( $average_rating );
 			$rating_link_class    = 'tasty-recipes-has-ratings';
 		} else {
-			$recipe_rating_label = esc_html__( 'Leave a Review', 'tasty-recipes-lite' );
+			$recipe_rating_label = Quick_Links::get_label_value( 'rating' );
 			$recipe_rating_icons = '';
 			$rating_link_class   = Quick_Links::quick_links_classes( $rating_link_class );
 		}

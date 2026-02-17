@@ -556,10 +556,11 @@ class Shortcodes {
 	 * @since 3.13
 	 *
 	 * @param bool|string $custom_design Custom design.
+	 * @param false|int   $variation     Template variation.
 	 *
 	 * @return void
 	 */
-	private static function set_template_info( $custom_design = false ) {
+	private static function set_template_info( $custom_design = false, $variation = false ) {
 		self::$template['php'] = '';
 		self::$custom_template = '';
 
@@ -579,8 +580,8 @@ class Shortcodes {
 		self::$custom_template = $custom_design;
 		if ( $template_obj ) {
 			self::$custom_template = $template_obj->get_id();
-			self::$template['php'] = $template_obj->get_template_path();
-			self::$template['css'] = $template_obj->get_style_path();
+			self::$template['php'] = $template_obj->get_template_path( $variation );
+			self::$template['css'] = $template_obj->get_style_path( $variation );
 		}
 	}
 
@@ -920,7 +921,16 @@ class Shortcodes {
 	 * @return string
 	 */
 	public static function get_shortcode_for_recipe( Recipe $recipe ) {
-		return '[' . self::RECIPE_SHORTCODE . ' id="' . $recipe->get_id() . '"]';
+		$shortcode = '[' . self::RECIPE_SHORTCODE . ' id="' . $recipe->get_id() . '"]';
+		/**
+		 * Filters the shortcode for a given recipe.
+		 *
+		 * @since 1.2.2
+		 *
+		 * @param string $shortcode Shortcode string.
+		 * @param Recipe $recipe    Recipe instance.
+		 */
+		return apply_filters( 'tasty_recipes_recipe_shortcode', $shortcode, $recipe );
 	}
 
 	/**
@@ -968,13 +978,8 @@ class Shortcodes {
 
 		$atts = array(
 			'recipe'        => $recipe,
-			'customization' => '',
+			'customization' => $template_obj->get_customized( 'admin_button' ),
 		);
-
-		if ( is_admin() ) {
-			// Set the colors dynamically in the preview.
-			$atts['customization'] = $template_obj->get_customized( 'admin_button' );
-		}
 		return Tasty_Recipes::get_template_part(
 			'buttons/' . $settings[ $position ],
 			$atts
@@ -984,24 +989,32 @@ class Shortcodes {
 	/**
 	 * Gets the styles to inject into the recipe card.
 	 *
-	 * @param string $override_design Design being used if not the saved option.
+	 * @param string    $override_design Design being used if not the saved option.
+	 * @param false|int $variation       Template variation.
 	 *
 	 * @return string
 	 */
-	public static function get_styles_as_string( $override_design = '' ) {
-		self::set_template_info( $override_design );
+	public static function get_styles_as_string( $override_design = '', $variation = false ) {
+		self::set_template_info( $override_design, $variation );
 
 		// Add stylesheet so we can add inline CSS to it.
 		wp_register_style( 'tasty-recipes-before', false, array(), TASTY_RECIPES_LITE_VERSION );
 		wp_enqueue_style( 'tasty-recipes-before' );
 		wp_enqueue_style( 'tasty-recipes-main' );
 
-		$styles    = '';
-		$css_files = [];
+		$styles       = '';
+		$css_files    = [];
+		$template_obj = Template::get_object_by_name( self::$custom_template );
+		
+		if ( $template_obj->supports( 'variations' ) ) {
+			$css_files[] = $template_obj->get_shared_style_path();
+		}
+
 		if ( self::$custom_template && self::$template['css'] ) {
 			$css_files[] = self::$template['css'];
 			add_filter( 'tasty_recipes_css_vars', array( __CLASS__, 'add_template_css_vars' ) );
 		}
+		
 
 		/**
 		 * Allow third-parties to more easily inject their own styles.

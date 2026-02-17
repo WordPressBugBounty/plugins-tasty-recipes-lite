@@ -77,6 +77,7 @@ export const EditorInput = ( {
 			className="tasty-editor-input"
 			onClick={ onClick }
 			variant={ variant }
+			{...props}
 		>
 			<div ref={ editorRef } className="tasty-editor-input-wrapper">
 				<textarea

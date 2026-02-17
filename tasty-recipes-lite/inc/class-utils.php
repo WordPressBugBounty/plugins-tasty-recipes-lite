@@ -484,18 +484,19 @@ class Utils {
 				'stop-color'   => true,
 			),
 			'svg'            => array(
-				'class'           => true,
-				'id'              => true,
-				'xmlns'           => true,
-				'viewbox'         => true,
-				'width'           => true,
-				'height'          => true,
-				'style'           => true,
-				'fill'            => true,
-				'aria-label'      => true,
-				'aria-hidden'     => true,
-				'aria-labelledby' => true,
-				'stroke'          => true,
+				'class'                            => true,
+				'id'                               => true,
+				'xmlns'                            => true,
+				'viewbox'                          => true,
+				'width'                            => true,
+				'height'                           => true,
+				'style'                            => true,
+				'fill'                             => true,
+				'aria-label'                       => true,
+				'aria-hidden'                      => true,
+				'aria-labelledby'                  => true,
+				'stroke'                           => true,
+				'data-tasty-recipes-customization' => true,
 			),
 			'symbol'         => array(
 				'id'      => true,
@@ -504,10 +505,10 @@ class Utils {
 				'viewbox' => true,
 			),
 			'use'            => array(
-				'href'        => true,
-				'xlink:href'  => true,
-				'class'       => true,
-				'aria-hidden' => true,
+				'href'                             => true,
+				'class'                            => true,
+				'aria-hidden'                      => true,
+				'data-tasty-recipes-customization' => true,
 			),
 		);
 
@@ -521,6 +522,14 @@ class Utils {
 		);
 
 		$allowed_html = array_replace_recursive( $add_html, $allowed_html );
+
+		// Allow the customization data attribute on standard HTML elements.
+		$customization_elements = array( 'span', 'img', 'li', 'div', 'footer', 'h2', 'h3', 'p' );
+		foreach ( $customization_elements as $tag ) {
+			if ( isset( $allowed_html[ $tag ] ) ) {
+				$allowed_html[ $tag ]['data-tasty-recipes-customization'] = true;
+			}
+		}
 		return (array) apply_filters( 'tasty_recipes_allowed_html', $allowed_html );
 	}
 

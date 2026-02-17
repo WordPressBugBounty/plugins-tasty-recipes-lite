@@ -472,7 +472,19 @@ class Ratings {
 			return $settings;
 		}
 
-		$settings['star_color'] = ! empty( $settings['detail_value_color'] ) ? $settings['detail_value_color'] : '#F2B955';
+		/**
+		 * Whether to use detail_value_color as the default star color.
+		 *
+		 * @since 1.2.2
+		 *
+		 * @param bool $use_detail_value Whether to fall back to detail_value_color. Default true.
+		 */
+		$use_detail_value = apply_filters( 'tasty_recipes_star_color_uses_detail_value', true );
+
+		$settings['star_color'] = $use_detail_value && ! empty( $settings['detail_value_color'] )
+			? $settings['detail_value_color']
+			: '#F2B955';
+
 		return $settings;
 	}
 

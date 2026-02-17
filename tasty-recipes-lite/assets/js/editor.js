@@ -56,6 +56,9 @@
 			var defaults = {
 				author_name: tastyRecipesEditor.defaultAuthorName
 			};
+			if ( elem.data( 'recipe-type' ) ) {
+				defaults.recipe_type = elem.data( 'recipe-type' );
+			}
 			if ( $('input[name="post_title"]').length ) {
 				defaults.title = $('input[name="post_title"]').val();
 			}

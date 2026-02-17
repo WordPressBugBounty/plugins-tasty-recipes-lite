@@ -89,7 +89,7 @@ class Block_Editor {
 				),
 				'editor_script'   => 'tasty-recipes-block-editor',
 				'editor_style'    => array( 'tasty-framework-global-css', 'tasty-recipes-main', 'tasty-recipes-block-editor' ),
-				'render_callback' => array( 'Tasty_Recipes\Shortcodes', 'render_tasty_recipe_shortcode' ),
+				'render_callback' => array( __CLASS__, 'render_recipe_block' ),
 			)
 		);
 
@@ -109,8 +109,17 @@ class Block_Editor {
 	public static function get_formatted_recipes_without_parents() {
 		global $wpdb;
 
-		// phpcs:ignore
-		$recipes = $wpdb->get_results(
+		/**
+		 * Filter the SQL query for getting recipes without parents.
+		 *
+		 * Allows Pro to modify the query to exclude how-tos.
+		 *
+		 * @since 1.2.2
+		 *
+		 * @param string $sql The SQL query.
+		 */
+		$sql = apply_filters(
+			'tasty_recipes_get_recipes_without_parents_sql',
 			"SELECT post.ID, post.post_title 
 			FROM $wpdb->posts post 
 			LEFT JOIN $wpdb->postmeta postmeta ON post.ID = postmeta.post_id AND postmeta.meta_key = '_tasty_recipe_parents'
@@ -118,6 +127,9 @@ class Block_Editor {
 			AND post.post_status = 'publish'
 			AND postmeta.meta_id IS NULL"
 		);
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+		$recipes = $wpdb->get_results( $sql );
 
 		if ( empty( $recipes ) ) {
 			return array();
@@ -143,6 +155,36 @@ class Block_Editor {
 	 */
 	public static function get_block_for_recipe( Recipe $recipe ) {
 		return '<!-- wp:wp-tasty/tasty-recipe {"id":' . $recipe->get_id() . ',"lastUpdated":' . time() . '} /-->';
+	}
+
+	/**
+	 * Render callback for the recipe block.
+	 *
+	 * @since 1.2.2
+	 *
+	 * @param array $attributes Block attributes.
+	 *
+	 * @return string
+	 */
+	public static function render_recipe_block( $attributes ) {
+		if ( empty( $attributes['id'] ) ) {
+			return '';
+		}
+
+		/**
+		 * Filter to validate if a recipe block should render this ID and allows preventing certain recipe IDs from being rendered in recipe blocks.
+		 *
+		 * @since 1.2.2
+		 *
+		 * @param bool $is_valid   Whether the ID is valid for this block.
+		 * @param int  $recipe_id  The recipe ID.
+		 */
+		$is_valid = apply_filters( 'tasty_recipes_validate_recipe_block_id', true, $attributes['id'] );
+		if ( ! $is_valid ) {
+			return '';
+		}
+
+		return Shortcodes::render_tasty_recipe_shortcode( $attributes );
 	}
 
 	/**

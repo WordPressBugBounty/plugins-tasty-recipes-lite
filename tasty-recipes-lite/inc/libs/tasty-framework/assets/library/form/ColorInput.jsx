@@ -14,6 +14,7 @@ export const ColorInput = ( {
 	setColor,
 	helper = '',
 	onClick = () => {},
+	...props
 } ) => {
 	const [ innerColor, setInnerColor ] = useState( () => {
 		if ( ! color || color.length === 0 ) {
@@ -66,6 +67,7 @@ export const ColorInput = ( {
 			helper={ helper }
 			onClick={ onClick }
 			variant={ variant }
+			{...props}
 		>
 			<div className="tasty-color-wrap">
 				<button

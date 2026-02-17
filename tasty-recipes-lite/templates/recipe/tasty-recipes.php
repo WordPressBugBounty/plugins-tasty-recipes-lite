@@ -67,7 +67,7 @@ do_action( 'tasty_recipes_card_after_title', $vars );
 	<div class="tasty-recipes-ingredients">
 		<div class="tasty-recipes-ingredients-header">
 			<div class="tasty-recipes-ingredients-clipboard-container">
-				<h3 data-tasty-recipes-customization="h3-color.color h3-transform.text-transform"><?php esc_html_e( 'Ingredients', 'tasty-recipes-lite' ); ?></h3>
+				<h3 data-tasty-recipes-customization="h3-color.color h3-transform.text-transform"><?php echo esc_html( Tasty_Recipes\Designs\Template::get_heading_name( 'ingredients', $recipe ) ); ?></h3>
 				<?php if ( $copy_ingredients ) : ?>
 					<?php Utils::kses( $copy_ingredients, true ); ?>
 				<?php endif; ?>
@@ -91,7 +91,7 @@ do_action( 'tasty_recipes_card_after_title', $vars );
 <?php if ( ! empty( $recipe_instructions ) ) : ?>
 	<div class="tasty-recipe-instructions">
 		<div class="tasty-recipes-instructions-header">
-			<h3 data-tasty-recipes-customization="h3-color.color h3-transform.text-transform"><?php esc_html_e( 'Instructions', 'tasty-recipes-lite' ); ?></h3>
+			<h3 data-tasty-recipes-customization="h3-color.color h3-transform.text-transform"><?php echo esc_html( Tasty_Recipes\Designs\Template::get_heading_name( 'instructions', $recipe ) ); ?></h3>
 			<?php if ( ! empty( $recipe_instructions_has_video ) ) : ?>
 			<div class="tasty-recipes-video-toggle-container">
 				<label for="tasty-recipes-video-toggle"><?php esc_html_e( 'Video', 'tasty-recipes-lite' ); ?></label>
@@ -118,14 +118,14 @@ do_action( 'tasty_recipes_card_after_title', $vars );
 if ( ! empty( $recipe_equipment ) ) :
 	?>
 	<div class="tasty-recipes-equipment">
-		<h3 data-tasty-recipes-customization="h3-color.color h3-transform.text-transform"><?php esc_html_e( 'Equipment', 'tasty-recipes-lite' ); ?></h3>
+		<h3 data-tasty-recipes-customization="h3-color.color h3-transform.text-transform"><?php echo esc_html( Tasty_Recipes\Designs\Template::get_heading_name( 'equipment', $recipe ) ); ?></h3>
 		<?php Utils::kses( $recipe_equipment, true ); ?>
 	</div>
 <?php endif; ?>
 
 <?php if ( ! empty( $recipe_notes ) && isset( $print_view_options['notes'] ) ) : ?>
 	<div class="tasty-recipes-notes">
-		<h3 data-tasty-recipes-customization="h3-color.color h3-transform.text-transform"><?php esc_html_e( 'Notes', 'tasty-recipes-lite' ); ?></h3>
+		<h3 data-tasty-recipes-customization="h3-color.color h3-transform.text-transform"><?php echo esc_html( Tasty_Recipes\Designs\Template::get_heading_name( 'notes', $recipe ) ); ?></h3>
 		<div class="tasty-recipes-notes-body" data-tasty-recipes-customization="body-color.color">
 			<?php Utils::kses( $recipe_notes, true ); ?>
 		</div>
@@ -142,7 +142,7 @@ if ( ! empty( $recipe_equipment ) ) :
 
 <?php if ( ! empty( $recipe_nutrition ) && isset( $print_view_options['nutrition'] ) ) : ?>
 	<div class="tasty-recipes-nutrition">
-		<h3 data-tasty-recipes-customization="h3-color.color h3-transform.text-transform"><?php esc_html_e( 'Nutrition', 'tasty-recipes-lite' ); ?></h3>
+		<h3 data-tasty-recipes-customization="h3-color.color h3-transform.text-transform"><?php echo esc_html( Tasty_Recipes\Designs\Template::get_heading_name( 'nutrition', $recipe ) ); ?></h3>
 		<ul>
 			<?php foreach ( $recipe_nutrition as $nutrition ) : ?>
 				<li><strong class="tasty-recipes-label" data-tasty-recipes-customization="body-color.color"><?php echo esc_html( $nutrition['label'] ); ?>:</strong> <?php Utils::kses( $nutrition['value'], true ); ?></li>

@@ -11,6 +11,7 @@ export const UploadInput = ( {
 	buttonText,
 	helper = '',
 	onClick = () => {},
+	...props
 } ) => {
 	const handleMediaUpload = () => {
 		// We use the global wp object because the available NPM packages work only within the block editor context.
@@ -44,6 +45,7 @@ export const UploadInput = ( {
 			helper={ helper }
 			onClick={ onClick }
 			variant={ variant }
+			{...props}
 		>
 			<input
 				type="hidden"

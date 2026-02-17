@@ -3,6 +3,7 @@ import { FormField } from './FormField';
 
 export const CheckInput = ( {
 	id,
+	label,
 	variant = 'side-label',
 	setValue,
 	helper = '',
@@ -15,8 +16,11 @@ export const CheckInput = ( {
 			helper={ helper }
 			onClick={ onClick }
 			variant={ variant }
+			{...props}
 		>
 			<CheckBox
+				id={ id }
+				label={ label }
 				onChange={ ( e ) => {
 					setValue( e.target.checked );
 				} }

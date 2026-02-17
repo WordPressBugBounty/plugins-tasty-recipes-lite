@@ -113,9 +113,14 @@ class Template {
 	 * @return string
 	 */
 	private static function build_dismiss_url( $key ) {
+		$page_param = Vars::get_param( 'page' );
+
+		// We check for the page value because the Vars::get_param will not always return the default value.
+		$page = $page_param ? $page_param : 'tasty';
+
 		$url = \add_query_arg(
 			array(
-				'page'   => Vars::get_param( 'page' ),
+				'page'   => $page,
 				'action' => 'dismiss-inbox-message',
 				'key'    => $key,
 				'nonce'  => wp_create_nonce( 'tasty-dismiss-inbox-message' ),

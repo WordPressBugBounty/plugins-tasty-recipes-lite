@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later (license.txt)..
 msgid ""
 msgstr ""
-"Project-Id-Version: Tasty Framework 1.1.10\n"
+"Project-Id-Version: Tasty Framework 1.1.11\n"
 "Report-Msgid-Bugs-To: https://wptasty.com/support\n"
 "Last-Translator: support@wptasty.com\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-01-12T16:59:34+00:00\n"
+"POT-Creation-Date: 2026-02-16T07:37:47+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: tasty\n"
@@ -449,11 +449,11 @@ msgstr ""
 msgid "%1$sSubmit a support ticket%2$s, and we'll do our best to help out."
 msgstr ""
 
-#: assets/library/form/ShareASaleInput.jsx:15
+#: assets/library/form/ShareASaleInput.jsx:16
 msgid "ShareASale Affiliate ID"
 msgstr ""
 
-#: assets/library/form/ShareASaleInput.jsx:23
+#: assets/library/form/ShareASaleInput.jsx:25
 msgid "<affiliateLink>Apply for the affiliate program</affiliateLink>, or <findIdLink>find your affiliate ID</findIdLink>."
 msgstr ""
 

@@ -11,6 +11,7 @@ export const FormField = ( {
 	helper = '',
 	onClick = () => {},
 	variant = 'side-label',
+	isNew = false
 } ) => {
 	return helper ? (
 		<div
@@ -19,7 +20,10 @@ export const FormField = ( {
 			} ) }
 			onClick={ onClick }
 		>
-			<label htmlFor={ id }>{ label }</label>
+			<label htmlFor={ id }>
+				{ label }
+				{ isNew && <span className="tasty-new-badge">New</span> }
+			</label>
 			<div className="tasty-form-field-input-wrapper">
 				{ children }
 				<p className="tasty-form-helper">
@@ -34,7 +38,10 @@ export const FormField = ( {
 			} ) }
 			onClick={ onClick }
 		>
-			<label htmlFor={ id }>{ label }</label>
+			<label htmlFor={ id }>
+				{ label }
+				{ isNew && <span className="tasty-new-badge">New</span> }
+			</label>
 			{ children }
 		</div>
 	);

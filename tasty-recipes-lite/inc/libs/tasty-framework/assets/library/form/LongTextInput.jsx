@@ -36,6 +36,7 @@ export const LongTextInput = ( {
 			helper={ helper }
 			onClick={ onClick }
 			variant={ variant }
+			{...props}
 		>
 			<textarea
 				id={ id }

@@ -189,12 +189,16 @@ class Admin {
 	 * @return array
 	 */
 	public static function filter_http_request_args( $r, $url ) {
-		if ( self::STORE_URL !== $url
-			|| 'POST' !== $r['method']
-			|| empty( $r['body'] )
-			|| ! is_array( $r['body'] )
-			|| empty( $r['body']['item_name'] )
-			|| self::ITEM_NAME !== $r['body']['item_name'] ) {
+		if ( self::STORE_URL !== $url || 'POST' !== $r['method'] ) {
+			return $r;
+		}
+
+		if ( ! isset( $r['body'] ) || ! is_array( $r['body'] ) ) {
+			return $r;
+		}
+
+		$body = $r['body'];
+		if ( empty( $body['item_name'] ) || self::ITEM_NAME !== $body['item_name'] ) {
 			return $r;
 		}
 
