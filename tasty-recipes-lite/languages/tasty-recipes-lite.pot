@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Tasty Recipes Lite 1.2.2\n"
+"Project-Id-Version: Tasty Recipes Lite 1.2.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/tasty-recipes-lite\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-02-17T08:33:46+00:00\n"
+"POT-Creation-Date: 2026-03-10T08:40:27+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: tasty-recipes-lite\n"
@@ -662,7 +662,7 @@ msgstr ""
 
 #: inc/class-shortcodes.php:263
 #: templates/recipe-print-controls.php:23
-#: assets/dist/settings.build.js:1156
+#: assets/dist/settings.build.js:1159
 #: assets/settings/tabs/Settings.jsx:32
 #: assets/dist/settings.build.js:1244
 msgid "Print"
@@ -1397,7 +1397,7 @@ msgstr ""
 
 #: templates/designs/snap/tasty-recipes.php:174
 #: templates/recipe/tasty-recipes.php:100
-#: assets/dist/settings.build.js:1300
+#: assets/dist/settings.build.js:1303
 #: assets/settings/tabs/Settings.jsx:227
 #: assets/dist/settings.build.js:1439
 msgid "Off"
@@ -1997,32 +1997,32 @@ msgstr ""
 msgid "Cook Mode description"
 msgstr ""
 
-#: assets/dist/settings.build.js:199
+#: assets/dist/settings.build.js:202
 #: assets/settings/partials/DesignExample.jsx:120
 #: assets/dist/settings.build.js:207
 msgid "Premium Template"
 msgstr ""
 
-#: assets/dist/settings.build.js:287
+#: assets/dist/settings.build.js:290
 #: assets/settings/partials/DesignSettings.jsx:43
 #: assets/dist/settings.build.js:295
 msgid "Social Footers"
 msgstr ""
 
-#: assets/dist/settings.build.js:305
+#: assets/dist/settings.build.js:308
 #: assets/settings/partials/DesignSettings.jsx:69
 #: assets/dist/settings.build.js:321
 msgid "Template Colors"
 msgstr ""
 
-#: assets/dist/settings.build.js:319
+#: assets/dist/settings.build.js:322
 #: assets/settings/partials/DesignSettings.jsx:85
 #: assets/dist/settings.build.js:337
 msgid "Title (H2)"
 msgstr ""
 
-#: assets/dist/settings.build.js:340
-#: assets/dist/settings.build.js:379
+#: assets/dist/settings.build.js:343
+#: assets/dist/settings.build.js:382
 #: assets/settings/partials/DesignSettings.jsx:107
 #: assets/settings/partials/DesignSettings.jsx:163
 #: assets/dist/settings.build.js:359
@@ -2030,8 +2030,8 @@ msgstr ""
 msgid "Default Capitalization"
 msgstr ""
 
-#: assets/dist/settings.build.js:344
-#: assets/dist/settings.build.js:383
+#: assets/dist/settings.build.js:347
+#: assets/dist/settings.build.js:386
 #: assets/settings/partials/DesignSettings.jsx:115
 #: assets/settings/partials/DesignSettings.jsx:171
 #: assets/dist/settings.build.js:367
@@ -2039,8 +2039,8 @@ msgstr ""
 msgid "Uppercase Capitalization"
 msgstr ""
 
-#: assets/dist/settings.build.js:348
-#: assets/dist/settings.build.js:387
+#: assets/dist/settings.build.js:351
+#: assets/dist/settings.build.js:390
 #: assets/settings/partials/DesignSettings.jsx:123
 #: assets/settings/partials/DesignSettings.jsx:179
 #: assets/dist/settings.build.js:375
@@ -2048,8 +2048,8 @@ msgstr ""
 msgid "Normal Capitalization"
 msgstr ""
 
-#: assets/dist/settings.build.js:352
-#: assets/dist/settings.build.js:391
+#: assets/dist/settings.build.js:355
+#: assets/dist/settings.build.js:394
 #: assets/settings/partials/DesignSettings.jsx:131
 #: assets/settings/partials/DesignSettings.jsx:187
 #: assets/dist/settings.build.js:383
@@ -2057,68 +2057,68 @@ msgstr ""
 msgid "Lowercase Capitalization"
 msgstr ""
 
-#: assets/dist/settings.build.js:358
+#: assets/dist/settings.build.js:361
 #: assets/settings/partials/DesignSettings.jsx:141
 #: assets/dist/settings.build.js:393
 msgid "Subtitles (H3)"
 msgstr ""
 
-#: assets/dist/settings.build.js:397
+#: assets/dist/settings.build.js:400
 #: assets/settings/partials/DesignSettings.jsx:197
 #: assets/dist/settings.build.js:449
 msgid "Body"
 msgstr ""
 
-#: assets/dist/settings.build.js:411
+#: assets/dist/settings.build.js:414
 #: assets/settings/partials/DesignSettings.jsx:210
 #: assets/dist/settings.build.js:462
 msgid "Star Ratings"
 msgstr ""
 
-#: assets/dist/settings.build.js:434
+#: assets/dist/settings.build.js:437
 #: assets/settings/partials/DesignSettings.jsx:233
 #: assets/dist/settings.build.js:485
 msgid "Solid"
 msgstr ""
 
-#: assets/dist/settings.build.js:438
+#: assets/dist/settings.build.js:441
 #: assets/settings/partials/DesignSettings.jsx:240
 #: assets/dist/settings.build.js:492
 msgid "Outline"
 msgstr ""
 
-#: assets/dist/settings.build.js:447
+#: assets/dist/settings.build.js:450
 #: assets/settings/partials/DesignSettings.jsx:251
 #: assets/dist/settings.build.js:503
 msgid "Nutrition Display"
 msgstr ""
 
-#: assets/dist/settings.build.js:460
+#: assets/dist/settings.build.js:463
 #: assets/settings/partials/DesignSettings.jsx:271
 #: assets/dist/settings.build.js:523
 msgid "Insert Nutrifox label (iframe)"
 msgstr ""
 
-#: assets/dist/settings.build.js:474
+#: assets/dist/settings.build.js:477
 #: assets/settings/partials/DesignSettings.jsx:295
 #: assets/dist/settings.build.js:547
 msgid "Insert as plain text"
 msgstr ""
 
-#: assets/dist/settings.build.js:495
+#: assets/dist/settings.build.js:498
 #: assets/settings/partials/DesignSettings.jsx:323
 #: assets/dist/settings.build.js:575
 msgid "Try Nutrifox free for 14 days"
 msgstr ""
 
-#: assets/dist/settings.build.js:500
+#: assets/dist/settings.build.js:503
 #: assets/settings/partials/DesignSettings.jsx:333
 #: assets/dist/settings.build.js:585
 msgid "Social Footer"
 msgstr ""
 
-#: assets/dist/settings.build.js:551
-#: assets/dist/settings.build.js:563
+#: assets/dist/settings.build.js:554
+#: assets/dist/settings.build.js:566
 #: assets/settings/partials/InstacartButton.jsx:17
 #: assets/settings/partials/InstacartButton.jsx:34
 #: assets/dist/settings.build.js:616
@@ -2126,39 +2126,39 @@ msgstr ""
 msgid "Instacart Button"
 msgstr ""
 
-#: assets/dist/settings.build.js:573
+#: assets/dist/settings.build.js:576
 #: assets/settings/partials/InstacartButton.jsx:45
 #: assets/dist/settings.build.js:644
 msgid "By turning this on, you agree to the <termsOfServiceLink>Instacart terms of service</termsOfServiceLink>, available in the US only at the moment."
 msgstr ""
 
-#: assets/dist/settings.build.js:590
+#: assets/dist/settings.build.js:593
 #: assets/settings/partials/InstacartButton.jsx:74
 #: assets/dist/settings.build.js:673
 msgid "Instacart Impact Affiliate ID"
 msgstr ""
 
-#: assets/dist/settings.build.js:598
+#: assets/dist/settings.build.js:601
 #: assets/settings/partials/InstacartButton.jsx:86
 #: assets/dist/settings.build.js:685
 msgid "<a>Get commissions</a> when visitors order ingredients."
 msgstr ""
 
-#: assets/dist/settings.build.js:660
+#: assets/dist/settings.build.js:663
 #: assets/settings/partials/TemplateSelector.jsx:29
 #: assets/dist/settings.build.js:733
 msgid "Template"
 msgstr ""
 
 #. translators: %d is the variation number
-#: assets/dist/settings.build.js:736
+#: assets/dist/settings.build.js:739
 #: assets/settings/partials/TemplateSelector.jsx:138
 #: assets/dist/settings.build.js:842
 msgid "Variation %d"
 msgstr ""
 
-#: assets/dist/settings.build.js:776
-#: assets/dist/settings.build.js:790
+#: assets/dist/settings.build.js:779
+#: assets/dist/settings.build.js:793
 #: assets/settings/partials/UnitConversion.jsx:15
 #: assets/settings/partials/UnitConversion.jsx:32
 #: assets/dist/settings.build.js:867
@@ -2166,93 +2166,93 @@ msgstr ""
 msgid "Unit Conversion"
 msgstr ""
 
-#: assets/dist/settings.build.js:800
+#: assets/dist/settings.build.js:803
 #: assets/settings/partials/UnitConversion.jsx:42
 #: assets/dist/settings.build.js:894
 msgid "Allow visitors to convert between US Customary and Metric."
 msgstr ""
 
-#: assets/dist/settings.build.js:808
+#: assets/dist/settings.build.js:811
 #: assets/settings/partials/UnitConversion.jsx:56
 #: assets/dist/settings.build.js:908
 msgid "Automatically apply unit conversion to existing recipes."
 msgstr ""
 
-#: assets/dist/settings.build.js:848
+#: assets/dist/settings.build.js:851
 #: assets/settings/partials/UpgradeBanner.jsx:14
 #: assets/dist/settings.build.js:935
 msgid "Unlock Your Recipe’s Full Potential"
 msgstr ""
 
-#: assets/dist/settings.build.js:849
+#: assets/dist/settings.build.js:852
 #: assets/settings/partials/UpgradeBanner.jsx:18
 #: assets/dist/settings.build.js:939
 msgid "The features below are exclusive to WP Tasty Recipes Pro. Upgrade now to power up your recipes and your site."
 msgstr ""
 
-#: assets/dist/settings.build.js:850
+#: assets/dist/settings.build.js:853
 #: assets/settings/partials/UpgradeBanner.jsx:22
 #: assets/dist/settings.build.js:943
 msgid "Upgrade to PRO"
 msgstr ""
 
-#: assets/dist/settings.build.js:944
+#: assets/dist/settings.build.js:947
 #: assets/settings/tabs/Converters.jsx:79
 #: assets/dist/settings.build.js:1031
 msgid "Import Existing Recipes"
 msgstr ""
 
 #. translators: %s: Link to WordPress backup documentation
-#: assets/dist/settings.build.js:947
+#: assets/dist/settings.build.js:950
 #: assets/settings/tabs/Converters.jsx:84
 #: assets/dist/settings.build.js:1036
 msgid "Just in case, we recommend backing up your database before converting your recipes in bulk to Tasty Recipes. <a>Learn more about backing up your database.</a>"
 msgstr ""
 
-#: assets/dist/settings.build.js:961
+#: assets/dist/settings.build.js:964
 #: assets/settings/tabs/Converters.jsx:103
 #: assets/dist/settings.build.js:1055
 msgid "Select an option below to start converting recipes."
 msgstr ""
 
-#: assets/dist/settings.build.js:1006
+#: assets/dist/settings.build.js:1009
 #: assets/settings/tabs/Converters.jsx:170
 #: assets/dist/settings.build.js:1122
 msgid "Start import"
 msgstr ""
 
-#: assets/dist/settings.build.js:1008
+#: assets/dist/settings.build.js:1011
 #: assets/settings/tabs/Converters.jsx:175
 #: assets/dist/settings.build.js:1127
 msgid "Importing recipes…"
 msgstr ""
 
-#: assets/dist/settings.build.js:1010
+#: assets/dist/settings.build.js:1013
 #: assets/settings/tabs/Converters.jsx:180
 #: assets/dist/settings.build.js:1132
 msgid "Import complete!"
 msgstr ""
 
-#: assets/dist/settings.build.js:1160
+#: assets/dist/settings.build.js:1163
 #: assets/settings/tabs/Settings.jsx:37
 #: assets/dist/settings.build.js:1249
 msgid "Pin this recipe"
 msgstr ""
 
-#: assets/dist/settings.build.js:1165
+#: assets/dist/settings.build.js:1168
 #: assets/settings/tabs/Settings.jsx:43
 #: assets/dist/settings.build.js:1255
 msgid "Mediavine Grow.me Save"
 msgstr ""
 
-#: assets/dist/settings.build.js:1170
+#: assets/dist/settings.build.js:1173
 #: assets/settings/tabs/Settings.jsx:49
 #: assets/dist/settings.build.js:1261
 msgid "Slickstream Favorites"
 msgstr ""
 
-#: assets/dist/settings.build.js:1196
-#: assets/dist/settings.build.js:1204
+#: assets/dist/settings.build.js:1199
+#: assets/dist/settings.build.js:1207
 #: assets/settings/tabs/Settings.jsx:79
 #: assets/settings/tabs/Settings.jsx:87
 #: assets/dist/settings.build.js:1291
@@ -2260,14 +2260,14 @@ msgstr ""
 msgid "Scaling"
 msgstr ""
 
-#: assets/dist/settings.build.js:1214
+#: assets/dist/settings.build.js:1217
 #: assets/settings/tabs/Settings.jsx:97
 #: assets/dist/settings.build.js:1309
 msgid "Allow visitors to scale the recipe ½, 2x, or 3x."
 msgstr ""
 
-#: assets/dist/settings.build.js:1221
-#: assets/dist/settings.build.js:1229
+#: assets/dist/settings.build.js:1224
+#: assets/dist/settings.build.js:1232
 #: assets/settings/tabs/Settings.jsx:113
 #: assets/settings/tabs/Settings.jsx:124
 #: assets/dist/settings.build.js:1325
@@ -2275,68 +2275,68 @@ msgstr ""
 msgid "Enable How-Tos"
 msgstr ""
 
-#: assets/dist/settings.build.js:1240
+#: assets/dist/settings.build.js:1243
 #: assets/settings/tabs/Settings.jsx:135
 #: assets/dist/settings.build.js:1347
 msgid "When enabled, you can create and manage How-Tos  alongside Recipes."
 msgstr ""
 
-#: assets/dist/settings.build.js:1247
+#: assets/dist/settings.build.js:1250
 #: assets/settings/tabs/Settings.jsx:147
 #: assets/dist/settings.build.js:1359
 msgid "Quick Links"
 msgstr ""
 
-#: assets/dist/settings.build.js:1251
+#: assets/dist/settings.build.js:1254
 #: assets/settings/tabs/Settings.jsx:151
 #: assets/dist/settings.build.js:1363
 msgid "'Jump to Recipe' link"
 msgstr ""
 
-#: assets/dist/settings.build.js:1258
+#: assets/dist/settings.build.js:1261
 #: assets/settings/tabs/Settings.jsx:167
 #: assets/dist/settings.build.js:1379
 msgid "'Print Recipe' link"
 msgstr ""
 
-#: assets/dist/settings.build.js:1265
+#: assets/dist/settings.build.js:1268
 #: assets/settings/tabs/Settings.jsx:180
 #: assets/dist/settings.build.js:1392
 msgid "'Leave a Review' link"
 msgstr ""
 
-#: assets/dist/settings.build.js:1269
+#: assets/dist/settings.build.js:1272
 #: assets/settings/tabs/Settings.jsx:189
 #: assets/dist/settings.build.js:1401
 msgid "Enable or disable quick links below the post title."
 msgstr ""
 
-#: assets/dist/settings.build.js:1273
+#: assets/dist/settings.build.js:1276
 #: assets/settings/tabs/Settings.jsx:197
 #: assets/dist/settings.build.js:1409
 msgid "Recipe Card Buttons"
 msgstr ""
 
-#: assets/dist/settings.build.js:1306
+#: assets/dist/settings.build.js:1309
 #: assets/settings/tabs/Settings.jsx:239
 #: assets/dist/settings.build.js:1451
 msgid "Default Author Link"
 msgstr ""
 
-#: assets/dist/settings.build.js:1321
+#: assets/dist/settings.build.js:1324
 #: assets/settings/tabs/Settings.jsx:256
 #: assets/dist/settings.build.js:1468
 msgid "Taxonomy Key Links"
 msgstr ""
 
-#: assets/dist/settings.build.js:1330
+#: assets/dist/settings.build.js:1333
 #: assets/settings/tabs/Settings.jsx:265
 #: assets/dist/settings.build.js:1477
 msgid "Allow users to click a taxonomy key and see all recipes that are tagged similarly"
 msgstr ""
 
-#: assets/dist/settings.build.js:1338
-#: assets/dist/settings.build.js:1347
+#: assets/dist/settings.build.js:1341
+#: assets/dist/settings.build.js:1350
 #: assets/settings/tabs/Settings.jsx:276
 #: assets/settings/tabs/Settings.jsx:290
 #: assets/dist/settings.build.js:1488
@@ -2344,20 +2344,20 @@ msgstr ""
 msgid "Quick Links Style"
 msgstr ""
 
-#: assets/dist/settings.build.js:1356
+#: assets/dist/settings.build.js:1359
 #: assets/settings/tabs/Settings.jsx:300
 #: assets/dist/settings.build.js:1512
 msgid "Buttons"
 msgstr ""
 
-#: assets/dist/settings.build.js:1360
+#: assets/dist/settings.build.js:1363
 #: assets/settings/tabs/Settings.jsx:307
 #: assets/dist/settings.build.js:1519
 msgid "Links"
 msgstr ""
 
-#: assets/dist/settings.build.js:1374
-#: assets/dist/settings.build.js:1382
+#: assets/dist/settings.build.js:1377
+#: assets/dist/settings.build.js:1385
 #: assets/settings/tabs/Settings.jsx:326
 #: assets/settings/tabs/Settings.jsx:337
 #: assets/dist/settings.build.js:1538
@@ -2365,14 +2365,14 @@ msgstr ""
 msgid "Ingredient Checkboxes"
 msgstr ""
 
-#: assets/dist/settings.build.js:1392
+#: assets/dist/settings.build.js:1395
 #: assets/settings/tabs/Settings.jsx:347
 #: assets/dist/settings.build.js:1559
 msgid "Allow visitors to check off recipe ingredients."
 msgstr ""
 
-#: assets/dist/settings.build.js:1403
-#: assets/dist/settings.build.js:1411
+#: assets/dist/settings.build.js:1406
+#: assets/dist/settings.build.js:1414
 #: assets/settings/tabs/Settings.jsx:364
 #: assets/settings/tabs/Settings.jsx:375
 #: assets/dist/settings.build.js:1576
@@ -2380,51 +2380,51 @@ msgstr ""
 msgid "Copy to Clipboard"
 msgstr ""
 
-#: assets/dist/settings.build.js:1421
+#: assets/dist/settings.build.js:1424
 #: assets/settings/tabs/Settings.jsx:385
 #: assets/dist/settings.build.js:1597
 msgid "Allow visitors to copy ingredients to clipboard."
 msgstr ""
 
-#: assets/dist/settings.build.js:1520
+#: assets/dist/settings.build.js:1523
 #: assets/settings/utils/templateFields.js:4
-#: assets/dist/settings.build.js:1649
+#: assets/dist/settings.build.js:1650
 msgid "Button Color"
 msgstr ""
 
-#: assets/dist/settings.build.js:1521
+#: assets/dist/settings.build.js:1524
 #: assets/settings/utils/templateFields.js:5
-#: assets/dist/settings.build.js:1650
+#: assets/dist/settings.build.js:1651
 msgid "Button Text Color"
 msgstr ""
 
-#: assets/dist/settings.build.js:1522
+#: assets/dist/settings.build.js:1525
 #: assets/settings/utils/templateFields.js:6
-#: assets/dist/settings.build.js:1651
+#: assets/dist/settings.build.js:1652
 msgid "Detail Label Color"
 msgstr ""
 
-#: assets/dist/settings.build.js:1523
+#: assets/dist/settings.build.js:1526
 #: assets/settings/utils/templateFields.js:7
-#: assets/dist/settings.build.js:1652
+#: assets/dist/settings.build.js:1653
 msgid "Detail Value Color"
 msgstr ""
 
-#: assets/dist/settings.build.js:1524
+#: assets/dist/settings.build.js:1527
 #: assets/settings/utils/templateFields.js:8
-#: assets/dist/settings.build.js:1653
+#: assets/dist/settings.build.js:1654
 msgid "Primary Color"
 msgstr ""
 
-#: assets/dist/settings.build.js:1525
+#: assets/dist/settings.build.js:1528
 #: assets/settings/utils/templateFields.js:9
-#: assets/dist/settings.build.js:1654
+#: assets/dist/settings.build.js:1655
 msgid "Secondary Color"
 msgstr ""
 
-#: assets/dist/settings.build.js:1526
+#: assets/dist/settings.build.js:1529
 #: assets/settings/utils/templateFields.js:10
-#: assets/dist/settings.build.js:1655
+#: assets/dist/settings.build.js:1656
 msgid "Icon Color"
 msgstr ""
 

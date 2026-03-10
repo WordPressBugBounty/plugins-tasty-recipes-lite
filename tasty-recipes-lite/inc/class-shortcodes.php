@@ -976,9 +976,24 @@ class Shortcodes {
 		}
 		$template_obj = Template::get_object_by_name( $template );
 
+		/**
+		 * Whether to apply button color customization on the frontend.
+		 *
+		 * When false, button colors from the Design tab are only used
+		 * in the admin preview and the frontend relies on template CSS.
+		 *
+		 * @since 1.2.3
+		 *
+		 * @param bool $apply Whether to apply button customization on the frontend.
+		 */
+		$apply_on_frontend = apply_filters( 'tasty_recipes_apply_button_customization', false );
+		$customization     = is_admin() || $apply_on_frontend
+			? $template_obj->get_customized( 'admin_button' )
+			: '';
+
 		$atts = array(
 			'recipe'        => $recipe,
-			'customization' => $template_obj->get_customized( 'admin_button' ),
+			'customization' => $customization,
 		);
 		return Tasty_Recipes::get_template_part(
 			'buttons/' . $settings[ $position ],
