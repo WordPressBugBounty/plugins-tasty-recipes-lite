@@ -75,6 +75,17 @@ class Recipes extends PluginInstaller {
 	}
 
 	/**
+	 * Get EDD download ID for this plugin.
+	 *
+	 * @since x.x
+	 *
+	 * @return int
+	 */
+	protected function get_item_id() {
+		return 10;
+	}
+
+	/**
 	 * Get current plugin license key option key.
 	 *
 	 * @return string

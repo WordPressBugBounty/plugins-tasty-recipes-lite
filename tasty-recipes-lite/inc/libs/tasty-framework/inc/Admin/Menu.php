@@ -174,8 +174,13 @@ class Menu {
 
 		foreach ( Factory::create_active_plugins() as $active_plugin ) {
 			if ( $active_plugin->has_framework() && ! $active_plugin->is_lite() && $active_plugin->is_licensed() ) {
-				$license      = $active_plugin->get_license_key();
-				$plugins      = $api_client->get_key_plugins( $license );
+				$license = $active_plugin->get_license_key();
+				$plugins = $api_client->get_key_plugins( $license );
+
+				if ( ! is_array( $plugins ) || empty( $plugins ) ) {
+					continue;
+				}
+
 				$first_plugin = reset( $plugins );
 				if ( is_array( $first_plugin ) && ! empty( $first_plugin['type'] ) && $first_plugin['type'] === 'complete-bundle' ) {
 					return true;

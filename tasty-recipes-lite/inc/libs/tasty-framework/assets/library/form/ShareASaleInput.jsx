@@ -13,7 +13,7 @@ export const ShareASaleInput = ( {
 } ) => {
 	return (
 		<TextInput
-			label={ __( 'ShareASale Affiliate ID', 'tasty' ) }
+			label={ __( 'WP Tasty Affiliate Link', 'tasty' ) }
 			id={ id }
 			name={ name }
 			value={ value }
@@ -23,14 +23,14 @@ export const ShareASaleInput = ( {
 			{...props}
 			helper={ createInterpolateElement(
 				__(
-					'<affiliateLink>Apply for the affiliate program</affiliateLink>, or <findIdLink>find your affiliate ID</findIdLink>.',
+					'<affiliateLink>Apply for the affiliate program</affiliateLink>, or <findIdLink>find your affiliate link</findIdLink>.',
 					'tasty'
 				),
 				{
 					affiliateLink: (
 						// eslint-disable-next-line jsx-a11y/anchor-has-content
 						<a
-							href="https://www.shareasale.com/r.cfm?b=122128&u=177486&m=41788&urllink=&afftrack="
+							href="https://www.wptasty.com/affiliate"
 							target="_blank"
 							rel="noreferrer"
 						/>
@@ -38,7 +38,7 @@ export const ShareASaleInput = ( {
 					findIdLink: (
 						// eslint-disable-next-line jsx-a11y/anchor-has-content
 						<a
-							href="https://www.shareasale.com/info/"
+							href="https://www.wptasty.com/knowledge-base/how-to-find-your-affiliate-id"
 							target="_blank"
 							rel="noreferrer"
 						/>

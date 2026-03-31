@@ -105,6 +105,17 @@ abstract class PluginInstaller {
 	abstract public function get_plugin_name();
 
 	/**
+	 * Get EDD download ID for this plugin.
+	 *
+	 * @since x.x
+	 *
+	 * @return int
+	 */
+	protected function get_item_id() {
+		return 0;
+	}
+
+	/**
 	 * Get current plugin license key option key.
 	 *
 	 * @return string
@@ -240,6 +251,7 @@ abstract class PluginInstaller {
 				'version'   => $this->plugin_version(),
 				'license'   => get_option( $this->get_license_key_option_name() ),
 				'item_name' => $this->get_plugin_name(),
+				'item_id'   => $this->get_item_id(),
 				'author'    => 'WP Tasty Team',
 			)
 		);

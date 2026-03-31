@@ -322,10 +322,10 @@ class Shortcodes {
 			$link = ! empty( $atts['author_link'] ) ? $atts['author_link'] : get_option( Tasty_Recipes::DEFAULT_AUTHOR_LINK_OPTION, '' );
 			if ( $link ) {
 				$recipe_author_name = '<a data-tasty-recipes-customization="detail-value-color.color" class="tasty-recipes-author-name" href="' . esc_url( $link ) . '">' .
-					$recipe_json['author_name'] . '</a>';
+					esc_html( $recipe_json['author_name'] ) . '</a>';
 			} else {
 				$recipe_author_name = '<span data-tasty-recipes-customization="detail-value-color.color" class="tasty-recipes-author-name">' .
-					$recipe_json['author_name'] . '</span>';
+					esc_html( $recipe_json['author_name'] ) . '</span>';
 			}
 		}
 
@@ -830,7 +830,7 @@ class Shortcodes {
 
 		$url = Url::add_utm_params( 'tasty-recipes', array( 'utm_content' => 'poweredby' ) );
 		if ( $shareasale ) {
-			$url = sprintf( 'https://shareasale.com/r.cfm?b=973044&u=%s&m=69860&urllink=&afftrack=trattr', $shareasale );
+			$url = filter_var( $shareasale, FILTER_VALIDATE_URL ) ? $shareasale : sprintf( 'https://www.wptasty.com/ref/%s/', $shareasale );
 		}
 
 		$ret .= '<div class="tasty-recipes-plug">';
