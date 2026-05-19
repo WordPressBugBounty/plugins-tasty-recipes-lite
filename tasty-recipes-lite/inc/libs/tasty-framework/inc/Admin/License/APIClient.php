@@ -19,6 +19,59 @@ class APIClient extends AbstractAPIClient {
 	use Singleton;
 
 	/**
+	 * Get the server's public IP address for license error reporting.
+	 *
+	 * @since x.x
+	 *
+	 * @return string Public IP address or 'unknown'.
+	 */
+	protected function get_ip_address() {
+		$cached = get_transient( 'tasty_framework_server_public_ip' );
+		if ( false !== $cached ) {
+			return $cached;
+		}
+
+		$response = wp_remote_request(
+			'https://api64.ipify.org',
+			array(
+				'method'  => 'GET',
+				'timeout' => 3,
+			)
+		);
+
+		if ( ! is_wp_error( $response ) ) {
+			$ip = $this->cache_valid_ip( trim( wp_remote_retrieve_body( $response ) ) );
+
+			if ( $ip ) {
+				return $ip;
+			}
+		}
+
+		$ip = $this->cache_valid_ip( gethostbyname( gethostname() ) );
+
+		return $ip ? $ip : 'unknown';
+	}
+
+	/**
+	 * Validate and cache a public IP address.
+	 *
+	 * @since x.x
+	 *
+	 * @param string $ip IP address to validate.
+	 *
+	 * @return false|string Valid public IP or false.
+	 */
+	private function cache_valid_ip( $ip ) {
+		if ( ! filter_var( $ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE ) ) {
+			return false;
+		}
+
+		set_transient( 'tasty_framework_server_public_ip', $ip, HOUR_IN_SECONDS );
+
+		return $ip;
+	}
+
+	/**
 	 * Get plugins attached to license key (Raw request).
 	 *
 	 * @param string $license_key License key to be checked.
@@ -157,9 +210,36 @@ class APIClient extends AbstractAPIClient {
 				return $this->response_body;
 			}
 
-			$this->error_message = __( 'Unknown error', 'tasty-recipes-lite' );
+			$error_code          = $this->response_body['error'] ?? '';
+			$this->error_message = $this->get_edd_error_message( $error_code );
+
+			return new WP_Error( 'edd_error', $this->error_message );
 		}
 
 		return new WP_Error( 500, $this->error_message );
+	}
+
+	/**
+	 * Map an EDD error code to a human-readable message.
+	 *
+	 * @since x.x
+	 *
+	 * @param string $error_code EDD error code from the API response.
+	 *
+	 * @return string Translated error message.
+	 */
+	private function get_edd_error_message( $error_code ) {
+		$messages = array(
+			'expired'             => __( 'This license key has expired.', 'tasty-recipes-lite' ),
+			'disabled'            => __( 'This license key has been disabled.', 'tasty-recipes-lite' ),
+			'revoked'             => __( 'This license key has been revoked.', 'tasty-recipes-lite' ),
+			'no_activations_left' => __( 'This license has reached its activation limit. Deactivate it on another site first.', 'tasty-recipes-lite' ),
+			'item_name_mismatch'  => __( 'This license key is not valid for this plugin.', 'tasty-recipes-lite' ),
+			'invalid_item_id'     => __( 'This license key is not valid for this plugin.', 'tasty-recipes-lite' ),
+			'key_mismatch'        => __( 'This license key is invalid.', 'tasty-recipes-lite' ),
+			'missing'             => __( 'This license key does not exist.', 'tasty-recipes-lite' ),
+		);
+
+		return $messages[ $error_code ] ?? __( 'Unknown error', 'tasty-recipes-lite' );
 	}
 }

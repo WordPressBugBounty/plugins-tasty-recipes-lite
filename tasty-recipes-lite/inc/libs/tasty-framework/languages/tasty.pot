@@ -2,16 +2,16 @@
 # This file is distributed under the GPLv2 or later (license.txt)..
 msgid ""
 msgstr ""
-"Project-Id-Version: Tasty Framework 1.1.13\n"
+"Project-Id-Version: Tasty Framework 1.1.14\n"
 "Report-Msgid-Bugs-To: https://wptasty.com/support\n"
 "Last-Translator: support@wptasty.com\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-03-30T10:18:45+00:00\n"
+"POT-Creation-Date: 2026-05-18T14:54:37+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.11.0\n"
+"X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: tasty\n"
 
 #. Plugin Name of the plugin
@@ -36,7 +36,8 @@ msgid "WP Tasty team"
 msgstr ""
 
 #. translators: %s: Server IP address.
-#: inc/Abstracts/APIClient.php:114
+#: inc/Abstracts/APIClient.php:125
+#, php-format
 msgid "Something went wrong while activating your license. <a href=\"https://www.wptasty.com/contact-us\"> Please contact support</a> and share the server IP address %s with our team so we can investigate."
 msgstr ""
 
@@ -49,8 +50,8 @@ msgid "Failed to write to new file."
 msgstr ""
 
 #: inc/Abstracts/PluginInstaller.php:494
-#: inc/Admin/License/Manager.php:423
-#: inc/Admin/License/Manager.php:461
+#: inc/Admin/License/Manager.php:427
+#: inc/Admin/License/Manager.php:465
 msgid "That's not a valid license."
 msgstr ""
 
@@ -58,16 +59,46 @@ msgstr ""
 msgid "No messages found."
 msgstr ""
 
-#: inc/Admin/License/APIClient.php:42
+#: inc/Admin/License/APIClient.php:95
 msgid "No plugins are associated with that license or it does not exist."
 msgstr ""
 
-#: inc/Admin/License/APIClient.php:160
+#: inc/Admin/License/APIClient.php:233
+msgid "This license key has expired."
+msgstr ""
+
+#: inc/Admin/License/APIClient.php:234
+msgid "This license key has been disabled."
+msgstr ""
+
+#: inc/Admin/License/APIClient.php:235
+msgid "This license key has been revoked."
+msgstr ""
+
+#: inc/Admin/License/APIClient.php:236
+msgid "This license has reached its activation limit. Deactivate it on another site first."
+msgstr ""
+
+#: inc/Admin/License/APIClient.php:237
+#: inc/Admin/License/APIClient.php:238
+msgid "This license key is not valid for this plugin."
+msgstr ""
+
+#: inc/Admin/License/APIClient.php:239
+msgid "This license key is invalid."
+msgstr ""
+
+#: inc/Admin/License/APIClient.php:240
+msgid "This license key does not exist."
+msgstr ""
+
+#: inc/Admin/License/APIClient.php:243
 msgid "Unknown error"
 msgstr ""
 
 #. translators: the plugin name.
 #: inc/Admin/License/EDDUpdater.php:364
+#, php-format
 msgid "There is a new version of %1$s available."
 msgstr ""
 
@@ -77,11 +108,13 @@ msgstr ""
 
 #. translators: 1: opening anchor tag, do not translate 2. the new plugin version 3. closing anchor tag, do not translate.
 #: inc/Admin/License/EDDUpdater.php:375
+#, php-format
 msgid "%1$sView version %2$s details%3$s."
 msgstr ""
 
 #. translators: 1: changelog url, do not translate 2: new version 3: closing a tag, do not translate 4:upgrade plugin button, do not translate 5: closing a tag, do not translate
 #: inc/Admin/License/EDDUpdater.php:385
+#, php-format
 msgid "%1$sView version %2$s details%3$s or %4$supdate now%5$s."
 msgstr ""
 
@@ -124,29 +157,28 @@ msgstr ""
 
 #. translators: %s Plugin name.
 #: inc/Admin/License/Manager.php:361
+#, php-format
 msgid "%s is almost ready. Click the \"Enter License\" button above to continue."
 msgstr ""
 
-#: inc/Admin/License/Manager.php:389
+#: inc/Admin/License/Manager.php:393
 msgid "The license was not saved."
 msgstr ""
 
-#: inc/Admin/License/Manager.php:406
-#: inc/Admin/License/Manager.php:503
+#: inc/Admin/License/Manager.php:410
+#: inc/Admin/License/Manager.php:507
 msgid "That's not a valid plugin."
 msgstr ""
 
-#: inc/Admin/License/Manager.php:413
-#: inc/Admin/License/Manager.php:478
+#: inc/Admin/License/Manager.php:421
+msgid "Can't connect to the WP Tasty server. Please try again in a few minutes."
+msgstr ""
+
+#: inc/Admin/License/Manager.php:482
 msgid "Can't connect to the WP Tasty server. Please try again later."
 msgstr ""
 
-#. translators: %1$s Error message.
-#: inc/Admin/License/Manager.php:416
-msgid "Error: %1$s"
-msgstr ""
-
-#: inc/Admin/License/Manager.php:520
+#: inc/Admin/License/Manager.php:524
 msgid "Not authorized!"
 msgstr ""
 
@@ -403,6 +435,7 @@ msgstr ""
 
 #. translators: %s: Time stamp
 #: templates/Admin/inbox-message.php:17
+#, php-format
 msgid "%s ago"
 msgstr ""
 
@@ -428,6 +461,7 @@ msgstr ""
 
 #. translators: %1$s Plugin name.
 #: templates/Admin/Notices/license-empty.php:17
+#, php-format
 msgid "%1$s is almost ready."
 msgstr ""
 
@@ -437,6 +471,7 @@ msgstr ""
 
 #. translators: %s is the plugin name.
 #: templates/Admin/Notices/license-invalid.php:18
+#, php-format
 msgid "<strong>To enable updates and support for %s</strong> enter a valid license"
 msgstr ""
 
@@ -446,6 +481,7 @@ msgstr ""
 
 #. translators: %1$s Opening anchor tag, %1$s Closing anchor tag.
 #: templates/Admin/Notices/license-invalid.php:34
+#, php-format
 msgid "%1$sSubmit a support ticket%2$s, and we'll do our best to help out."
 msgstr ""
 

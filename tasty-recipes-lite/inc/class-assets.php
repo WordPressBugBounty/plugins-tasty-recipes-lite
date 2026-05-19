@@ -282,15 +282,16 @@ class Assets {
 		return apply_filters(
 			'tasty_recipes_settings_tab_options',
 			array(
-				'quickLinks'          => get_option( Tasty_Recipes::QUICK_LINKS_OPTION, array( 'print', 'jump' ) ),
-				'recipeCardButtons'   => get_option( 
-					Tasty_Recipes::CARD_BUTTONS_OPTION, 
-					[ 'first' => 'print' ] 
+				'quickLinks'                => get_option( Tasty_Recipes::QUICK_LINKS_OPTION, array( 'print', 'jump' ) ),
+				'recipeCardButtons'         => get_option(
+					Tasty_Recipes::CARD_BUTTONS_OPTION,
+					[ 'first' => 'print' ]
 				),
-				'defaultAuthorLink'   => get_option( Tasty_Recipes::DEFAULT_AUTHOR_LINK_OPTION, '' ),
-				'enablePoweredBy'     => get_option( Tasty_Recipes::POWEREDBY_OPTION, false ),
-				'shareasaleId'        => get_option( Tasty_Recipes::SHAREASALE_OPTION, '' ),
-				'enableTaxonomyLinks' => get_option( Tasty_Recipes::ENABLE_TAXONOMY_LINKS_OPTION, '0' ),
+				'defaultAuthorLink'         => get_option( Tasty_Recipes::DEFAULT_AUTHOR_LINK_OPTION, '' ),
+				'enablePoweredBy'           => get_option( Tasty_Recipes::POWEREDBY_OPTION, false ),
+				'shareasaleId'              => get_option( Tasty_Recipes::SHAREASALE_OPTION, '' ),
+				'enableTaxonomyLinks'       => get_option( Tasty_Recipes::ENABLE_TAXONOMY_LINKS_OPTION, '0' ),
+				'enableAiScraperPrevention' => get_option( Tasty_Recipes::AI_SCRAPER_PREVENTION_OPTION, '0' ),
 			)
 		);
 	}

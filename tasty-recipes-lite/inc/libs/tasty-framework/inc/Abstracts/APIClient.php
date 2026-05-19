@@ -96,6 +96,17 @@ abstract class APIClient {
 	}
 
 	/**
+	 * Get the server's IP address for error reporting.
+	 *
+	 * @since x.x
+	 *
+	 * @return string IP address or 'unknown'.
+	 */
+	protected function get_ip_address() {
+		return gethostbyname( gethostname() );
+	}
+
+	/**
 	 * Handle SaaS request error.
 	 *
 	 * @param array|WP_Error $response WP Remote request.
@@ -108,7 +119,7 @@ abstract class APIClient {
 			: $response->get_error_code();
 
 		if ( 400 <= $this->response_code && 500 > $this->response_code ) {
-			$ip_address          = gethostbyname( gethostname() );
+			$ip_address          = $this->get_ip_address();
 			$this->error_message = sprintf(
 				// translators: %s: Server IP address.
 				__(

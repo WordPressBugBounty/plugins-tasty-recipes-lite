@@ -210,6 +210,7 @@ class Settings {
 				'sanitize_callback' => 'sanitize_text_field',
 			],
 			Tasty_Recipes::ENABLE_TAXONOMY_LINKS_OPTION => $sanitize_title,
+			Tasty_Recipes::AI_SCRAPER_PREVENTION_OPTION => $sanitize_title,
 		);
 
 		/**

@@ -187,6 +187,15 @@ class Tasty_Recipes {
 	const TEMPLATE_VARIATION_OPTION = 'tasty_recipes_template_variation';
 
 	/**
+	 * Option name for the AI scraper prevention toggle.
+	 *
+	 * @since 1.2.5
+	 *
+	 * @var string
+	 */
+	const AI_SCRAPER_PREVENTION_OPTION = 'tasty_recipes_ai_scraper_prevention';
+
+	/**
 	 * Option name for the improved keys notice dismissal.
 	 *
 	 * @var string
@@ -392,6 +401,7 @@ class Tasty_Recipes {
 		add_filter( 'comment_text', array( 'Tasty_Recipes\Ratings', 'filter_comment_text' ), 10, 2 );
 
 		Tasty_Recipes\Settings::load_hooks();
+		Tasty_Recipes\AI_Scraper_Prevention::maybe_load_hooks();
 
 		// Integrations.
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {

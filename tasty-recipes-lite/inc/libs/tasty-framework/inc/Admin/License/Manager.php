@@ -380,13 +380,17 @@ class Manager {
 		}
 
 		$at_least_one_activated = false;
+		$last_error             = null;
 		foreach ( $plugins as $plugin ) {
 			$activated               = $this->activate_one_plugin( $license_key, $plugin['name'] );
 			$at_least_one_activated |= ! is_wp_error( $activated );
+			if ( is_wp_error( $activated ) ) {
+				$last_error = $activated;
+			}
 		}
 
 		if ( ! $at_least_one_activated ) {
-			return new WP_Error( 500, __( 'The license was not saved.', 'tasty-recipes-lite' ) );
+			return $last_error ?? new WP_Error( 500, __( 'The license was not saved.', 'tasty-recipes-lite' ) );
 		}
 
 		return 'active';// To simulate the active state for the plugin to show the success message.
@@ -408,14 +412,14 @@ class Manager {
 
 		$response = $plugin->activate_license( $license_key );
 		if ( is_wp_error( $response ) ) {
+			if ( 'edd_error' === $response->get_error_code() ) {
+				return $response;
+			}
+
 			return new WP_Error(
-				500,
-				esc_html__( 'Can\'t connect to the WP Tasty server. Please try again later.', 'tasty-recipes-lite' ) .
-				sprintf(
-					// translators: %1$s Error message.
-					esc_html__( 'Error: %1$s', 'tasty-recipes-lite' ),
-					$response->get_error_message()
-				)
+				$response->get_error_code(),
+				esc_html__( 'Can\'t connect to the WP Tasty server. Please try again in a few minutes.', 'tasty-recipes-lite' ),
+				$response->get_error_data()
 			);
 		}
 

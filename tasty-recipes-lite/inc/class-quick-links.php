@@ -278,6 +278,16 @@ class Quick_Links {
 				self::get_label_value( 'print', $recipe_id ) .
 				'</a>';
 		}
+		if ( in_array( 'trusted_source', $should_prepend_jump_to, true ) ) {
+			$trusted_url = add_query_arg( 'q', wp_parse_url( home_url(), PHP_URL_HOST ), 'https://google.com/preferences/source' );
+			$icon        = 'buttons' === get_option( Tasty_Recipes::QUICK_LINKS_STYLE ) ? self::get_trusted_source_icon() : '';
+
+			$links['trusted_source'] = '<a class="tasty-recipes-trusted-source-link' . esc_attr( $btn_class ) . '" ' .
+				'href="' . esc_url( $trusted_url ) . '" target="_blank" rel="noopener nofollow">' .
+				$icon .
+				'<span class="tasty-recipes-trusted-source-label">' . self::get_label_value( 'trusted_source', $recipe_id ) . '</span>' .
+				'</a>';
+		}
 
 		/**
 		 * Filter to modify the links used in Quick Links.
@@ -355,9 +365,10 @@ class Quick_Links {
 	 */
 	public static function get_label_value( $type, $recipe_id = null ) {
 		$labels = array(
-			'jump'   => esc_html__( 'Jump to Recipe', 'tasty-recipes-lite' ),
-			'print'  => esc_html__( 'Print Recipe', 'tasty-recipes-lite' ),
-			'rating' => esc_html__( 'Leave a Review', 'tasty-recipes-lite' ),
+			'jump'           => esc_html__( 'Jump to Recipe', 'tasty-recipes-lite' ),
+			'print'          => esc_html__( 'Print Recipe', 'tasty-recipes-lite' ),
+			'rating'         => esc_html__( 'Leave a Review', 'tasty-recipes-lite' ),
+			'trusted_source' => esc_html__( 'Trust With Google', 'tasty-recipes-lite' ),
 		);
 
 		if ( ! isset( $labels[ $type ] ) ) {
@@ -365,5 +376,22 @@ class Quick_Links {
 		}
 
 		return apply_filters( 'tasty_recipes_quick_links_label', $labels[ $type ], $type, $recipe_id );
+	}
+
+	/**
+	 * Get the Google logo SVG used inside the Trusted Source button.
+	 *
+	 * @since 1.2.5
+	 *
+	 * @return string
+	 */
+	private static function get_trusted_source_icon() {
+		$svg = Utils::get_contents( 'assets/images/google-trusted-source.svg', 'path' );
+
+		if ( ! is_string( $svg ) || '' === $svg ) {
+			return '';
+		}
+
+		return '<span class="tasty-recipes-trusted-source-icon" aria-hidden="true">' . trim( $svg ) . '</span>';
 	}
 }
