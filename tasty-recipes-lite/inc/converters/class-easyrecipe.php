@@ -228,7 +228,7 @@ class EasyRecipe extends Converter {
 				$value = wp_unslash( $value );
 				$value = str_replace( '<span class="fn">', '', $value );
 			}
-			$value                  = html_entity_decode( $value, ENT_COMPAT, 'UTF-8' );
+			$value                  = html_entity_decode( $value, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
 			$converted_data[ $key ] = $value;
 		}
 		return self::save_converted_data_to_recipe( $converted_data, $recipe );

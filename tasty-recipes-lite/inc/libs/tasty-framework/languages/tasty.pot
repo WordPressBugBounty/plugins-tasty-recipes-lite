@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later (license.txt)..
 msgid ""
 msgstr ""
-"Project-Id-Version: Tasty Framework 1.1.14\n"
+"Project-Id-Version: Tasty Framework 1.1.15\n"
 "Report-Msgid-Bugs-To: https://wptasty.com/support\n"
 "Last-Translator: support@wptasty.com\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-05-18T14:54:37+00:00\n"
+"POT-Creation-Date: 2026-06-16T07:41:19+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: tasty\n"
@@ -36,7 +36,7 @@ msgid "WP Tasty team"
 msgstr ""
 
 #. translators: %s: Server IP address.
-#: inc/Abstracts/APIClient.php:125
+#: inc/Abstracts/APIClient.php:168
 #, php-format
 msgid "Something went wrong while activating your license. <a href=\"https://www.wptasty.com/contact-us\"> Please contact support</a> and share the server IP address %s with our team so we can investigate."
 msgstr ""
@@ -49,7 +49,7 @@ msgstr ""
 msgid "Failed to write to new file."
 msgstr ""
 
-#: inc/Abstracts/PluginInstaller.php:494
+#: inc/Abstracts/PluginInstaller.php:501
 #: inc/Admin/License/Manager.php:427
 #: inc/Admin/License/Manager.php:465
 msgid "That's not a valid license."
@@ -63,70 +63,70 @@ msgstr ""
 msgid "No plugins are associated with that license or it does not exist."
 msgstr ""
 
-#: inc/Admin/License/APIClient.php:233
+#: inc/Admin/License/APIClient.php:263
 msgid "This license key has expired."
 msgstr ""
 
-#: inc/Admin/License/APIClient.php:234
+#: inc/Admin/License/APIClient.php:264
 msgid "This license key has been disabled."
 msgstr ""
 
-#: inc/Admin/License/APIClient.php:235
+#: inc/Admin/License/APIClient.php:265
 msgid "This license key has been revoked."
 msgstr ""
 
-#: inc/Admin/License/APIClient.php:236
+#: inc/Admin/License/APIClient.php:266
 msgid "This license has reached its activation limit. Deactivate it on another site first."
 msgstr ""
 
-#: inc/Admin/License/APIClient.php:237
-#: inc/Admin/License/APIClient.php:238
+#: inc/Admin/License/APIClient.php:267
+#: inc/Admin/License/APIClient.php:268
 msgid "This license key is not valid for this plugin."
 msgstr ""
 
-#: inc/Admin/License/APIClient.php:239
+#: inc/Admin/License/APIClient.php:269
 msgid "This license key is invalid."
 msgstr ""
 
-#: inc/Admin/License/APIClient.php:240
+#: inc/Admin/License/APIClient.php:270
 msgid "This license key does not exist."
 msgstr ""
 
-#: inc/Admin/License/APIClient.php:243
+#: inc/Admin/License/APIClient.php:273
 msgid "Unknown error"
 msgstr ""
 
 #. translators: the plugin name.
-#: inc/Admin/License/EDDUpdater.php:364
+#: inc/Admin/License/EDDUpdater.php:365
 #, php-format
 msgid "There is a new version of %1$s available."
 msgstr ""
 
-#: inc/Admin/License/EDDUpdater.php:370
+#: inc/Admin/License/EDDUpdater.php:371
 msgid "Contact your network administrator to install the update."
 msgstr ""
 
 #. translators: 1: opening anchor tag, do not translate 2. the new plugin version 3. closing anchor tag, do not translate.
-#: inc/Admin/License/EDDUpdater.php:375
+#: inc/Admin/License/EDDUpdater.php:376
 #, php-format
 msgid "%1$sView version %2$s details%3$s."
 msgstr ""
 
 #. translators: 1: changelog url, do not translate 2: new version 3: closing a tag, do not translate 4:upgrade plugin button, do not translate 5: closing a tag, do not translate
-#: inc/Admin/License/EDDUpdater.php:385
+#: inc/Admin/License/EDDUpdater.php:386
 #, php-format
 msgid "%1$sView version %2$s details%3$s or %4$supdate now%5$s."
 msgstr ""
 
-#: inc/Admin/License/EDDUpdater.php:396
+#: inc/Admin/License/EDDUpdater.php:397
 msgid "Update now."
 msgstr ""
 
-#: inc/Admin/License/EDDUpdater.php:642
+#: inc/Admin/License/EDDUpdater.php:643
 msgid "You do not have permission to install plugin updates"
 msgstr ""
 
-#: inc/Admin/License/EDDUpdater.php:642
+#: inc/Admin/License/EDDUpdater.php:643
 #: inc/Admin/Pages/Dashboard.php:195
 msgid "Error"
 msgstr ""

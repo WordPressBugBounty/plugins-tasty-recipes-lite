@@ -4,7 +4,7 @@ Tags: recipe, recipe maker, recipe card, rating, food blogging
 Requires at least: 5.9
 Tested up to: 7.0
 Requires PHP: 7.2
-Stable tag: 1.2.5
+Stable tag: 1.2.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -111,6 +111,13 @@ The Tasty Recipes plugin can be installed much like any other WordPress plugin.
 With Tasty Recipes, there aren't any confusing settings to configure or customizations you need to worry about. You can now share your favorite recipes with the world!
 
 == Changelog ==
+= 1.2.6 (June 16, 2026) =
+* New: Save Recipe/Newsletter setting to allow visitors to send a recipe via email
+* New: Action hook `tasty_recipes_before_ingredients_section` for developers to add content above the ingredients section
+* Enhancement: Improved quick links layout with wrapping support and rating link displayed first
+* Fix: Error messages now display properly in the converter tool
+* Fix: EasyRecipe converter now correctly decodes all HTML entities during import
+
 = 1.2.5 (May 19, 2026) =
 * New: AI Scraper Prevention setting to block AI crawlers from scraping your recipes via robots.txt rules and meta tags
 * New: "Trust With Google" quick link option that lets visitors set your site as a Google Preferred Source

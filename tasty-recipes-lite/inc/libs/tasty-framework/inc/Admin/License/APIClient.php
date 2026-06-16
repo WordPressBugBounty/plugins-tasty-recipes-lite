@@ -121,12 +121,13 @@ class APIClient extends AbstractAPIClient {
 	/**
 	 * Send activate license request.
 	 *
-	 * @param string $license_key License key.
-	 * @param string $plugin_name Plugin name.
+	 * @param string $license_key    License key.
+	 * @param string $plugin_name    Plugin name.
+	 * @param string $plugin_version Plugin version.
 	 *
 	 * @return array|WP_Error
 	 */
-	public function activate_plugin_license( $license_key, $plugin_name ) {
+	public function activate_plugin_license( $license_key, $plugin_name, $plugin_version = '' ) {
 		$api_params = array(
 			'timeout' => 15,
 			'body'    => array(
@@ -137,18 +138,21 @@ class APIClient extends AbstractAPIClient {
 			),
 		);
 
+		$api_params = $this->add_plugin_user_agent( $api_params, $plugin_name, $plugin_version );
+
 		return $this->send_edd_request( $api_params );
 	}
 
 	/**
 	 * Send deactivate license request.
 	 *
-	 * @param string $license_key License key.
-	 * @param string $plugin_name Plugin name.
+	 * @param string $license_key    License key.
+	 * @param string $plugin_name    Plugin name.
+	 * @param string $plugin_version Plugin version.
 	 *
 	 * @return array|WP_Error
 	 */
-	public function deactivate_plugin_license( $license_key, $plugin_name ) {
+	public function deactivate_plugin_license( $license_key, $plugin_name, $plugin_version = '' ) {
 		$api_params = array(
 			'timeout' => 15,
 			'body'    => array(
@@ -159,18 +163,21 @@ class APIClient extends AbstractAPIClient {
 			),
 		);
 
+		$api_params = $this->add_plugin_user_agent( $api_params, $plugin_name, $plugin_version );
+
 		return $this->send_edd_request( $api_params );
 	}
 
 	/**
 	 * Send check license request (Raw request).
 	 *
-	 * @param string $license_key License key.
-	 * @param string $plugin_name Plugin name.
+	 * @param string $license_key    License key.
+	 * @param string $plugin_name    Plugin name.
+	 * @param string $plugin_version Plugin version.
 	 *
 	 * @return array|WP_Error
 	 */
-	public function check_plugin_license_raw( $license_key, $plugin_name ) {
+	public function check_plugin_license_raw( $license_key, $plugin_name, $plugin_version = '' ) {
 		$api_params = array(
 			'timeout' => 15,
 			'body'    => array(
@@ -181,7 +188,30 @@ class APIClient extends AbstractAPIClient {
 			),
 		);
 
+		$api_params = $this->add_plugin_user_agent( $api_params, $plugin_name, $plugin_version );
+
 		return $this->send_edd_request( $api_params );
+	}
+
+	/**
+	 * Add plugin-specific user agent to EDD request arguments.
+	 *
+	 * @since x.x
+	 *
+	 * @param array  $api_params     API request arguments.
+	 * @param string $plugin_name    Plugin name.
+	 * @param string $plugin_version Plugin version.
+	 *
+	 * @return array
+	 */
+	private function add_plugin_user_agent( $api_params, $plugin_name, $plugin_version ) {
+		if ( empty( $plugin_version ) ) {
+			return $api_params;
+		}
+
+		$api_params['user-agent'] = self::get_plugin_user_agent( $plugin_name, $plugin_version );
+
+		return $api_params;
 	}
 
 	/**

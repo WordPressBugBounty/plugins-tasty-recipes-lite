@@ -64,6 +64,16 @@ do_action( 'tasty_recipes_card_after_title', $vars );
 <?php endif; ?>
 
 <?php if ( ! empty( $recipe_ingredients ) ) : ?>
+	<?php
+	/**
+	 * Fires before the entire ingredients section, above the heading.
+	 *
+	 * @since 1.2.6
+	 *
+	 * @param array $vars Template variables.
+	 */
+	do_action( 'tasty_recipes_before_ingredients_section', $vars );
+	?>
 	<div class="tasty-recipes-ingredients">
 		<div class="tasty-recipes-ingredients-header">
 			<div class="tasty-recipes-ingredients-clipboard-container">

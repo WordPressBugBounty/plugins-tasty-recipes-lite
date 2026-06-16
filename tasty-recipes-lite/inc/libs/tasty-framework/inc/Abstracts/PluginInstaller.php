@@ -464,9 +464,16 @@ abstract class PluginInstaller {
 	 * @return void
 	 */
 	public function remove_license() {
+		$license_key = $this->get_license_key();
+
 		delete_option( $this->get_license_key_option_name() );
 		delete_transient( $this->get_license_check_cache_key() );
-		$this->api_client->deactivate_plugin_license( $this->get_license_key(), $this->get_plugin_name() );
+
+		if ( empty( $license_key ) ) {
+			return;
+		}
+
+		$this->api_client->deactivate_plugin_license( $license_key, $this->get_plugin_name(), $this->plugin_version() );
 	}
 
 	/**
@@ -494,7 +501,7 @@ abstract class PluginInstaller {
 			return new WP_Error( 500, __( 'That\'s not a valid license.', 'tasty-recipes-lite' ) );
 		}
 
-		$check_license = $this->api_client->check_plugin_license_raw( $license_key, $this->get_plugin_name() );
+		$check_license = $this->api_client->check_plugin_license_raw( $license_key, $this->get_plugin_name(), $this->plugin_version() );
 		// Save an error for 1 minute to avoid API DDOS.
 		$save_for = is_wp_error( $check_license ) ? MINUTE_IN_SECONDS : 24 * HOUR_IN_SECONDS;
 		set_transient( $this->get_license_check_cache_key(), $check_license, $save_for );
@@ -564,7 +571,7 @@ abstract class PluginInstaller {
 	 * @return array|WP_Error
 	 */
 	public function activate_license( $license_key ) {
-		return $this->api_client->activate_plugin_license( $license_key, $this->get_plugin_name() );
+		return $this->api_client->activate_plugin_license( $license_key, $this->get_plugin_name(), $this->plugin_version() );
 	}
 
 	/**

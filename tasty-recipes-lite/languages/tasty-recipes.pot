@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Tasty Recipes Lite 1.2.5\n"
+"Project-Id-Version: Tasty Recipes Lite 1.2.6\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/tasty-recipes-lite\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-05-19T07:07:16+00:00\n"
+"POT-Creation-Date: 2026-06-16T08:02:24+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: tasty-recipes-lite\n"
@@ -697,7 +697,7 @@ msgstr ""
 msgid "Failed to write to new file."
 msgstr ""
 
-#: inc/libs/tasty-framework/inc/Abstracts/PluginInstaller.php:494
+#: inc/libs/tasty-framework/inc/Abstracts/PluginInstaller.php:501
 #: inc/libs/tasty-framework/inc/Admin/License/Manager.php:427
 #: inc/libs/tasty-framework/inc/Admin/License/Manager.php:465
 msgid "That's not a valid license."
@@ -711,70 +711,70 @@ msgstr ""
 msgid "No plugins are associated with that license or it does not exist."
 msgstr ""
 
-#: inc/libs/tasty-framework/inc/Admin/License/APIClient.php:233
+#: inc/libs/tasty-framework/inc/Admin/License/APIClient.php:263
 msgid "This license key has expired."
 msgstr ""
 
-#: inc/libs/tasty-framework/inc/Admin/License/APIClient.php:234
+#: inc/libs/tasty-framework/inc/Admin/License/APIClient.php:264
 msgid "This license key has been disabled."
 msgstr ""
 
-#: inc/libs/tasty-framework/inc/Admin/License/APIClient.php:235
+#: inc/libs/tasty-framework/inc/Admin/License/APIClient.php:265
 msgid "This license key has been revoked."
 msgstr ""
 
-#: inc/libs/tasty-framework/inc/Admin/License/APIClient.php:236
+#: inc/libs/tasty-framework/inc/Admin/License/APIClient.php:266
 msgid "This license has reached its activation limit. Deactivate it on another site first."
 msgstr ""
 
-#: inc/libs/tasty-framework/inc/Admin/License/APIClient.php:237
-#: inc/libs/tasty-framework/inc/Admin/License/APIClient.php:238
+#: inc/libs/tasty-framework/inc/Admin/License/APIClient.php:267
+#: inc/libs/tasty-framework/inc/Admin/License/APIClient.php:268
 msgid "This license key is not valid for this plugin."
 msgstr ""
 
-#: inc/libs/tasty-framework/inc/Admin/License/APIClient.php:239
+#: inc/libs/tasty-framework/inc/Admin/License/APIClient.php:269
 msgid "This license key is invalid."
 msgstr ""
 
-#: inc/libs/tasty-framework/inc/Admin/License/APIClient.php:240
+#: inc/libs/tasty-framework/inc/Admin/License/APIClient.php:270
 msgid "This license key does not exist."
 msgstr ""
 
-#: inc/libs/tasty-framework/inc/Admin/License/APIClient.php:243
+#: inc/libs/tasty-framework/inc/Admin/License/APIClient.php:273
 msgid "Unknown error"
 msgstr ""
 
 #. translators: the plugin name.
-#: inc/libs/tasty-framework/inc/Admin/License/EDDUpdater.php:364
+#: inc/libs/tasty-framework/inc/Admin/License/EDDUpdater.php:365
 #, php-format
 msgid "There is a new version of %1$s available."
 msgstr ""
 
-#: inc/libs/tasty-framework/inc/Admin/License/EDDUpdater.php:370
+#: inc/libs/tasty-framework/inc/Admin/License/EDDUpdater.php:371
 msgid "Contact your network administrator to install the update."
 msgstr ""
 
 #. translators: 1: opening anchor tag, do not translate 2. the new plugin version 3. closing anchor tag, do not translate.
-#: inc/libs/tasty-framework/inc/Admin/License/EDDUpdater.php:375
+#: inc/libs/tasty-framework/inc/Admin/License/EDDUpdater.php:376
 #, php-format
 msgid "%1$sView version %2$s details%3$s."
 msgstr ""
 
 #. translators: 1: changelog url, do not translate 2: new version 3: closing a tag, do not translate 4:upgrade plugin button, do not translate 5: closing a tag, do not translate
-#: inc/libs/tasty-framework/inc/Admin/License/EDDUpdater.php:385
+#: inc/libs/tasty-framework/inc/Admin/License/EDDUpdater.php:386
 #, php-format
 msgid "%1$sView version %2$s details%3$s or %4$supdate now%5$s."
 msgstr ""
 
-#: inc/libs/tasty-framework/inc/Admin/License/EDDUpdater.php:396
+#: inc/libs/tasty-framework/inc/Admin/License/EDDUpdater.php:397
 msgid "Update now."
 msgstr ""
 
-#: inc/libs/tasty-framework/inc/Admin/License/EDDUpdater.php:642
+#: inc/libs/tasty-framework/inc/Admin/License/EDDUpdater.php:643
 msgid "You do not have permission to install plugin updates"
 msgstr ""
 
-#: inc/libs/tasty-framework/inc/Admin/License/EDDUpdater.php:642
+#: inc/libs/tasty-framework/inc/Admin/License/EDDUpdater.php:643
 #: inc/libs/tasty-framework/inc/Admin/Pages/Dashboard.php:195
 msgid "Error"
 msgstr ""
@@ -1149,8 +1149,8 @@ msgid "Notes Video Settings"
 msgstr ""
 
 #: inc/objects/class-recipe.php:111
-#: templates/designs/snap/tasty-recipes.php:240
-#: templates/recipe/tasty-recipes.php:156
+#: templates/designs/snap/tasty-recipes.php:248
+#: templates/recipe/tasty-recipes.php:166
 msgid "Keywords"
 msgstr ""
 
@@ -1402,24 +1402,24 @@ msgstr ""
 msgid "We hope you enjoy using Tasty Recipes!"
 msgstr ""
 
-#: templates/designs/snap/tasty-recipes.php:171
-#: templates/recipe/tasty-recipes.php:97
+#: templates/designs/snap/tasty-recipes.php:179
+#: templates/recipe/tasty-recipes.php:107
 msgid "Video"
 msgstr ""
 
-#: templates/designs/snap/tasty-recipes.php:173
-#: templates/recipe/tasty-recipes.php:99
+#: templates/designs/snap/tasty-recipes.php:181
+#: templates/recipe/tasty-recipes.php:109
 msgid "On"
 msgstr ""
 
-#: templates/designs/snap/tasty-recipes.php:174
-#: templates/recipe/tasty-recipes.php:100
+#: templates/designs/snap/tasty-recipes.php:182
+#: templates/recipe/tasty-recipes.php:110
 #: assets/settings/tabs/Settings.jsx:247
 msgid "Off"
 msgstr ""
 
-#: templates/designs/snap/tasty-recipes.php:263
-#: templates/recipe/tasty-recipes.php:175
+#: templates/designs/snap/tasty-recipes.php:271
+#: templates/recipe/tasty-recipes.php:185
 msgid "Find it online"
 msgstr ""
 
@@ -1984,15 +1984,15 @@ msgstr ""
 msgid "Select an option below to start converting recipes."
 msgstr ""
 
-#: assets/settings/tabs/Converters.jsx:170
+#: assets/settings/tabs/Converters.jsx:177
 msgid "Start import"
 msgstr ""
 
-#: assets/settings/tabs/Converters.jsx:175
+#: assets/settings/tabs/Converters.jsx:182
 msgid "Importing recipes…"
 msgstr ""
 
-#: assets/settings/tabs/Converters.jsx:180
+#: assets/settings/tabs/Converters.jsx:187
 msgid "Import complete!"
 msgstr ""
 
@@ -2107,6 +2107,15 @@ msgstr ""
 
 #: assets/settings/tabs/Settings.jsx:421
 msgid "Allow visitors to copy ingredients to clipboard."
+msgstr ""
+
+#: assets/settings/tabs/Settings.jsx:437
+#: assets/settings/tabs/Settings.jsx:448
+msgid "Save Recipe/Newsletter"
+msgstr ""
+
+#: assets/settings/tabs/Settings.jsx:469
+msgid "Allow visitors to send a recipe via email."
 msgstr ""
 
 #: assets/settings/utils/templateFields.js:4

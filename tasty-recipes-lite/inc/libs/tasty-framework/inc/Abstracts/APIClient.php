@@ -52,6 +52,46 @@ abstract class APIClient {
 	}
 
 	/**
+	 * Build a plugin-specific user agent.
+	 *
+	 * @since x.x
+	 *
+	 * @param string $plugin_name    Plugin name.
+	 * @param string $plugin_version Plugin version.
+	 * @param string $user_agent     Existing user agent to append to.
+	 *
+	 * @return string
+	 */
+	public static function get_plugin_user_agent( $plugin_name, $plugin_version, $user_agent = '' ) {
+		$plugin_name    = self::sanitize_user_agent_token( $plugin_name );
+		$plugin_version = self::sanitize_user_agent_token( $plugin_version );
+
+		if ( empty( $user_agent ) ) {
+			return $plugin_name . '/' . $plugin_version . '; PHP/' . PHP_VERSION;
+		}
+
+		return rtrim( $user_agent, '; ' )
+			. '; PHP/' . PHP_VERSION . '; '
+			. $plugin_name . '/' . $plugin_version;
+	}
+
+	/**
+	 * Sanitize a value for use in a User-Agent product token.
+	 *
+	 * @since x.x
+	 *
+	 * @param string $value Token value.
+	 *
+	 * @return string
+	 */
+	private static function sanitize_user_agent_token( $value ) {
+		$token = preg_replace( '/[^A-Za-z0-9!#$%&\'*+\-.^_`|~]+/', '-', (string) $value );
+		$token = trim( $token, '-' );
+
+		return '' === $token ? 'unknown' : $token;
+	}
+
+	/**
 	 * Handle the request.
 	 *
 	 * @param string $request_path Request path after tasty domain.
@@ -62,6 +102,9 @@ abstract class APIClient {
 	 */
 	private function handle_request( $request_path, $args = array(), $type = 'post' ) {
 		$args['method'] = strtoupper( $type );
+		if ( empty( $args['user-agent'] ) && defined( 'TASTY_FRAMEWORK_VERSION' ) ) {
+			$args['user-agent'] = self::get_plugin_user_agent( 'Tasty Framework', TASTY_FRAMEWORK_VERSION );
+		}
 
 		$response = wp_remote_request(
 			$this->get_api_url() . $request_path,

@@ -66,6 +66,25 @@ class Recipes extends PluginInstaller {
 	}
 
 	/**
+	 * Get the plugin version number.
+	 *
+	 * @since x.x
+	 *
+	 * @return string
+	 */
+	protected function plugin_version() {
+		if ( $this->is_pro_active() ) {
+			return constant( 'TASTY_RECIPES_PRO_PLUGIN_VERSION' );
+		}
+
+		if ( $this->is_lite_active() ) {
+			return constant( 'TASTY_RECIPES_LITE_VERSION' );
+		}
+
+		return parent::plugin_version();
+	}
+
+	/**
 	 * Get current plugin name.
 	 *
 	 * @return string
