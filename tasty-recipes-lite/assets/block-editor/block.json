@@ -1,0 +1,36 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "wp-tasty/tasty-recipe",
+	"title": "Tasty Recipe",
+	"category": "common",
+	"keywords": [ "recipe" ],
+	"textdomain": "tasty-recipes-lite",
+	"supports": {
+		"html": false
+	},
+	"attributes": {
+		"className": {
+			"type": "string"
+		},
+		"id": {
+			"type": "number"
+		},
+		"lastUpdated": {
+			"type": "number"
+		},
+		"author_link": {
+			"type": "string"
+		},
+		"override_author_link": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"editorScript": "tasty-recipes-block-editor",
+	"editorStyle": [
+		"tasty-framework-global-css",
+		"tasty-recipes-main",
+		"tasty-recipes-block-editor"
+	]
+}
