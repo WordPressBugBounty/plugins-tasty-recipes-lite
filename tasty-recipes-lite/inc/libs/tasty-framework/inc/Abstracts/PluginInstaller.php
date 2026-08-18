@@ -518,17 +518,37 @@ abstract class PluginInstaller {
 	}
 
 	/**
+	 * Get normalized license status.
+	 *
+	 * @since x.x
+	 *
+	 * @return string
+	 */
+	public function get_license_status() {
+		$license = $this->check_license();
+		if ( empty( $license ) || is_wp_error( $license ) ) {
+			return '';
+		}
+
+		$status = '';
+		if ( isset( $license->license ) ) {
+			$status = $license->license;
+		} elseif ( isset( $license->error ) ) {
+			$status = $license->error;
+		}
+
+		return strtolower( (string) $status );
+	}
+
+	/**
 	 * Check if license is expired for current plugin.
+	 *
+	 * @since x.x
 	 *
 	 * @return bool
 	 */
 	public function is_expired() {
-		$license = $this->check_license();
-		if ( empty( $license ) || is_wp_error( $license ) ) {
-			return true;
-		}
-
-		return 'expired' === $license->license;
+		return 'expired' === $this->get_license_status();
 	}
 
 	/**
@@ -537,12 +557,67 @@ abstract class PluginInstaller {
 	 * @return bool
 	 */
 	public function is_valid_license() {
-		$license = $this->check_license();
-		if ( empty( $license ) || is_wp_error( $license ) ) {
+		if ( 'valid' === $this->get_license_status() ) {
+			return true;
+		}
+
+		return $this->is_in_license_grace_period();
+	}
+
+	/**
+	 * Check if current license is in the expired-license grace period.
+	 *
+	 * @since x.x
+	 *
+	 * @return bool
+	 */
+	public function is_in_license_grace_period() {
+		if ( ! $this->is_expired() ) {
 			return false;
 		}
 
-		return 'valid' === $license->license;
+		return $this->get_license_grace_period_days_remaining() > 0;
+	}
+
+	/**
+	 * Get license grace-period end timestamp.
+	 *
+	 * @since x.x
+	 *
+	 * @return int
+	 */
+	public function get_license_grace_period_end_timestamp() {
+		$license = $this->check_license();
+		if ( empty( $license ) || is_wp_error( $license ) || empty( $license->grace ) ) {
+			return 0;
+		}
+
+		return is_numeric( $license->grace ) ? (int) $license->grace : 0;
+	}
+
+	/**
+	 * Get remaining grace-period days for expired licenses.
+	 *
+	 * @since x.x
+	 *
+	 * @return int
+	 */
+	public function get_license_grace_period_days_remaining() {
+		if ( ! $this->is_expired() ) {
+			return 0;
+		}
+
+		$grace_period_ends = $this->get_license_grace_period_end_timestamp();
+		if ( ! $grace_period_ends ) {
+			return 0;
+		}
+
+		$seconds_remaining = $grace_period_ends - time();
+		if ( 0 >= $seconds_remaining ) {
+			return 0;
+		}
+
+		return (int) ceil( $seconds_remaining / DAY_IN_SECONDS );
 	}
 
 	/**
@@ -560,7 +635,9 @@ abstract class PluginInstaller {
 			return false;
 		}
 
-		return ! in_array( (int) $license->price_id, array( 2, 3 ), true );
+		$price_id = (int) ( $license->price_id ?? 0 );
+
+		return ! in_array( $price_id, array( 2, 3 ), true );
 	}
 
 	/**

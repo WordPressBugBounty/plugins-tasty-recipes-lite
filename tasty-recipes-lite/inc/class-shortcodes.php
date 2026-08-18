@@ -72,7 +72,7 @@ class Shortcodes {
 
 		add_filter( 'tasty_recipes_recipe_card_output', array( __CLASS__, 'filter_tasty_recipes_recipe_card_output' ), 10, 2 );
 
-		add_filter( 'tasty_recipes_the_content', array( __CLASS__, 'add_inside_ingredients' ), 10, 2 );
+		add_filter( 'tasty_recipes_the_content', array( __CLASS__, 'add_inside_ingredients' ), 11, 2 );
 		add_filter( 'tasty_recipes_recipe_card_output', array( __CLASS__, 'inside_ingredients_handler' ), 10, 3 );
 		add_action( 'tasty_recipes_card_after_ingredients', array( __CLASS__, 'run_after_ingredients' ) );
 		add_action( 'tasty_recipes_card_after_title', array( __CLASS__, 'print_ratings' ) );
@@ -246,7 +246,7 @@ class Shortcodes {
 		);
 
 		$before_recipe = '';
-		$error         = get_post_meta( $recipe->get_id(), 'nutrifox_error', true );
+		$error         = get_post_meta( $recipe->get_id(), Meta_Keys::NUTRIFOX_ERROR, true );
 		if ( $error && self::is_error_message_showable() ) {
 			$before_recipe .= '<div style="border:4px solid #dc3232;padding:10px 12px;margin-top:10px;margin-bottom:10px;">' .
 				'<p>Nutrifox API integration failed.</p>';

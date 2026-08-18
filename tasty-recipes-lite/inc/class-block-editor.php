@@ -49,14 +49,41 @@ class Block_Editor {
 			$asset_meta['version'],
 			true
 		);
+		$css_path = dirname( TASTY_RECIPES_LITE_FILE ) . '/assets/dist/recipes-block.css';
 		wp_register_style(
 			'tasty-recipes-block-editor',
 			plugins_url( 'assets/dist/recipes-block.css', TASTY_RECIPES_LITE_FILE ),
 			array(),
-			$asset_meta['version']
+			(string) filemtime( $css_path )
 		);
+		wp_style_add_data( 'tasty-recipes-block-editor', 'path', $css_path );
 		if ( function_exists( 'wp_set_script_translations' ) ) {
 			wp_set_script_translations( 'tasty-recipes-block-editor', 'tasty-recipes-lite' );
+		}
+
+		add_filter( 'block_type_metadata_settings', array( __CLASS__, 'filter_block_type_metadata_settings' ), 10, 2 );
+
+		register_block_type(
+			dirname( TASTY_RECIPES_LITE_FILE ) . '/assets/block-editor',
+			array(
+				'render_callback' => array( __CLASS__, 'render_recipe_block' ),
+			)
+		);
+	}
+
+	/**
+	 * Apply the block attributes filter after metadata is parsed from block.json.
+	 *
+	 * @since 1.2.7
+	 *
+	 * @param array $settings Block type settings derived from metadata.
+	 * @param array $metadata Block metadata from block.json.
+	 *
+	 * @return array
+	 */
+	public static function filter_block_type_metadata_settings( $settings, $metadata ) {
+		if ( empty( $metadata['name'] ) || self::RECIPE_BLOCK_TYPE !== $metadata['name'] ) {
+			return $settings;
 		}
 
 		/**
@@ -66,37 +93,7 @@ class Block_Editor {
 		 *
 		 * @param array $attributes Block attributes.
 		 */
-		$attributes = apply_filters(
-			'tasty_recipes_lite_block_attributes',
-			array(
-				'attributes'      => array(
-					'className'            => array(
-						'type' => 'string',
-					),
-					'id'                   => array(
-						'type' => 'number',
-					),
-					'lastUpdated'          => array(
-						'type' => 'number',
-					),
-					'author_link'          => array(
-						'type' => 'string',
-					),
-					'override_author_link' => array(
-						'type'    => 'boolean',
-						'default' => false,
-					),
-				),
-				'editor_script'   => 'tasty-recipes-block-editor',
-				'editor_style'    => array( 'tasty-framework-global-css', 'tasty-recipes-main', 'tasty-recipes-block-editor' ),
-				'render_callback' => array( __CLASS__, 'render_recipe_block' ),
-			)
-		);
-
-		register_block_type(
-			self::RECIPE_BLOCK_TYPE,
-			$attributes
-		);
+		return apply_filters( 'tasty_recipes_lite_block_attributes', $settings );
 	}
 
 	/**

@@ -8,6 +8,7 @@
 use Tasty_Recipes\Block_Editor;
 use Tasty_Recipes\MetaBox;
 use Tasty_Recipes\Onboarding_Wizard;
+use Tasty_Recipes\Options;
 use Tasty_Recipes\Recipe_Explorer;
 use Tasty_Recipes\Shortcodes;
 
@@ -37,21 +38,21 @@ class Tasty_Recipes {
 	 *
 	 * @var string
 	 */
-	const CUSTOMIZATION_OPTION = 'tasty_recipes_customization';
+	const CUSTOMIZATION_OPTION = Options::CUSTOMIZATION;
 
 	/**
 	 * Option name for the default author link.
 	 *
 	 * @var string
 	 */
-	const DEFAULT_AUTHOR_LINK_OPTION = 'tasty_recipes_default_author_link';
+	const DEFAULT_AUTHOR_LINK_OPTION = Options::DEFAULT_AUTHOR_LINK;
 
 	/**
 	 * Option name for the Instacart enable field.
 	 *
 	 * @var string
 	 */
-	const INSTACART_OPTION = 'tasty_recipes_instacart';
+	const INSTACART_OPTION = Options::INSTACART;
 
 	/**
 	 * Option name for the Instagram handle.
@@ -60,7 +61,7 @@ class Tasty_Recipes {
 	 *
 	 * @var string
 	 */
-	const INSTAGRAM_HANDLE_OPTION = '';
+	const INSTAGRAM_HANDLE_OPTION = Options::INSTAGRAM_HANDLE;
 
 	/**
 	 * Option name for the Instagram tag.
@@ -69,21 +70,21 @@ class Tasty_Recipes {
 	 *
 	 * @var string
 	 */
-	const INSTAGRAM_HASHTAG_OPTION = '';
+	const INSTAGRAM_HASHTAG_OPTION = Options::INSTAGRAM_HASHTAG;
 
 	/**
 	 * Option name for the license key.
 	 *
 	 * @var string
 	 */
-	const LICENSE_KEY_OPTION = 'tasty_recipes_license_key';
+	const LICENSE_KEY_OPTION = Options::LICENSE_KEY;
 
 	/**
 	 * Option name for the ShareASale affiliate ID.
 	 *
 	 * @var string
 	 */
-	const SHAREASALE_OPTION = 'tasty_recipes_shareasale';
+	const SHAREASALE_OPTION = Options::SHAREASALE;
 
 	/**
 	 * Option name for enabling taxonomy links.
@@ -92,7 +93,7 @@ class Tasty_Recipes {
 	 *
 	 * @var string
 	 */
-	const ENABLE_TAXONOMY_LINKS_OPTION = 'tasty_recipes_enable_taxonomy_links';
+	const ENABLE_TAXONOMY_LINKS_OPTION = Options::ENABLE_TAXONOMY_LINKS;
 
 	/**
 	 * Option name for storing the installed plugin version.
@@ -101,90 +102,91 @@ class Tasty_Recipes {
 	 *
 	 * @var string
 	 */
-	const PLUGIN_VERSION_OPTION = 'tasty_recipes_plugin_version';
+	const PLUGIN_VERSION_OPTION = Options::PLUGIN_VERSION;
 
 	/**
 	 * Option name for the powered by link.
 	 *
 	 * @var string
 	 */
-	const POWEREDBY_OPTION = 'tasty_recipes_poweredby';
+	const POWEREDBY_OPTION = Options::POWEREDBY;
 
 	/**
 	 * Option name for the template.
 	 *
 	 * @var string
 	 */
-	const TEMPLATE_OPTION = 'tasty_recipes_template';
+	const TEMPLATE_OPTION = Options::TEMPLATE;
 
 	/**
 	 * Option name for the quick links.
 	 *
 	 * @var string
 	 */
-	const QUICK_LINKS_OPTION = 'tasty_recipes_quick_links';
+	const QUICK_LINKS_OPTION = Options::QUICK_LINKS;
 
 	/**
 	 * Option name for the quick links.
 	 *
 	 * @var string
 	 */
-	const QUICK_LINKS_STYLE = 'tasty_recipes_quick_links_style';
+	const QUICK_LINKS_STYLE = Options::QUICK_LINKS_STYLE;
+
 	/**
 	 * Option name for the card buttons.
 	 *
 	 * @var string
 	 */
-	const CARD_BUTTONS_OPTION = 'tasty_recipes_card_buttons';
+	const CARD_BUTTONS_OPTION = Options::CARD_BUTTONS;
 
 	/**
 	 * Option name for the unit conversion option.
 	 *
 	 * @var string
 	 */
-	const UNIT_CONVERSION_OPTION = 'tasty_recipes_unit_conversion';
+	const UNIT_CONVERSION_OPTION = Options::UNIT_CONVERSION;
 
 	/**
 	 * Option name for the automatic unit conversion option.
 	 *
 	 * @var string
 	 */
-	const AUTOMATIC_UNIT_CONVERSION_OPTION = 'tasty_recipes_automatic_unit_conversion';
+	const AUTOMATIC_UNIT_CONVERSION_OPTION = Options::AUTOMATIC_UNIT_CONVERSION;
 
 	/**
 	 * Option name for the ingredient checkboxes option.
 	 *
 	 * @var string
 	 */
-	const INGREDIENT_CHECKBOXES_OPTION = 'tasty_recipes_ingredient_checkboxes';
+	const INGREDIENT_CHECKBOXES_OPTION = Options::INGREDIENT_CHECKBOXES;
 
 	/**
 	 * Option name for the cook mode.
 	 *
 	 * @var string
 	 */
-	const COOK_MODE_OPTION = 'tasty_recipes_cook_mode';
+	const COOK_MODE_OPTION = Options::COOK_MODE;
 
 	/**
 	 * Option name for the disable scaling option.
 	 *
 	 * @var string
 	 */
-	const DISABLE_SCALING_OPTION = 'tasty_recipes_disable_scaling';
+	const DISABLE_SCALING_OPTION = Options::DISABLE_SCALING;
 
 	/**
 	 * Option name for the copy to clipboard.
 	 *
 	 * @var string
 	 */
-	const COPY_TO_CLIPBOARD_OPTION = 'tasty_recipes_copy_to_clipboard';
+	const COPY_TO_CLIPBOARD_OPTION = Options::COPY_TO_CLIPBOARD;
 
 	/**
 	 * Option name for the template variation.
 	 *
 	 * @var string
 	 */
-	const TEMPLATE_VARIATION_OPTION = 'tasty_recipes_template_variation';
+	const TEMPLATE_VARIATION_OPTION = Options::TEMPLATE_VARIATION;
 
 	/**
 	 * Option name for the AI scraper prevention toggle.
@@ -193,14 +195,14 @@ class Tasty_Recipes {
 	 *
 	 * @var string
 	 */
-	const AI_SCRAPER_PREVENTION_OPTION = 'tasty_recipes_ai_scraper_prevention';
+	const AI_SCRAPER_PREVENTION_OPTION = Options::AI_SCRAPER_PREVENTION;
 
 	/**
 	 * Option name for the improved keys notice dismissal.
 	 *
 	 * @var string
 	 */
-	const IMPROVED_KEYS_NOTICE_DISMISSED_OPTION = 'tasty_recipes_improved_keys_notice_dismissed';
+	const IMPROVED_KEYS_NOTICE_DISMISSED_OPTION = Options::IMPROVED_KEYS_NOTICE_DISMISSED;
 
 	/**
 	 * Instantiates and gets the singleton instance for the class.

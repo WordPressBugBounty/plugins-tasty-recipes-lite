@@ -52,6 +52,15 @@ class Manager {
 	private $admin_notices = array();
 
 	/**
+	 * Whether admin notices have been set for this request.
+	 *
+	 * @since x.x
+	 *
+	 * @var bool
+	 */
+	private $admin_notices_set = false;
+
+	/**
 	 * Initialize class.
 	 *
 	 * @param APIClient    $api_client    License APIClient instance.
@@ -78,6 +87,8 @@ class Manager {
 
 		add_filter( 'tasty_framework_notification_icon', array( $this, 'maybe_show_menu_icon' ) );
 		add_action( 'current_screen', array( $this, 'remove_all_admin_notices_from_dashboard_page' ) );
+		add_action( 'admin_notices', array( $this, 'show_global_license_grace_notices' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_global_license_grace_notice_assets' ) );
 
 		return $this;
 	}
@@ -291,6 +302,12 @@ class Manager {
 	 * @return void
 	 */
 	private function set_admin_notices() {
+		if ( $this->admin_notices_set ) {
+			return;
+		}
+
+		$this->admin_notices_set = true;
+
 		foreach ( Factory::create_active_plugins() as $active_plugin ) {
 			if ( ! $active_plugin->has_framework() || $active_plugin->is_lite() ) {
 				continue;
@@ -300,17 +317,34 @@ class Manager {
 			if ( ! $active_plugin->is_licensed() ) {
 				$this->admin_notices[ $plugin_slug ] = array(
 					'type'        => 'Notices/license-empty',
+					'plugin'      => $active_plugin,
 					'render_atts' => array(
 						'plugin_name'        => $active_plugin->get_plugin_name(),
 						'plugin_pricing_url' => $active_plugin->get_product_pricing_page_url(),
 						'license_url'        => Url::get_main_admin_url(),
 					),
 				);
+			} elseif ( $active_plugin->is_in_license_grace_period() ) {
+				$this->admin_notices[ $plugin_slug ] = array(
+					'type'        => 'Notices/license-grace',
+					'plugin'      => $active_plugin,
+					'render_atts' => array(
+						'days_remaining' => $active_plugin->get_license_grace_period_days_remaining(),
+						'plugin_name'    => $active_plugin->get_plugin_name(),
+						'renew_url'      => $this->get_license_renew_url(),
+					),
+				);
 			} elseif ( ! $active_plugin->is_valid_license() ) {
+				$support_url = $active_plugin->is_expired()
+					? 'https://www.wptasty.com/contact-us'
+					: 'https://www.wptasty.com/support';
+
 				$this->admin_notices[ $plugin_slug ] = array(
 					'type'        => 'Notices/license-invalid',
+					'plugin'      => $active_plugin,
 					'render_atts' => array(
 						'plugin_name' => $active_plugin->get_plugin_name(),
+						'support_url' => $support_url,
 					),
 				);
 			}
@@ -345,6 +379,99 @@ class Manager {
 	}
 
 	/**
+	 * Show grace-period license notices across WordPress admin.
+	 *
+	 * @since x.x
+	 *
+	 * @return void
+	 */
+	public function show_global_license_grace_notices() {
+		if ( Url::is_wpt_page() ) {
+			return;
+		}
+
+		$screen = get_current_screen();
+		if ( $screen && 'post' === $screen->base ) {
+			return;
+		}
+
+		$this->render_global_license_grace_notices();
+	}
+
+	/**
+	 * Render global grace-period license notices.
+	 *
+	 * @since x.x
+	 *
+	 * @return void
+	 */
+	private function render_global_license_grace_notices() {
+		$this->set_admin_notices();
+		foreach ( $this->admin_notices as $notice ) {
+			if ( 'Notices/license-grace' !== $notice['type'] ) {
+				continue;
+			}
+
+			$plugin = $notice['plugin'];
+			if ( ! current_user_can( $plugin->get_required_capability() ) ) {
+				continue;
+			}
+
+			if ( ! apply_filters( 'tasty_framework_show_license_notice', true, $plugin ) ) {
+				continue;
+			}
+
+			$this->template->render( $notice['type'], $notice['render_atts'], true );
+		}
+	}
+
+	/**
+	 * Enqueue assets for global grace-period license notices.
+	 *
+	 * @since x.x
+	 *
+	 * @return void
+	 */
+	public function enqueue_global_license_grace_notice_assets() {
+		$this->set_admin_notices();
+		if ( ! $this->has_license_grace_notice() ) {
+			return;
+		}
+
+		wp_enqueue_style(
+			'tasty-framework-license-grace-notice',
+			TASTY_FRAMEWORK_URL_ASSETS_STYLES . '/license-grace-notice.css',
+			array(),
+			TASTY_FRAMEWORK_VERSION
+		);
+
+		wp_enqueue_script(
+			'tasty-framework-license-grace-notice',
+			TASTY_FRAMEWORK_URL_ASSETS_SCRIPTS . '/license-grace-notice.js',
+			array(),
+			TASTY_FRAMEWORK_VERSION,
+			true
+		);
+	}
+
+	/**
+	 * Check if there is a grace-period notice.
+	 *
+	 * @since x.x
+	 *
+	 * @return bool
+	 */
+	private function has_license_grace_notice() {
+		foreach ( $this->admin_notices as $notice ) {
+			if ( 'Notices/license-grace' === $notice['type'] ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Maybe show dashboard message to enter license.
 	 *
 	 * @param array           $details     Plugin details.
@@ -356,6 +483,24 @@ class Manager {
 	public function maybe_show_dashboard_plugin_message( $details, $plugin_name, $plugin ) {
 		$plugin_slug = $plugin->get_plugin_slug();
 		if ( isset( $this->admin_notices[ $plugin_slug ] ) ) {
+			$notice = $this->admin_notices[ $plugin_slug ];
+			if ( 'Notices/license-grace' === $notice['type'] ) {
+				$days_remaining     = (int) $notice['render_atts']['days_remaining'];
+				$details['message'] = sprintf(
+					// translators: %1$s Plugin name, %2$d days remaining.
+					_n(
+						'%1$s license expired. Renew within %2$d day to keep access.',
+						'%1$s license expired. Renew within %2$d days to keep access.',
+						$days_remaining,
+						'tasty'
+					),
+					$details['name'],
+					$days_remaining
+				);
+
+				return $details;
+			}
+
 			$details['message'] = sprintf(
 				// translators: %s Plugin name.
 				__( '%s is almost ready. Click the "Enter License" button above to continue.', 'tasty-recipes-lite' ),
@@ -364,6 +509,23 @@ class Manager {
 		}
 
 		return $details;
+	}
+
+	/**
+	 * Get the renewal URL for expired licenses.
+	 *
+	 * @since x.x
+	 *
+	 * @return string
+	 */
+	private function get_license_renew_url() {
+		return Url::add_utm_params(
+			'account/',
+			array(
+				'utm_medium'  => 'dashboard',
+				'utm_content' => 'expired_grace',
+			)
+		);
 	}
 
 	/**

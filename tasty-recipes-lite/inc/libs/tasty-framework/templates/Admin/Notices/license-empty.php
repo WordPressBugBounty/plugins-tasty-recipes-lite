@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-<div class="updated">
+<div class="updated inline tasty-license-admin-notice">
 	<p>
 		<strong>
 			<?php

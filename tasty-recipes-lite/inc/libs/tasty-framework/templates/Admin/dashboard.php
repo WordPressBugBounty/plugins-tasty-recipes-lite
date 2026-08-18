@@ -56,16 +56,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 								</div>
 							</div>
 							<?php if ( $tasty_plugin['message'] ) { ?>
-								<div class="tasty-framework-licensing-row-buttons">
-									<span class="tasty-msg tasty-msg-error" style="opacity:1">
+								<div class="tasty-framework-licensing-row-message">
+									<div class="tasty-msg tasty-msg-error" style="opacity:1">
 										<?php echo esc_html( $tasty_plugin['message'] ); ?>
-									</span>
+									</div>
 								</div>
 							<?php } elseif ( 'error' === $tasty_plugin['status'] ) { ?>
-								<div class="tasty-framework-licensing-row-buttons">
-									<span class="tasty-msg tasty-msg-error" style="opacity:1">
+								<div class="tasty-framework-licensing-row-message">
+									<div class="tasty-msg tasty-msg-error" style="opacity:1">
 										<?php esc_html_e( 'Refresh the page in 1 minute. If the problem continues, please reach out to support.', 'tasty-recipes-lite' ); ?>
-									</span>
+									</div>
 								</div>
 							<?php } elseif ( ! empty( $tasty_plugin['buttons'] ) ) { ?>
 								<div class="tasty-framework-licensing-row-buttons">

@@ -9,6 +9,7 @@ namespace Tasty_Recipes;
 
 use Tasty\Framework\Utils\Url;
 use Tasty_Recipes;
+use Tasty_Recipes\Converters\Mediavine_Create;
 use Tasty_Recipes\Settings;
 use Tasty_Recipes\Objects\Recipe;
 
@@ -23,6 +24,15 @@ class Admin {
 	 * @var string
 	 */
 	const CAPABILITY = 'manage_options';
+
+	/**
+	 * Capability required to access the recipes list.
+	 *
+	 * @since 1.2.7
+	 *
+	 * @var string
+	 */
+	const CONTENT_CAPABILITY = 'edit_others_posts';
 
 	/**
 	 * Plugin name for EDD registration.
@@ -136,7 +146,7 @@ class Admin {
 	 *
 	 * @var string
 	 */
-	const DB_VERSION_OPTION = 'tasty_recipes_db_version';
+	const DB_VERSION_OPTION = Options::DB_VERSION;
 
 	/**
 	 * Current database version.
@@ -462,6 +472,11 @@ class Admin {
 		}
 
 		$after_count = $class::get_count();
+
+		if ( 'create' === $get_type && 0 === (int) $after_count ) {
+			Mediavine_Create::cleanup_empty_title_orphans();
+		}
+
 		wp_send_json_success(
 			array(
 				'converted' => $converted,

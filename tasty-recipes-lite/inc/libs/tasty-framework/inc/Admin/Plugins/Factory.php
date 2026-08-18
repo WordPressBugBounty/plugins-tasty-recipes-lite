@@ -53,6 +53,24 @@ class Factory {
 	}
 
 	/**
+	 * Check whether a plugin's features should be restricted by license state.
+	 *
+	 * @since x.x
+	 *
+	 * @param string $plugin_name Plugin name.
+	 *
+	 * @return bool
+	 */
+	public static function is_feature_restricted( $plugin_name ) {
+		$plugin = self::create( $plugin_name );
+		if ( empty( $plugin ) ) {
+			return true;
+		}
+
+		return ! $plugin->is_valid_license();
+	}
+
+	/**
 	 * Create active plugins instances.
 	 *
 	 * @return array

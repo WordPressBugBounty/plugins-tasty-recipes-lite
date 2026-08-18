@@ -39,7 +39,7 @@ abstract class Main {
 	 * @return void
 	 */
 	public static function initialize_framework() {
-		define( 'TASTY_FRAMEWORK_VERSION', '1.1.15' );
+		define( 'TASTY_FRAMEWORK_VERSION', '1.1.16' );
 		define( 'TASTY_FRAMEWORK_PATH', self::plugin_path() );
 		define( 'TASTY_FRAMEWORK_PATH_ASSETS', self::plugin_path( 'assets' ) );
 
@@ -102,8 +102,6 @@ abstract class Main {
 	public static function init( $plugin_file ) {
 		self::$plugin_file = $plugin_file;
 
-		load_plugin_textdomain( 'tasty', false, self::plugin_path( 'languages' ) );
-
 		spl_autoload_register( array( __CLASS__, 'autoload' ) );
 
 		// phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.NotAbsolutePath
@@ -114,7 +112,19 @@ abstract class Main {
 		 */
 		do_action( 'tasty_framework_pre_init' );
 
+		add_action( 'init', array( __CLASS__, 'load_textdomain' ), 0 );
 		add_action( 'init', array( __CLASS__, 'initialize_framework' ) );
+	}
+
+	/**
+	 * Load the plugin textdomain.
+	 *
+	 * @since x.x
+	 *
+	 * @return void
+	 */
+	public static function load_textdomain() {
+		load_plugin_textdomain( 'tasty', false, self::plugin_path( 'languages' ) );
 	}
 
 	/**

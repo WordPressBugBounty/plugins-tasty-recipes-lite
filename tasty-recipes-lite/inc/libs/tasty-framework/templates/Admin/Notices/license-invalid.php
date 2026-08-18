@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-<div class="error">
+<div class="error inline tasty-license-admin-notice">
 	<p>
 		<?php
 			echo wp_kses_post(
@@ -29,10 +29,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<?php esc_html_e( "Think you've reached this message in error?", 'tasty-recipes-lite' ); ?>
 		</strong>
 		<?php
+			$tasty_support_url = ! empty( $data['support_url'] ) ? $data['support_url'] : 'https://www.wptasty.com/support';
 			printf(
-				// translators: %1$s Opening anchor tag, %1$s Closing anchor tag.
+				// translators: %1$s Opening anchor tag, %2$s Closing anchor tag.
 				esc_html__( '%1$sSubmit a support ticket%2$s, and we\'ll do our best to help out.', 'tasty-recipes-lite' ),
-				'<a href="https://www.wptasty.com/support" target="_blank" rel="noopener">',
+				'<a href="' . esc_url( $tasty_support_url ) . '" target="_blank" rel="noopener">',
 				'</a>'
 			);
 			?>

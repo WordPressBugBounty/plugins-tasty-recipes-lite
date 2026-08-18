@@ -208,6 +208,15 @@ class Assets {
 
 			$nonce = wp_create_nonce( Admin::NONCE_KEY );
 
+			/**
+			 * Filters option name map passed to settings JavaScript.
+			 *
+			 * @since 1.2.7
+			 *
+			 * @param array $option_names Camel-cased option name map.
+			 */
+			$option_names = apply_filters( 'tasty_recipes_settings_option_names', Options::as_js_map() );
+
 			wp_localize_script(
 				'tasty-recipes-settings-v2',
 				'tastyRecipesSettings',
@@ -218,6 +227,7 @@ class Assets {
 					'design'         => self::get_design_options( $nonce ),
 					'settings'       => self::get_settings_tab_options(),
 					'converters'     => self::get_converters_data(),
+					'optionNames'    => $option_names,
 				)
 			);
 		}

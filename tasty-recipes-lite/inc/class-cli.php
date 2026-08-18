@@ -110,14 +110,14 @@ class CLI {
 		}
 
 		// Retrieve the old SRP ratings data on the post.
-		$rating = get_post_meta( $post_id, 'srp_ratings', true );
+		$rating = get_post_meta( $post_id, Meta_Keys::SRP_RATINGS, true );
 
 		// If the data should be archived, store it under a different meta key.
 		if ( $rating && 'archive' === $action ) {
 			update_post_meta( $post_id, 'archive_srp_ratings', $rating );
 		}
 
-		delete_post_meta( $post_id, 'srp_ratings' );
+		delete_post_meta( $post_id, Meta_Keys::SRP_RATINGS );
 
 		WP_CLI::success( 'Recipe ratings data removed on recipe.' );
 	}

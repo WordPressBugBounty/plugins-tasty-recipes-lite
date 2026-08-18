@@ -94,9 +94,15 @@
 }
 
 .tasty-recipes-quick-links a.button{
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
+	display: inline-block;
+}
+
+@media only screen and (max-width: 520px) {
+	.tasty-recipes-quick-links a.button{
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+	}
 }
 
 body.foodie-pro .tasty-recipes-quick-links a.button:hover,

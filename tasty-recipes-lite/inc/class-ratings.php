@@ -25,42 +25,42 @@ class Ratings {
 	 *
 	 * @var string
 	 */
-	const COMMENT_META_KEY = 'ERRating';
+	const COMMENT_META_KEY = Meta_Keys::COMMENT_RATING;
 
 	/**
 	 * Meta key where Cookbook ratings are stored.
 	 *
 	 * @var string
 	 */
-	const CB_COMMENT_META_KEY = 'cookbook_comment_rating';
+	const CB_COMMENT_META_KEY = Meta_Keys::COOKBOOK_COMMENT_RATING;
 
 	/**
 	 * Meta key where Simple Recipe Pro ratings are stored.
 	 *
 	 * @var string
 	 */
-	const SRP_COMMENT_META_KEY = 'recipe_rating';
+	const SRP_COMMENT_META_KEY = Meta_Keys::SRP_COMMENT_RATING;
 
 	/**
 	 * Meta key where WP Recipe Maker ratings are stored.
 	 *
 	 * @var string
 	 */
-	const WPRM_COMMENT_META_KEY = 'wprm-comment-rating';
+	const WPRM_COMMENT_META_KEY = Meta_Keys::WPRM_COMMENT_RATING;
 
 	/**
 	 * Meta key where ZipList ratings are stored.
 	 *
 	 * @var string
 	 */
-	const ZRP_COMMENT_META_KEY = 'zrdn_post_recipe_rating';
+	const ZRP_COMMENT_META_KEY = Meta_Keys::ZRP_COMMENT_RATING;
 
 	/**
 	 * Card rating hash meta key.
 	 *
 	 * @var string
 	 */
-	const RATING_COMMENT_HASH_META_KEY = 'tasty-recipes-comment-hash';
+	const RATING_COMMENT_HASH_META_KEY = Meta_Keys::RATING_COMMENT_HASH;
 
 	/**
 	 * Whether the SVG has been loaded.
@@ -174,23 +174,23 @@ class Ratings {
 		}
 		$ratings        = array_values( $comment_ratings );
 		$total_reviews  = count( $ratings );
-		$create_ratings = get_post_meta( $recipe->get_id(), 'create_ratings', true );
+		$create_ratings = get_post_meta( $recipe->get_id(), Meta_Keys::CREATE_RATINGS, true );
 		if ( ! empty( $create_ratings ) ) {
 			$ratings        = array_merge( $ratings, array_fill( 0, $create_ratings['rating_count'], $create_ratings['rating'] ) );
 			$total_reviews += $create_ratings['rating_count'];
 		}
-		$srp_ratings = get_post_meta( $recipe->get_id(), 'srp_ratings', true );
+		$srp_ratings = get_post_meta( $recipe->get_id(), Meta_Keys::SRP_RATINGS, true );
 		if ( ! empty( $srp_ratings ) ) {
 			$srp_ratings    = json_decode( $srp_ratings, true );
 			$ratings        = array_merge( $ratings, array_values( $srp_ratings ) );
 			$total_reviews += count( $srp_ratings );
 		}
-		$wprm_ratings = get_post_meta( $recipe->get_id(), 'wprm_ratings', true );
+		$wprm_ratings = get_post_meta( $recipe->get_id(), Meta_Keys::WPRM_RATINGS, true );
 		if ( ! empty( $wprm_ratings ) ) {
 			$ratings        = array_merge( $ratings, array( $wprm_ratings['total'] ) );
 			$total_reviews += $wprm_ratings['count'];
 		}
-		$zrp_ratings = get_post_meta( $recipe->get_id(), 'zrp_ratings', true );
+		$zrp_ratings = get_post_meta( $recipe->get_id(), Meta_Keys::ZRP_RATINGS, true );
 		if ( ! empty( $zrp_ratings ) ) {
 			$zrp_ratings_data = wp_list_pluck( $zrp_ratings, 'rating' );
 			$ratings          = array_merge( $ratings, array_values( $zrp_ratings_data ) );

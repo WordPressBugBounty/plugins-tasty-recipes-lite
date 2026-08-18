@@ -131,12 +131,52 @@ class Quick_Links {
 		}
 
 		$html    = do_shortcode( '[' . self::$shortcode_name . ' links="' . $quick_links . '" prepended=1]' );
-		$content = $html . PHP_EOL . PHP_EOL . $content;
+		$content = self::place_quick_links_in_content( $content, $html );
 		if ( strpos( $html, '#wpt-star-full' ) ) {
 			self::move_sprite_up( $content );
 		}
 
 		return $content;
+	}
+
+	/**
+	 * Place quick links in content.
+	 *
+	 * @since 1.2.7
+	 *
+	 * @param string $content Post content.
+	 * @param string $html    Quick links markup.
+	 *
+	 * @return string
+	 */
+	private static function place_quick_links_in_content( $content, $html ) {
+		if ( self::content_has_elementor_title( $content )
+			&& preg_match( '/<h1\b[^>]*>.*?<\/h1>/is', $content, $matches, PREG_OFFSET_CAPTURE )
+		) {
+			$offset = $matches[0][1] + strlen( $matches[0][0] );
+			return substr( $content, 0, $offset ) . PHP_EOL . PHP_EOL . $html . PHP_EOL . PHP_EOL . substr( $content, $offset );
+		}
+
+		return $html . PHP_EOL . PHP_EOL . $content;
+	}
+
+	/**
+	 * Whether content looks like an Elementor layout that includes the title.
+	 *
+	 * @since 1.2.7
+	 *
+	 * @param string $content Post content.
+	 *
+	 * @return bool
+	 */
+	private static function content_has_elementor_title( $content ) {
+		if ( ! str_contains( $content, 'elementor' ) ) {
+			return false;
+		}
+
+		return str_contains( $content, 'elementor-widget-theme-post-title' )
+			|| str_contains( $content, 'elementor-page-title' )
+			|| ( str_contains( $content, 'data-elementor-type' ) && preg_match( '/<h1\b/i', $content ) );
 	}
 
 	/**

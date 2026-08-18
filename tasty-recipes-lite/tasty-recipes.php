@@ -9,7 +9,7 @@
  * License URI:     http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * Text Domain:     tasty-recipes-lite
  * Domain Path:     /languages
- * Version: 1.2.6
+ * Version: 1.2.7
  *
  * @package         Tasty_Recipes
  *
@@ -24,7 +24,7 @@
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
 if ( ! defined( 'TASTY_RECIPES_LITE_VERSION' ) ) {
-	define( 'TASTY_RECIPES_LITE_VERSION', '1.2.6' );
+	define( 'TASTY_RECIPES_LITE_VERSION', '1.2.7' );
 	define( 'TASTY_RECIPES_LITE_FILE', __FILE__ );
 }
 
@@ -35,6 +35,29 @@ if ( ! defined( 'TASTY_RECIPES_NUTRIFOX_DOMAIN' ) ) {
 // Load Tasty framework.
 require_once dirname( TASTY_RECIPES_LITE_FILE ) . '/inc/libs/tasty-framework/tasty-framework.php';
 
+if ( ! function_exists( 'tasty_recipes_lite_require_storage_keys' ) ) {
+	/**
+	 * Load option and meta key registries before the main plugin class.
+	 *
+	 * @since 1.2.7
+	 *
+	 * @return void
+	 */
+	function tasty_recipes_lite_require_storage_keys() {
+		static $loaded = false;
+
+		if ( $loaded ) {
+			return;
+		}
+
+		require_once dirname( TASTY_RECIPES_LITE_FILE ) . '/inc/class-options.php';
+		require_once dirname( TASTY_RECIPES_LITE_FILE ) . '/inc/class-meta-keys.php';
+		$loaded = true;
+	}
+
+	tasty_recipes_lite_require_storage_keys();
+}
+
 if ( ! function_exists( 'tasty_recipes_lite' ) ) {
 	/**
 	 * Access the Tasty Recipes instance.
@@ -43,6 +66,7 @@ if ( ! function_exists( 'tasty_recipes_lite' ) ) {
 	 */
 	function tasty_recipes_lite() {
 		if ( ! class_exists( 'Tasty_Recipes' ) ) {
+			tasty_recipes_lite_require_storage_keys();
 			require_once dirname( TASTY_RECIPES_LITE_FILE ) . '/inc/class-tasty-recipes.php';
 		}
 
@@ -61,6 +85,7 @@ if ( ! function_exists( 'tasty_recipes_lite_activation' ) ) {
 	 */
 	function tasty_recipes_lite_activation() {
 		if ( ! class_exists( 'Tasty_Recipes' ) ) {
+			tasty_recipes_lite_require_storage_keys();
 			require_once dirname( TASTY_RECIPES_LITE_FILE ) . '/inc/class-tasty-recipes.php';
 		}
 		Tasty_Recipes::plugin_activation();

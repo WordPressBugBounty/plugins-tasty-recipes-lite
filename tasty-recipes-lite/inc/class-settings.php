@@ -53,11 +53,12 @@ class Settings {
 	 * @return void
 	 */
 	public static function load_hooks() {
+		add_filter( 'tasty_framework_admin_menu_items', array( __CLASS__, 'add_menu_item' ) );
+
 		if ( ! is_admin() ) {
 			return;
 		}
 
-		add_filter( 'tasty_framework_admin_menu_items', array( __CLASS__, 'add_menu_item' ) );
 		add_action( 'admin_menu', array( __CLASS__, 'register_settings' ) );
 		add_action( 'update_option_' . Tasty_Recipes::TEMPLATE_OPTION, array( __CLASS__, 'maybe_remove_default_colors' ), 10, 2 );
 		add_action( 'tasty_after_remove_admin_notices', array( __CLASS__, 'register_tabs_hook' ) );
@@ -86,6 +87,7 @@ class Settings {
 		if ( ! empty( $menu_items['tasty-recipes'] ) ) {
 			$menu_items['tasty-recipes']['callback']      = array( __CLASS__, 'handle_settings_page' );
 			$menu_items['tasty-recipes']['load_callback'] = array( __CLASS__, 'mabybe_redirect_to_recipes' );
+			$menu_items['tasty-recipes']['capability']    = Admin::CONTENT_CAPABILITY;
 		}
 
 		return $menu_items;
@@ -93,18 +95,27 @@ class Settings {
 
 	/**
 	 * Maybe redirect to the recipes page if no tab is set.
-	 * 
+	 *
 	 * @since 1.1
 	 *
 	 * @return void
 	 */
 	public static function mabybe_redirect_to_recipes() {
-		if ( ! Utils::get_param( 'page' ) || ! empty( Utils::get_param( 'tab' ) ) ) {
+		if ( ! Utils::get_param( 'page' ) ) {
 			return;
 		}
-		
-		wp_safe_redirect( admin_url( 'edit.php?post_type=tasty_recipe' ) );
-		exit;
+
+		$tab = Utils::get_param( 'tab' );
+
+		if ( empty( $tab ) ) {
+			wp_safe_redirect( admin_url( 'edit.php?post_type=tasty_recipe' ) );
+			exit;
+		}
+
+		if ( self::is_settings_tab( $tab ) && ! current_user_can( Admin::CAPABILITY ) ) {
+			wp_safe_redirect( admin_url( 'edit.php?post_type=tasty_recipe' ) );
+			exit;
+		}
 	}
 
 	/**
@@ -237,6 +248,12 @@ class Settings {
 	 * @return void
 	 */
 	public static function handle_settings_page() {
+		$tab = Utils::sanitize_get_key( 'tab', 'design' );
+		if ( self::is_settings_tab( $tab ) && ! current_user_can( Admin::CAPABILITY ) ) {
+			wp_safe_redirect( admin_url( 'edit.php?post_type=tasty_recipe' ) );
+			exit;
+		}
+
 		add_settings_section(
 			self::SETTINGS_SECTION_CARD_DESIGN,
 			'',
@@ -325,14 +342,17 @@ class Settings {
 		$recipes_label = apply_filters( 'tasty_recipes_settings_recipes_tab_label', __( 'Recipes', 'tasty-recipes-lite' ) );
 
 		$add_link = array(
-			'recipes'    => $recipes_label,
-			'design'     => __( 'Design', 'tasty-recipes-lite' ),
-			'settings'   => __( 'Settings', 'tasty-recipes-lite' ),
-			'converters' => __( 'Converters', 'tasty-recipes-lite' ),
+			'recipes' => $recipes_label,
 		);
 
-		if ( ! empty( $debug ) || 'debug' === $active_tab ) {
-			$add_link['debug'] = __( 'Debug', 'tasty-recipes-lite' );
+		if ( current_user_can( Admin::CAPABILITY ) ) {
+			$add_link['design']     = __( 'Design', 'tasty-recipes-lite' );
+			$add_link['settings']   = __( 'Settings', 'tasty-recipes-lite' );
+			$add_link['converters'] = __( 'Converters', 'tasty-recipes-lite' );
+
+			if ( ! empty( $debug ) || 'debug' === $active_tab ) {
+				$add_link['debug'] = __( 'Debug', 'tasty-recipes-lite' );
+			}
 		}
 
 		$add_link['about'] = __( 'Get Started', 'tasty-recipes-lite' );
@@ -353,6 +373,19 @@ class Settings {
 		}
 
 		return $tabs;
+	}
+
+	/**
+	 * Whether a tab is a global settings tab.
+	 *
+	 * @since 1.2.7
+	 *
+	 * @param string $tab Tab slug.
+	 *
+	 * @return bool
+	 */
+	private static function is_settings_tab( $tab ) {
+		return in_array( $tab, array( 'design', 'settings', 'converters', 'debug' ), true );
 	}
 
 	/**

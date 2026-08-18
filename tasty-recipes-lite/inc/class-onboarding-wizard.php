@@ -56,14 +56,14 @@ class Onboarding_Wizard {
 	 *
 	 * @var string
 	 */
-	const REDIRECT_STATUS_OPTION = 'tasty_recipes_welcome_redirect';
+	const REDIRECT_STATUS_OPTION = Options::WELCOME_REDIRECT;
 
 	/**
 	 * Option name for tracking if the onboarding wizard was skipped.
 	 *
 	 * @var string
 	 */
-	const ONBOARDING_SKIPPED_OPTION = 'tasty_recipes_onboarding_skipped';
+	const ONBOARDING_SKIPPED_OPTION = Options::ONBOARDING_SKIPPED;
 
 	/**
 	 * Defines the initial step for redirection within the application flow.
@@ -77,7 +77,7 @@ class Onboarding_Wizard {
 	 *
 	 * @var string
 	 */
-	const USAGE_DATA_OPTION = 'tasty_recipes_onboarding_usage_data';
+	const USAGE_DATA_OPTION = Options::ONBOARDING_USAGE_DATA;
 
 	/**
 	 * Holds the URL to access the Onboarding Wizard's page.
@@ -500,7 +500,7 @@ class Onboarding_Wizard {
 			return;
 		}
 
-		$onboarding_version = get_option( 'tasty_recipes_welcome_redirect' );
+		$onboarding_version = get_option( Options::WELCOME_REDIRECT );
 
 		// We return if the redirect version is greater than or equal to 1.0.4 because the usage consent was added in 1.0.4.
 		if ( $onboarding_version && version_compare( $onboarding_version, '1.0.4', '>=' ) ) {

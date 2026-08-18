@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later (license.txt)..
 msgid ""
 msgstr ""
-"Project-Id-Version: Tasty Framework 1.1.15\n"
+"Project-Id-Version: Tasty Framework 1.1.16\n"
 "Report-Msgid-Bugs-To: https://wptasty.com/support\n"
 "Last-Translator: support@wptasty.com\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-06-16T07:41:19+00:00\n"
+"POT-Creation-Date: 2026-08-18T04:45:16+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: tasty\n"
@@ -50,8 +50,9 @@ msgid "Failed to write to new file."
 msgstr ""
 
 #: inc/Abstracts/PluginInstaller.php:501
-#: inc/Admin/License/Manager.php:427
-#: inc/Admin/License/Manager.php:465
+#: inc/Admin/License/APIClient.php:281
+#: inc/Admin/License/Manager.php:589
+#: inc/Admin/License/Manager.php:627
 msgid "That's not a valid license."
 msgstr ""
 
@@ -59,40 +60,45 @@ msgstr ""
 msgid "No messages found."
 msgstr ""
 
-#: inc/Admin/License/APIClient.php:95
+#: inc/Admin/License/APIClient.php:164
 msgid "No plugins are associated with that license or it does not exist."
 msgstr ""
 
-#: inc/Admin/License/APIClient.php:263
+#: inc/Admin/License/APIClient.php:415
 msgid "This license key has expired."
 msgstr ""
 
-#: inc/Admin/License/APIClient.php:264
+#: inc/Admin/License/APIClient.php:416
+#: inc/Admin/License/APIClient.php:417
+msgid "This license key has been cancelled."
+msgstr ""
+
+#: inc/Admin/License/APIClient.php:418
 msgid "This license key has been disabled."
 msgstr ""
 
-#: inc/Admin/License/APIClient.php:265
+#: inc/Admin/License/APIClient.php:419
 msgid "This license key has been revoked."
 msgstr ""
 
-#: inc/Admin/License/APIClient.php:266
+#: inc/Admin/License/APIClient.php:420
 msgid "This license has reached its activation limit. Deactivate it on another site first."
 msgstr ""
 
-#: inc/Admin/License/APIClient.php:267
-#: inc/Admin/License/APIClient.php:268
+#: inc/Admin/License/APIClient.php:421
+#: inc/Admin/License/APIClient.php:422
 msgid "This license key is not valid for this plugin."
 msgstr ""
 
-#: inc/Admin/License/APIClient.php:269
+#: inc/Admin/License/APIClient.php:423
 msgid "This license key is invalid."
 msgstr ""
 
-#: inc/Admin/License/APIClient.php:270
+#: inc/Admin/License/APIClient.php:424
 msgid "This license key does not exist."
 msgstr ""
 
-#: inc/Admin/License/APIClient.php:273
+#: inc/Admin/License/APIClient.php:427
 msgid "Unknown error"
 msgstr ""
 
@@ -131,54 +137,62 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: inc/Admin/License/Manager.php:115
+#: inc/Admin/License/Manager.php:126
 msgid "All Plugins"
 msgstr ""
 
-#: inc/Admin/License/Manager.php:181
+#: inc/Admin/License/Manager.php:192
 msgid "Can't download plugin, please reach out to our support."
 msgstr ""
 
-#: inc/Admin/License/Manager.php:188
+#: inc/Admin/License/Manager.php:199
 msgid "Downloaded and activated successfully."
 msgstr ""
 
-#: inc/Admin/License/Manager.php:210
+#: inc/Admin/License/Manager.php:221
 msgid "Activated successfully."
 msgstr ""
 
-#: inc/Admin/License/Manager.php:232
+#: inc/Admin/License/Manager.php:243
 msgid "Deactivated successfully."
 msgstr ""
 
-#: inc/Admin/License/Manager.php:261
+#: inc/Admin/License/Manager.php:272
 msgid "License was removed successfully."
 msgstr ""
 
+#. translators: %1$s Plugin name, %2$d days remaining.
+#: inc/Admin/License/Manager.php:491
+#, php-format
+msgid "%1$s license expired. Renew within %2$d day to keep access."
+msgid_plural "%1$s license expired. Renew within %2$d days to keep access."
+msgstr[0] ""
+msgstr[1] ""
+
 #. translators: %s Plugin name.
-#: inc/Admin/License/Manager.php:361
+#: inc/Admin/License/Manager.php:506
 #, php-format
 msgid "%s is almost ready. Click the \"Enter License\" button above to continue."
 msgstr ""
 
-#: inc/Admin/License/Manager.php:393
+#: inc/Admin/License/Manager.php:555
 msgid "The license was not saved."
 msgstr ""
 
-#: inc/Admin/License/Manager.php:410
-#: inc/Admin/License/Manager.php:507
+#: inc/Admin/License/Manager.php:572
+#: inc/Admin/License/Manager.php:669
 msgid "That's not a valid plugin."
 msgstr ""
 
-#: inc/Admin/License/Manager.php:421
+#: inc/Admin/License/Manager.php:583
 msgid "Can't connect to the WP Tasty server. Please try again in a few minutes."
 msgstr ""
 
-#: inc/Admin/License/Manager.php:482
+#: inc/Admin/License/Manager.php:644
 msgid "Can't connect to the WP Tasty server. Please try again later."
 msgstr ""
 
-#: inc/Admin/License/Manager.php:524
+#: inc/Admin/License/Manager.php:686
 msgid "Not authorized!"
 msgstr ""
 
@@ -270,8 +284,8 @@ msgstr ""
 msgid "No sales found."
 msgstr ""
 
-#: inc/Main.php:182
-#: inc/Main.php:191
+#: inc/Main.php:192
+#: inc/Main.php:201
 #: inc/Traits/Singleton.php:42
 #: inc/Traits/Singleton.php:51
 msgid "Don't try again!"
@@ -469,6 +483,18 @@ msgstr ""
 msgid "Enter your license to continue."
 msgstr ""
 
+#. translators: %1$s is the plugin name, %2$s is the number of days remaining.
+#: templates/Admin/Notices/license-grace.php:28
+#, php-format
+msgid "<strong>%1$s license expired.</strong> You have %2$s day left before some features are disabled."
+msgid_plural "<strong>%1$s license expired.</strong> You have %2$s days left before some features are disabled."
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/Admin/Notices/license-grace.php:41
+msgid "Renew License"
+msgstr ""
+
 #. translators: %s is the plugin name.
 #: templates/Admin/Notices/license-invalid.php:18
 #, php-format
@@ -479,8 +505,8 @@ msgstr ""
 msgid "Think you've reached this message in error?"
 msgstr ""
 
-#. translators: %1$s Opening anchor tag, %1$s Closing anchor tag.
-#: templates/Admin/Notices/license-invalid.php:34
+#. translators: %1$s Opening anchor tag, %2$s Closing anchor tag.
+#: templates/Admin/Notices/license-invalid.php:35
 #, php-format
 msgid "%1$sSubmit a support ticket%2$s, and we'll do our best to help out."
 msgstr ""

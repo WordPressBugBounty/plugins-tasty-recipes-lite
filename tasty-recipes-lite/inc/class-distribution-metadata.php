@@ -1012,7 +1012,7 @@ class Distribution_Metadata {
 		 * @param array $comment_args {
 		 *     Array of WP_Comment_Query arguments.
 		 *
-		 *     @type array|string $orderby                   Field(s) to order by.
+		 *     @type mixed        $orderby                   Array or string field(s) to order by.
 		 *     @type string       $order                     Order of results. Accepts 'ASC' or 'DESC'.
 		 *     @type string       $status                    Comment status.
 		 *     @type array        $include_unapproved        Array of IDs or email addresses whose unapproved comments
@@ -1020,7 +1020,7 @@ class Distribution_Metadata {
 		 *     @type int          $post_id                   ID of the post.
 		 *     @type bool         $no_found_rows             Whether to refrain from querying for found rows.
 		 *     @type bool         $update_comment_meta_cache Whether to prime cache for comment meta.
-		 *     @type bool|string  $hierarchical              Whether to query for comments hierarchically.
+		 *     @type mixed        $hierarchical              Boolean or string query hierarchy setting.
 		 *     @type int          $offset                    Comment offset.
 		 *     @type int          $number                    Number of comments to fetch.
 		 * }
