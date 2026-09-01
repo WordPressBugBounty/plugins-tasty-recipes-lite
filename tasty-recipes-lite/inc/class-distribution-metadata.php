@@ -419,8 +419,10 @@ class Distribution_Metadata {
 				$value = trim( $bits[0] );
 			}
 			if ( $value && 'diet' === $name ) {
-				// Turns 'Low Fat' into 'LowFatDiet'.
-				$value = str_replace( ' ', '', $value ) . 'Diet';
+				$value = self::get_suitable_for_diet_schema( $value );
+				if ( empty( $value ) ) {
+					continue;
+				}
 			}
 
 			// If '2 cups' or similar, needs to be broken into an array
@@ -435,6 +437,97 @@ class Distribution_Metadata {
 			}
 			$schema[ $meta['property'] ] = $value;
 		}
+	}
+
+	/**
+	 * Convert stored diet term names into schema.org RestrictedDiet values.
+	 *
+	 * @since 1.2.9
+	 *
+	 * @param string $value Comma-separated diet term names.
+	 *
+	 * @return string|string[] Empty string when nothing maps, a single URL, or an array of URLs.
+	 */
+	private static function get_suitable_for_diet_schema( $value ) {
+		$terms = array_map( 'trim', explode( ',', $value ) );
+		$map   = self::get_suitable_for_diet_map();
+		$urls  = array();
+
+		foreach ( $terms as $term ) {
+			if ( '' === $term ) {
+				continue;
+			}
+
+			$key = self::normalize_diet_term( $term );
+			if ( ! isset( $map[ $key ] ) ) {
+				continue;
+			}
+
+			$url = 'https://schema.org/' . $map[ $key ];
+			if ( ! in_array( $url, $urls, true ) ) {
+				$urls[] = $url;
+			}
+		}
+
+		if ( empty( $urls ) ) {
+			return '';
+		}
+
+		return 1 === count( $urls ) ? $urls[0] : $urls;
+	}
+
+	/**
+	 * Normalize a diet term for RestrictedDiet lookup.
+	 *
+	 * @since 1.2.9
+	 *
+	 * @param string $term Diet term name.
+	 *
+	 * @return string
+	 */
+	private static function normalize_diet_term( $term ) {
+		$normalized = strtolower( $term );
+		$normalized = str_replace( array( ' ', '-', '_' ), '', $normalized );
+
+		if ( str_ends_with( $normalized, 'diet' ) ) {
+			$normalized = substr( $normalized, 0, -4 );
+		}
+
+		return $normalized;
+	}
+
+	/**
+	 * Get the map of normalized diet labels to RestrictedDiet members.
+	 *
+	 * @since 1.2.9
+	 *
+	 * @return array<string, string>
+	 */
+	private static function get_suitable_for_diet_map() {
+		$map = array(
+			'diabetic'   => 'DiabeticDiet',
+			'glutenfree' => 'GlutenFreeDiet',
+			'halal'      => 'HalalDiet',
+			'hindu'      => 'HinduDiet',
+			'kosher'     => 'KosherDiet',
+			'lowcalorie' => 'LowCalorieDiet',
+			'lowfat'     => 'LowFatDiet',
+			'lowlactose' => 'LowLactoseDiet',
+			'dairyfree'  => 'LowLactoseDiet',
+			'lowsalt'    => 'LowSaltDiet',
+			'lowsodium'  => 'LowSaltDiet',
+			'vegan'      => 'VeganDiet',
+			'vegetarian' => 'VegetarianDiet',
+		);
+
+		/**
+		 * Filters the map of normalized diet labels to schema.org RestrictedDiet members.
+		 *
+		 * @since 1.2.9
+		 *
+		 * @param array $map Normalized diet label => RestrictedDiet member.
+		 */
+		return apply_filters( 'tasty_recipes_suitable_for_diet_map', $map );
 	}
 
 	/**

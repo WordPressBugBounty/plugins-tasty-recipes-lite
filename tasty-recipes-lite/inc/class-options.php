@@ -218,6 +218,7 @@ final class Options {
 	 * Improved keys notice dismissal option.
 	 *
 	 * @since 1.2.7
+	 * @deprecated 1.2.9 The improved keys notice has been removed.
 	 *
 	 * @var string
 	 */
@@ -249,6 +250,15 @@ final class Options {
 	 * @var string
 	 */
 	public const ONBOARDING_USAGE_DATA = 'tasty_recipes_onboarding_usage_data';
+
+	/**
+	 * Stable telemetry site identifier option.
+	 *
+	 * @since 1.2.9
+	 *
+	 * @var string
+	 */
+	public const TELEMETRY_SITE_ID = 'tasty_recipes_telemetry_site_id';
 
 	/**
 	 * Database version option.

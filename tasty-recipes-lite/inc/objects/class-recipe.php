@@ -66,11 +66,11 @@ class Recipe {
 			),
 			'title'                       => array(
 				'label'             => __( 'Title', 'tasty-recipes-lite' ),
-				'sanitize_callback' => 'wp_filter_post_kses',
+				'sanitize_callback' => 'sanitize_text_field',
 			),
 			'author_name'                 => array(
 				'label'             => __( 'Author Name', 'tasty-recipes-lite' ),
-				'sanitize_callback' => 'wp_filter_post_kses',
+				'sanitize_callback' => 'sanitize_text_field',
 			),
 			'image_id'                    => array(
 				'label' => __( 'Image ID', 'tasty-recipes-lite' ),
@@ -153,7 +153,7 @@ class Recipe {
 				'label'       => __( 'Total Time', 'tasty-recipes-lite' ),
 				'property'    => 'totalTime',
 				'object_key'  => 'total_time_raw',
-				'placeholder' => __( 'Default to prep + cook.', 'tasty-recipes-lite' ),
+				'placeholder' => __( 'Defaults to prep + cook', 'tasty-recipes-lite' ),
 			),
 			'yield'                 => array(
 				'label'    => __( 'Yield', 'tasty-recipes-lite' ),
@@ -342,7 +342,7 @@ class Recipe {
 	 * @return string
 	 */
 	public function get_title() {
-		return $this->get_field( 'post_title' );
+		return wp_specialchars_decode( (string) $this->get_field( 'post_title' ), ENT_QUOTES );
 	}
 
 	/**
@@ -371,7 +371,7 @@ class Recipe {
 	 * @return string
 	 */
 	public function get_author_name() {
-		return $this->get_meta( 'author_name' );
+		return wp_specialchars_decode( (string) $this->get_meta( 'author_name' ), ENT_QUOTES );
 	}
 
 	/**
@@ -1464,7 +1464,10 @@ class Recipe {
 		$terms = get_the_terms( $this->get_id(), $taxonomy );
 
 		if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
-			$term_names = wp_list_pluck( $terms, 'name' );
+			$term_names = array_map(
+				array( Utils::class, 'decode_term_name' ),
+				wp_list_pluck( $terms, 'name' )
+			);
 			return implode( ', ', $term_names );
 		}
 
@@ -1511,14 +1514,19 @@ class Recipe {
 		$term_ids = array();
 
 		foreach ( $term_names as $term_name ) {
-			$existing_term = get_term_by( 'name', $term_name, $taxonomy );
+			$decoded_name  = Utils::decode_term_name( $term_name );
+			$existing_term = get_term_by( 'name', $decoded_name, $taxonomy );
+			if ( ! $existing_term ) {
+				$existing_term = get_term_by( 'name', esc_html( $decoded_name ), $taxonomy );
+			}
+
 			if ( $existing_term ) {
 				$term_ids[] = $existing_term->term_id;
 
 				continue;
 			}
 
-			$new_term = wp_insert_term( $term_name, $taxonomy );
+			$new_term = wp_insert_term( $decoded_name, $taxonomy );
 			if ( ! is_wp_error( $new_term ) ) {
 				$term_ids[] = $new_term['term_id'];
 			}

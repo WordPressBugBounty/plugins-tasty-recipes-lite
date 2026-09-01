@@ -620,4 +620,19 @@ class Utils {
 
 		return is_admin() && $get_page === $page;
 	}
+
+	/**
+	 * Decode HTML entities in a taxonomy term name for display.
+	 *
+	 * Does not change how terms are sanitized on save.
+	 *
+	 * @since 1.2.9
+	 *
+	 * @param string $name Term name.
+	 *
+	 * @return string
+	 */
+	public static function decode_term_name( $name ) {
+		return wp_specialchars_decode( (string) $name, ENT_QUOTES );
+	}
 }

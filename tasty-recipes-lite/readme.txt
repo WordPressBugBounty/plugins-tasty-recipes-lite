@@ -1,10 +1,10 @@
 === Tasty Recipes Lite – WordPress Recipe Card Plugin with Built-In Recipe Schema ===
 Contributors: strategy11team, sswells, srwells, danielbachhuber
 Tags: recipe, recipe card, recipe maker, food blogging, schema
-Requires at least: 5.9
-Tested up to: 7.0
-Requires PHP: 7.2
-Stable tag: 1.2.8
+Requires at least: 6.3
+Tested up to: 7.1
+Requires PHP: 7.4
+Stable tag: 1.2.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -216,6 +216,14 @@ The Tasty Recipes plugin installs much like any other WordPress plugin.
 With Tasty Recipes, there aren't any confusing settings to configure or customizations you need to worry about. Share your favorite recipes with the world!
 
 == Changelog ==
+= 1.2.9 (September 1, 2026) =
+* New: New Ingredients and Instructions fieldw UI
+* Enhancement: Recipe editor improvements including modal behavior refinements, URL field styling, keyboard shortcuts, and checkbox styling
+* Enhancement: Diet taxonomy now maps to Google's RestrictedDiet schema
+* Fix: YouTube Error 153 in recipe card editor preview
+* Fix: WPRM plugin compatibility
+* Fix: Toolbar conflicts
+
 = 1.2.8 (August 18, 2026) =
 * Fix: Fix block registration issue
 

@@ -7,9 +7,11 @@
  * Author URI:      https://www.wptasty.com
  * License:         GPLv2 or later
  * License URI:     http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * Requires at least: 6.3
+ * Requires PHP:    7.4
  * Text Domain:     tasty-recipes-lite
  * Domain Path:     /languages
- * Version: 1.2.8
+ * Version: 1.2.9
  *
  * @package         Tasty_Recipes
  *
@@ -24,7 +26,7 @@
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
 if ( ! defined( 'TASTY_RECIPES_LITE_VERSION' ) ) {
-	define( 'TASTY_RECIPES_LITE_VERSION', '1.2.8' );
+	define( 'TASTY_RECIPES_LITE_VERSION', '1.2.9' );
 	define( 'TASTY_RECIPES_LITE_FILE', __FILE__ );
 }
 

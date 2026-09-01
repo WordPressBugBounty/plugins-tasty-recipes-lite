@@ -11,6 +11,7 @@ use Tasty_Recipes\Onboarding_Wizard;
 use Tasty_Recipes\Options;
 use Tasty_Recipes\Recipe_Explorer;
 use Tasty_Recipes\Shortcodes;
+use Tasty_Recipes\Telemetry;
 
 /**
  * Base controller class for the plugin.
@@ -200,9 +201,18 @@ class Tasty_Recipes {
 	/**
 	 * Option name for the improved keys notice dismissal.
 	 *
+	 * @deprecated 1.2.9 The improved keys notice has been removed.
+	 *
 	 * @var string
 	 */
 	const IMPROVED_KEYS_NOTICE_DISMISSED_OPTION = Options::IMPROVED_KEYS_NOTICE_DISMISSED;
+
+	/**
+	 * User meta key for the description format tip dismissal.
+	 *
+	 * @var string
+	 */
+	const DESCRIPTION_FORMAT_TIP_DISMISSED_META = 'tasty_recipes_description_format_tip_dismissed';
 
 	/**
 	 * Instantiates and gets the singleton instance for the class.
@@ -332,7 +342,7 @@ class Tasty_Recipes {
 		add_action( 'wp_ajax_tasty_recipes_revert_ignore_type_convert', array( 'Tasty_Recipes\Editor', 'handle_wp_ajax_revert_ignore_type_convert' ) );
 		add_action( 'wp_ajax_tasty_recipes_parse_shortcode', array( 'Tasty_Recipes\Editor', 'handle_wp_ajax_parse_shortcode' ) );
 		add_action( 'wp_ajax_tasty_recipes_modify_recipe', array( 'Tasty_Recipes\Editor', 'handle_wp_ajax_modify_recipe' ) );
-		add_action( 'wp_ajax_tasty_recipes_dismiss_improved_keys_notice', array( 'Tasty_Recipes\Editor', 'handle_wp_ajax_dismiss_improved_keys_notice' ) );
+		add_action( 'wp_ajax_tasty_recipes_dismiss_description_format_tip', array( 'Tasty_Recipes\Editor', 'handle_wp_ajax_dismiss_description_format_tip' ) );
 		add_action( 'rest_api_init', array( 'Tasty_Recipes\Editor', 'action_rest_api_init' ) );
 
 		add_action( 'wp_insert_post', array( 'Tasty_Recipes\Editor', 'handle_add_new_post' ), 10, 3 );
@@ -403,6 +413,7 @@ class Tasty_Recipes {
 		add_filter( 'comment_text', array( 'Tasty_Recipes\Ratings', 'filter_comment_text' ), 10, 2 );
 
 		Tasty_Recipes\Settings::load_hooks();
+		Telemetry::load_hooks();
 		Tasty_Recipes\AI_Scraper_Prevention::maybe_load_hooks();
 
 		// Integrations.

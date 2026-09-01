@@ -76,6 +76,7 @@ class Shortcodes {
 		add_filter( 'tasty_recipes_recipe_card_output', array( __CLASS__, 'inside_ingredients_handler' ), 10, 3 );
 		add_action( 'tasty_recipes_card_after_ingredients', array( __CLASS__, 'run_after_ingredients' ) );
 		add_action( 'tasty_recipes_card_after_title', array( __CLASS__, 'print_ratings' ) );
+		Editor_Embed_Preview::load_hooks();
 	}
 
 	/**
@@ -366,17 +367,21 @@ class Shortcodes {
 		if ( ! empty( $embed_data->html ) ) {
 			add_filter( 'tasty_recipes_allowed_html', array( __CLASS__, 'allow_html_iframe' ) );
 
-			$template_vars['recipe_video_embed'] = $responsive_iframes ? self::make_iframes_responsive(
-				$embed_data->html
-			) : $embed_data->html;
+			if ( self::is_editor_preview_context() ) {
+				$template_vars['recipe_video_embed'] = Editor_Embed_Preview::wrap_oembed( $embed_data );
+			} else {
+				$template_vars['recipe_video_embed'] = $responsive_iframes ? self::make_iframes_responsive(
+					$embed_data->html
+				) : $embed_data->html;
+			}
 		} elseif ( ! empty( $embed_data->provider_url )
 			&& 'www.adthrive.com' === wp_parse_url( $embed_data->provider_url, PHP_URL_HOST ) ) {
 			// If the AdThrive plugin is active, assume the <div> will be
 			// handled correctly on the frontend.
 			if ( shortcode_exists( 'adthrive-in-post-video-player' ) ) {
-				// Show the thumbnail as the preview in the backend.
-				if ( is_admin() ) {
-					$template_vars['recipe_video_embed'] = sprintf( '<img src="%s">', esc_url( $embed_data->thumbnail_url ) );
+				$editor_thumbnail = self::is_editor_preview_context() ? self::get_editor_video_thumbnail_html( $embed_data ) : '';
+				if ( $editor_thumbnail ) {
+					$template_vars['recipe_video_embed'] = $editor_thumbnail;
 				} else {
 					$template_vars['recipe_video_embed'] = sprintf( '<div class="adthrive-video-player in-post" data-video-id="%s"></div>', $embed_data->video_id );
 				}
@@ -1155,6 +1160,40 @@ class Shortcodes {
 	}
 
 	/**
+	 * Whether the recipe card is rendering in an editor preview context.
+	 *
+	 * @since 1.2.9
+	 *
+	 * @return bool
+	 */
+	private static function is_editor_preview_context() {
+		return is_admin() || ( defined( 'REST_REQUEST' ) && REST_REQUEST );
+	}
+
+	/**
+	 * Get a static thumbnail for video embeds in the editor preview.
+	 *
+	 * @since 1.2.9
+	 *
+	 * @param false|object $embed_data Cached oEmbed response.
+	 *
+	 * @return string
+	 */
+	private static function get_editor_video_thumbnail_html( $embed_data ) {
+		if ( empty( $embed_data ) || empty( $embed_data->thumbnail_url ) ) {
+			return '';
+		}
+
+		$alt = ! empty( $embed_data->title ) ? $embed_data->title : '';
+
+		return sprintf(
+			'<img src="%s" alt="%s">',
+			esc_url( $embed_data->thumbnail_url ),
+			esc_attr( $alt )
+		);
+	}
+
+	/**
 	 * Whether or not an error message should be shown.
 	 *
 	 * @return bool
@@ -1163,10 +1202,8 @@ class Shortcodes {
 		if ( ! current_user_can( 'edit_posts' ) ) {
 			return false;
 		}
-		if ( is_admin() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
-			return true;
-		}
-		return false;
+
+		return self::is_editor_preview_context();
 	}
 
 	/**

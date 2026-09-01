@@ -677,7 +677,7 @@ class Editor {
 	 *
 	 * @param WP_Post $post Post object to extract recipes from.
 	 *
-	 * @return int[]
+	 * @return list<int>
 	 */
 	private static function get_recipe_ids_from_post( $post ) {
 		if ( ! self::post_has_recipes( $post ) ) {
@@ -832,12 +832,15 @@ class Editor {
 
 	/**
 	 * Handles an AJAX request to dismiss the improved keys notice.
-	 * 
+	 *
 	 * @since 1.2
+	 * @deprecated 1.2.9 The improved keys notice has been removed.
 	 *
 	 * @return void
 	 */
 	public static function handle_wp_ajax_dismiss_improved_keys_notice() {
+		_deprecated_function( __METHOD__, 'x.x' );
+
 		check_ajax_referer( 'tasty_recipes_modify_recipe', 'nonce' );
 
 		if ( ! current_user_can( 'edit_posts' ) ) {
@@ -845,6 +848,28 @@ class Editor {
 		}
 
 		update_option( \Tasty_Recipes::IMPROVED_KEYS_NOTICE_DISMISSED_OPTION, true );
+		wp_send_json_success();
+	}
+
+	/**
+	 * Handles an AJAX request to permanently dismiss the description format tip.
+	 *
+	 * @since 1.2.9
+	 *
+	 * @return void
+	 */
+	public static function handle_wp_ajax_dismiss_description_format_tip() {
+		check_ajax_referer( 'tasty_recipes_modify_recipe', 'nonce' );
+
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			wp_send_json_error();
+		}
+
+		update_user_meta(
+			get_current_user_id(),
+			\Tasty_Recipes::DESCRIPTION_FORMAT_TIP_DISMISSED_META,
+			1
+		);
 		wp_send_json_success();
 	}
 
@@ -960,7 +985,7 @@ class Editor {
 	 */
 	public static function rest_create_taxonomy_term( $request ) {
 		$taxonomy = $request->get_param( 'taxonomy' );
-		$name     = $request->get_param( 'name' );
+		$name     = Utils::decode_term_name( $request->get_param( 'name' ) );
 
 		if ( ! taxonomy_exists( $taxonomy ) ) {
 			return new \WP_Error(
@@ -971,16 +996,11 @@ class Editor {
 		}
 
 		$existing_term = get_term_by( 'name', $name, $taxonomy );
+		if ( ! $existing_term ) {
+			$existing_term = get_term_by( 'name', esc_html( $name ), $taxonomy );
+		}
 		if ( $existing_term ) {
-			return rest_ensure_response(
-				array(
-					'value'     => $existing_term->name,
-					'label'     => $existing_term->name,
-					'id'        => $existing_term->term_id,
-					'count'     => $existing_term->count,
-					'isDefault' => Content_Model::is_default_term( $existing_term->term_id, $taxonomy ),
-				)
-			);
+			return rest_ensure_response( self::format_taxonomy_term_option( $existing_term, $taxonomy ) );
 		}
 
 		$result = wp_insert_term( $name, $taxonomy );
@@ -991,15 +1011,7 @@ class Editor {
 
 		$term = get_term( $result['term_id'], $taxonomy );
 
-		return rest_ensure_response(
-			array(
-				'value'     => $term->name,
-				'label'     => $term->name,
-				'id'        => $term->term_id,
-				'count'     => $term->count,
-				'isDefault' => Content_Model::is_default_term( $term->term_id, $taxonomy ),
-			)
-		);
+		return rest_ensure_response( self::format_taxonomy_term_option( $term, $taxonomy ) );
 	}
 
 	/**
@@ -1014,7 +1026,7 @@ class Editor {
 	public static function rest_update_taxonomy_term( $request ) {
 		$taxonomy = $request->get_param( 'taxonomy' );
 		$id       = $request->get_param( 'id' );
-		$name     = $request->get_param( 'name' );
+		$name     = Utils::decode_term_name( $request->get_param( 'name' ) );
 
 		if ( ! taxonomy_exists( $taxonomy ) ) {
 			return new \WP_Error(
@@ -1055,15 +1067,7 @@ class Editor {
 
 		$updated_term = get_term( $result['term_id'], $taxonomy );
 
-		return rest_ensure_response(
-			array(
-				'value'     => $updated_term->name,
-				'label'     => $updated_term->name,
-				'id'        => $updated_term->term_id,
-				'count'     => $updated_term->count,
-				'isDefault' => Content_Model::is_default_term( $updated_term->term_id, $taxonomy ),
-			)
-		);
+		return rest_ensure_response( self::format_taxonomy_term_option( $updated_term, $taxonomy ) );
 	}
 
 	/**
@@ -1156,13 +1160,9 @@ class Editor {
 		$custom_options  = array();
 
 		foreach ( $terms as $term ) {
-			$option = array(
-				'value'     => $term->name,
-				'label'     => $term->name,
-				'id'        => $term->term_id,
-				'count'     => $term->count,
-				'isDefault' => in_array( $term->name, $defaults, true ),
-			);
+			$option              = self::format_taxonomy_term_option( $term, $taxonomy );
+			$option['isDefault'] = in_array( $option['value'], $defaults, true )
+				|| in_array( $term->name, $defaults, true );
 
 			if ( $option['isDefault'] ) {
 				$default_options[] = $option;
@@ -1188,5 +1188,27 @@ class Editor {
 		}
 
 		return rest_ensure_response( $result );
+	}
+
+	/**
+	 * Format a taxonomy term for the editor select.
+	 *
+	 * @since 1.2.9
+	 *
+	 * @param \WP_Term $term     Term object.
+	 * @param string   $taxonomy Taxonomy name.
+	 *
+	 * @return array
+	 */
+	private static function format_taxonomy_term_option( $term, $taxonomy ) {
+		$name = Utils::decode_term_name( $term->name );
+
+		return array(
+			'value'     => $name,
+			'label'     => $name,
+			'id'        => $term->term_id,
+			'count'     => $term->count,
+			'isDefault' => Content_Model::is_default_term( $term->term_id, $taxonomy ),
+		);
 	}
 }
