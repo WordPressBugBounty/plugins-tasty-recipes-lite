@@ -11,7 +11,7 @@
  * Requires PHP:    7.4
  * Text Domain:     tasty-recipes-lite
  * Domain Path:     /languages
- * Version: 1.2.9
+ * Version: 1.2.10
  *
  * @package         Tasty_Recipes
  *
@@ -26,7 +26,7 @@
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
 if ( ! defined( 'TASTY_RECIPES_LITE_VERSION' ) ) {
-	define( 'TASTY_RECIPES_LITE_VERSION', '1.2.9' );
+	define( 'TASTY_RECIPES_LITE_VERSION', '1.2.10' );
 	define( 'TASTY_RECIPES_LITE_FILE', __FILE__ );
 }
 

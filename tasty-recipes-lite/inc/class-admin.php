@@ -784,10 +784,10 @@ class Admin {
 		);
 		
 		wp_enqueue_style(
-			'tasty-recipes-database-migration',
-			plugins_url( 'assets/dist/database-migration.css', TASTY_RECIPES_LITE_FILE ),
+			'tasty-recipes-admin-notice',
+			plugins_url( 'assets/dist/admin-notice.css', TASTY_RECIPES_LITE_FILE ),
 			array(),
-			$asset_meta['version']
+			TASTY_RECIPES_LITE_VERSION
 		);
 
 		$migration_url = wp_nonce_url(

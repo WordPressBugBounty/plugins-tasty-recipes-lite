@@ -1,6 +1,5 @@
 import domReady from '@wordpress/dom-ready';
 import { __, sprintf } from '@wordpress/i18n';
-import '../../scss/migration-notice/index.scss';
 
 domReady( () => {
 	const notice = document.getElementById(
@@ -18,7 +17,9 @@ domReady( () => {
 		return;
 	}
 
-	const message = notice.querySelector( '.tasty-recipes-migration-message' );
+	const message = notice.querySelector(
+		'.tasty-recipes-admin-notice-message'
+	);
 	const loadingText = button.querySelector( '.tasty-recipes-loading-text' );
 
 	const handleComplete = () => {

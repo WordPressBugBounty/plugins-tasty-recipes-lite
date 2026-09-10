@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Tasty Recipes Lite 1.2.9\n"
+"Project-Id-Version: Tasty Recipes Lite 1.2.10\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/tasty-recipes-lite\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-01T10:58:10+00:00\n"
+"POT-Creation-Date: 2026-09-10T05:46:54+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: tasty-recipes-lite\n"
@@ -276,24 +276,24 @@ msgid "Cannot Delete Term"
 msgstr ""
 
 #. translators: Nutrifox HTTP error code.
-#: inc/class-content-model.php:439
+#: inc/class-content-model.php:440
 #, php-format
 msgid "Nutrifox API request failed (HTTP code %d)"
 msgstr ""
 
-#: inc/class-content-model.php:474
+#: inc/class-content-model.php:475
 msgid "Unknown shortcode in video URL."
 msgstr ""
 
-#: inc/class-content-model.php:493
+#: inc/class-content-model.php:494
 msgid "Shortcode is missing video id."
 msgstr ""
 
-#: inc/class-content-model.php:519
+#: inc/class-content-model.php:520
 msgid "Unknown provider for URL."
 msgstr ""
 
-#: inc/class-content-model.php:538
+#: inc/class-content-model.php:541
 msgid "Invalid response from provider."
 msgstr ""
 
@@ -1464,6 +1464,7 @@ msgstr ""
 
 #: templates/recipe-editor.php:26
 #: assets/js/recipe-explorer/modals/permanentDeleteModal.js:60
+#: assets/recipe-editor/components/recipe-row-list/RecipeRowList.jsx:903
 #: assets/recipe-editor/components/taxonomy-select/DeleteConfirmation.jsx:44
 msgid "Cancel"
 msgstr ""
@@ -1558,25 +1559,25 @@ msgstr ""
 msgid "Select existing recipe"
 msgstr ""
 
-#: assets/js/database-migration/index.js:29
+#: assets/js/database-migration/index.js:30
 msgid "Success!"
 msgstr ""
 
-#: assets/js/database-migration/index.js:30
+#: assets/js/database-migration/index.js:31
 msgid "Database update completed successfully."
 msgstr ""
 
-#: assets/js/database-migration/index.js:41
+#: assets/js/database-migration/index.js:42
 msgid "Error:"
 msgstr ""
 
-#: assets/js/database-migration/index.js:65
-#: assets/js/database-migration/index.js:87
+#: assets/js/database-migration/index.js:66
+#: assets/js/database-migration/index.js:88
 msgid "An error occurred during migration."
 msgstr ""
 
 #. translators: %d: number of remaining recipes
-#: assets/js/database-migration/index.js:76
+#: assets/js/database-migration/index.js:77
 #, js-format
 msgid "Updating… (%d remaining)"
 msgstr ""
@@ -1838,28 +1839,96 @@ msgstr ""
 msgid "Remove Image"
 msgstr ""
 
-#: assets/recipe-editor/components/recipe-row-list/RecipeRow.jsx:158
+#: assets/recipe-editor/components/recipe-row-list/BulkToolbar.jsx:545
+#: assets/recipe-editor/components/recipe-row-list/SelectionToolbar.jsx:543
+msgid "Bold"
+msgstr ""
+
+#: assets/recipe-editor/components/recipe-row-list/BulkToolbar.jsx:553
+#: assets/recipe-editor/components/recipe-row-list/SelectionToolbar.jsx:551
+msgid "Italic"
+msgstr ""
+
+#: assets/recipe-editor/components/recipe-row-list/BulkToolbar.jsx:561
+#: assets/recipe-editor/components/recipe-row-list/SelectionToolbar.jsx:559
+msgid "Underline"
+msgstr ""
+
+#: assets/recipe-editor/components/recipe-row-list/BulkToolbar.jsx:573
+#: assets/recipe-editor/components/recipe-row-list/SelectionToolbar.jsx:608
+#: assets/recipe-editor/components/recipe-row-list/SelectionToolbar.jsx:616
+msgid "Add link"
+msgstr ""
+
+#: assets/recipe-editor/components/recipe-row-list/BulkToolbar.jsx:586
+#: assets/recipe-editor/components/recipe-row-list/SelectionToolbar.jsx:579
+msgid "Text formatting"
+msgstr ""
+
+#: assets/recipe-editor/components/recipe-row-list/BulkToolbar.jsx:612
+#: assets/recipe-editor/components/recipe-row-list/BulkToolbar.jsx:618
+msgid "Heading"
+msgstr ""
+
+#: assets/recipe-editor/components/recipe-row-list/BulkToolbar.jsx:627
+#: assets/recipe-editor/components/recipe-row-list/BulkToolbar.jsx:631
+#: assets/recipe-editor/components/recipe-row-list/RowActions.jsx:57
+msgid "Add image"
+msgstr ""
+
+#: assets/recipe-editor/components/recipe-row-list/BulkToolbar.jsx:644
+#: assets/recipe-editor/components/recipe-row-list/SelectionToolbar.jsx:632
+msgid "Insert link"
+msgstr ""
+
+#: assets/recipe-editor/components/recipe-row-list/BulkToolbar.jsx:672
+#: assets/recipe-editor/components/recipe-row-list/SelectionToolbar.jsx:662
+msgid "Update"
+msgstr ""
+
+#: assets/recipe-editor/components/recipe-row-list/BulkToolbar.jsx:673
+#: assets/recipe-editor/components/recipe-row-list/SelectionToolbar.jsx:663
+#: assets/recipe-editor/components/taxonomy-select/utils.js:7
+msgid "Add"
+msgstr ""
+
+#: assets/recipe-editor/components/recipe-row-list/BulkToolbar.jsx:681
+#: assets/recipe-editor/components/recipe-row-list/SelectionToolbar.jsx:671
+msgid "Remove"
+msgstr ""
+
+#: assets/recipe-editor/components/recipe-row-list/RecipeRow.jsx:182
 msgid "Drag to reorder"
 msgstr ""
 
-#: assets/recipe-editor/components/recipe-row-list/RecipeRow.jsx:177
+#: assets/recipe-editor/components/recipe-row-list/RecipeRow.jsx:201
+#: assets/recipe-editor/components/recipe-row-list/RecipeRowList.jsx:165
+#: assets/recipe-editor/components/recipe-row-list/RecipeRowList.jsx:731
 msgid "Remove image"
 msgstr ""
 
-#: assets/recipe-editor/components/recipe-row-list/RecipeRowList.jsx:60
+#: assets/recipe-editor/components/recipe-row-list/RecipeRowList.jsx:72
 msgid "For the …"
 msgstr ""
 
-#: assets/recipe-editor/components/recipe-row-list/RecipeRowList.jsx:65
+#: assets/recipe-editor/components/recipe-row-list/RecipeRowList.jsx:77
 msgid "Add Step"
 msgstr ""
 
-#: assets/recipe-editor/components/recipe-row-list/RecipeRowList.jsx:66
+#: assets/recipe-editor/components/recipe-row-list/RecipeRowList.jsx:78
 msgid "Add Ingredient"
 msgstr ""
 
-#: assets/recipe-editor/components/recipe-row-list/RecipeRowList.jsx:731
+#: assets/recipe-editor/components/recipe-row-list/RecipeRowList.jsx:896
+msgid "Done"
+msgstr ""
+
+#: assets/recipe-editor/components/recipe-row-list/RecipeRowList.jsx:984
 msgid "Add Section Title"
+msgstr ""
+
+#: assets/recipe-editor/components/recipe-row-list/RecipeRowList.jsx:1001
+msgid "Bulk Edit"
 msgstr ""
 
 #: assets/recipe-editor/components/recipe-row-list/RowActions.jsx:31
@@ -1880,48 +1949,6 @@ msgstr ""
 
 #: assets/recipe-editor/components/recipe-row-list/RowActions.jsx:48
 msgid "Move down"
-msgstr ""
-
-#: assets/recipe-editor/components/recipe-row-list/RowActions.jsx:57
-msgid "Add image"
-msgstr ""
-
-#: assets/recipe-editor/components/recipe-row-list/SelectionToolbar.jsx:490
-msgid "Bold"
-msgstr ""
-
-#: assets/recipe-editor/components/recipe-row-list/SelectionToolbar.jsx:498
-msgid "Italic"
-msgstr ""
-
-#: assets/recipe-editor/components/recipe-row-list/SelectionToolbar.jsx:506
-msgid "Underline"
-msgstr ""
-
-#: assets/recipe-editor/components/recipe-row-list/SelectionToolbar.jsx:526
-msgid "Text formatting"
-msgstr ""
-
-#: assets/recipe-editor/components/recipe-row-list/SelectionToolbar.jsx:555
-#: assets/recipe-editor/components/recipe-row-list/SelectionToolbar.jsx:563
-msgid "Add link"
-msgstr ""
-
-#: assets/recipe-editor/components/recipe-row-list/SelectionToolbar.jsx:579
-msgid "Insert link"
-msgstr ""
-
-#: assets/recipe-editor/components/recipe-row-list/SelectionToolbar.jsx:609
-msgid "Update"
-msgstr ""
-
-#: assets/recipe-editor/components/recipe-row-list/SelectionToolbar.jsx:610
-#: assets/recipe-editor/components/taxonomy-select/utils.js:7
-msgid "Add"
-msgstr ""
-
-#: assets/recipe-editor/components/recipe-row-list/SelectionToolbar.jsx:618
-msgid "Remove"
 msgstr ""
 
 #: assets/recipe-editor/components/RecipeForm.jsx:108
@@ -1996,7 +2023,7 @@ msgstr ""
 msgid "Hide Controls"
 msgstr ""
 
-#: assets/recipe-editor/components/RichTextarea.jsx:325
+#: assets/recipe-editor/components/RichTextarea.jsx:326
 msgid "Video Settings:"
 msgstr ""
 

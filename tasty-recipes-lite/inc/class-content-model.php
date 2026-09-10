@@ -383,6 +383,7 @@ class Content_Model {
 		wp_oembed_add_provider( '#video\.mediavine\.com/videos/.*\.js#', 'https://embed.mediavine.com/oembed/', true );
 		wp_oembed_add_provider( '#https://dashboard\.mediavine\.com/videos/.*/edit#', 'https://embed.mediavine.com/oembed/', true );
 		wp_oembed_add_provider( '#https://reporting\.mediavine\.com/sites/[\d]+/videos/edit/.+#', 'https://embed.mediavine.com/oembed/', true );
+		wp_oembed_add_provider( '#https?://(www\.)?publishers\.mediavine\.com/.+#', 'https://embed.mediavine.com/oembed/', true );
 		wp_oembed_add_provider( '#https?://((m|www)\.)?youtube\.com/shorts/*#i', 'https://www.youtube.com/oembed', true );
 	}
 
@@ -517,10 +518,12 @@ class Content_Model {
 			if ( ! $provider ) {
 				delete_post_meta( $object_id, Meta_Keys::VIDEO_URL_RESPONSE );
 				update_post_meta( $object_id, Meta_Keys::VIDEO_URL_ERROR, new \WP_Error( 'video-url', __( 'Unknown provider for URL.', 'tasty-recipes-lite' ) ) );
+				return $check;
 			}
 
 			$response_data = $wp_oembed->fetch( $provider, $meta_value );
 			if ( false !== $response_data ) {
+				$response_data = self::normalize_mediavine_oembed_response( $response_data );
 				update_post_meta( $object_id, Meta_Keys::VIDEO_URL_RESPONSE, $response_data );
 				delete_post_meta( $object_id, Meta_Keys::VIDEO_URL_ERROR );
 
@@ -539,6 +542,42 @@ class Content_Model {
 			}
 		}
 		return $check;
+	}
+
+	/**
+	 * Reconstructs Mediavine player HTML when oEmbed returns blank html.
+	 *
+	 * @since 1.2.10
+	 *
+	 * @param object $response_data oEmbed response data.
+	 *
+	 * @return object
+	 */
+	private static function normalize_mediavine_oembed_response( $response_data ) {
+		$html = isset( $response_data->html ) && is_string( $response_data->html ) ? trim( $response_data->html ) : '';
+		if ( '' !== $html ) {
+			return $response_data;
+		}
+
+		$embed_url = '';
+		if ( isset( $response_data->embedUrl ) && is_string( $response_data->embedUrl ) ) {
+			$embed_url = $response_data->embedUrl;
+		} elseif ( isset( $response_data->embed_url ) && is_string( $response_data->embed_url ) ) {
+			$embed_url = $response_data->embed_url;
+		}
+
+		if ( ! preg_match( '~(?:https?:)?//video\.mediavine\.com/videos/([^./?#]+)\.js~', $embed_url, $matches ) ) {
+			return $response_data;
+		}
+
+		$video_id            = $matches[1];
+		$response_data->html = sprintf(
+			// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript -- Reconstructs Mediavine oEmbed player markup.
+			'<div id="%1$s"></div>' . "\n" . '<script type="text/javascript" src="//video.mediavine.com/videos/%1$s.js" async data-noptimize></script>',
+			esc_attr( $video_id )
+		);
+
+		return $response_data;
 	}
 
 	/**
