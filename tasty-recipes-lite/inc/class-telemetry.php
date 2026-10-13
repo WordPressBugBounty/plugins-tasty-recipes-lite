@@ -166,7 +166,7 @@ class Telemetry {
 	}
 
 	/**
-	 * Enqueue PostHog on recipe admin screens, or in the block editor when a Tasty block is present.
+	 * Enqueue PostHog on recipe admin, classic editor/list, or block editor screens.
 	 *
 	 * @since 1.2.9
 	 *
@@ -189,6 +189,11 @@ class Telemetry {
 
 		if ( $screen->is_block_editor() ) {
 			self::enqueue_posthog_for_block_editor();
+			return;
+		}
+
+		if ( in_array( $screen->base, array( 'post', 'edit' ), true ) ) {
+			self::enqueue_posthog();
 		}
 	}
 
@@ -259,11 +264,12 @@ class Telemetry {
 
 		$config = wp_json_encode(
 			array(
-				'apiKey'   => self::POSTHOG_API_KEY,
-				'apiHost'  => self::POSTHOG_API_HOST,
-				'defaults' => self::POSTHOG_DEFAULTS,
-				'siteId'   => self::get_site_id(),
-				'autoInit' => (bool) $auto_init,
+				'apiKey'          => self::POSTHOG_API_KEY,
+				'apiHost'         => self::POSTHOG_API_HOST,
+				'defaults'        => self::POSTHOG_DEFAULTS,
+				'siteId'          => self::get_site_id(),
+				'autoInit'        => (bool) $auto_init,
+				'eventProperties' => self::get_client_event_properties(),
 			)
 		);
 
@@ -474,6 +480,29 @@ class Telemetry {
 		}
 
 		return $success;
+	}
+
+	/**
+	 * Common properties attached to client-side PostHog events.
+	 *
+	 * @since 1.2.11
+	 *
+	 * @return array
+	 */
+	public static function get_client_event_properties() {
+		$properties = array(
+			'product'        => 'lite',
+			'plugin_version' => defined( 'TASTY_RECIPES_LITE_VERSION' ) ? TASTY_RECIPES_LITE_VERSION : '',
+		);
+
+		/**
+		 * Filters common properties attached to client-side PostHog events.
+		 *
+		 * @since 1.2.11
+		 *
+		 * @param array $properties Common event properties.
+		 */
+		return apply_filters( 'tasty_recipes_telemetry_event_properties', $properties );
 	}
 
 	/**

@@ -970,9 +970,7 @@ class Recipe_Explorer {
 	 * @return \WP_Query
 	 */
 	public static function filter_recipes_by_params( $query ) {
-		global $post_type, $pagenow;
-
-		if ( 'tasty_recipe' !== $post_type || 'edit.php' !== $pagenow ) {
+		if ( ! is_admin() || ! $query->is_main_query() || 'tasty_recipe' !== $query->get( 'post_type' ) ) {
 			return $query;
 		}
 
@@ -982,14 +980,20 @@ class Recipe_Explorer {
 			// We run this custom query because sometimes the ratings are floats and we should round them to the nearest integer.
 			add_filter(
 				'posts_clauses',
-				function ( $clauses ) use ( $rating_filter ) {
+				function ( $clauses, $filtered_query ) use ( $rating_filter, $query ) {
+					if ( $filtered_query !== $query ) {
+						return $clauses;
+					}
+
 					global $wpdb;
 
 					$clauses['join']  .= " INNER JOIN {$wpdb->postmeta} rating_meta ON ({$wpdb->posts}.ID = rating_meta.post_id AND rating_meta.meta_key = 'average_rating')";
 					$clauses['where'] .= $wpdb->prepare( ' AND ROUND(CAST(rating_meta.meta_value AS DECIMAL(3,2))) = %d', $rating_filter );
 
 					return $clauses;
-				}
+				},
+				10,
+				2
 			);
 		}
 
@@ -999,9 +1003,15 @@ class Recipe_Explorer {
 		if ( ! empty( $attribute_filters ) ) {
 			add_filter(
 				'posts_clauses',
-				function ( $clauses ) use ( $attribute_filters ) {
+				function ( $clauses, $filtered_query ) use ( $attribute_filters, $query ) {
+					if ( $filtered_query !== $query ) {
+						return $clauses;
+					}
+
 					return self::apply_attribute_filter_clauses( $clauses, $attribute_filters );
-				}
+				},
+				10,
+				2
 			);
 		}
 

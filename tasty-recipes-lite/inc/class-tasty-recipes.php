@@ -307,6 +307,7 @@ class Tasty_Recipes {
 		add_action( 'init', array( 'Tasty_Recipes\Content_Model', 'init_post_type' ) );
 		add_action( 'init', array( __CLASS__, 'maybe_flush_rewrite_rules_on_update' ), 20 );
 		add_action( 'tasty_recipes_process_thumbnails', array( 'Tasty_Recipes\Content_Model', 'action_tasty_recipes_process_thumbnails' ) );
+		add_action( 'tasty_recipes_process_thumbnails_continue', array( 'Tasty_Recipes\Content_Model', 'action_tasty_recipes_process_thumbnails' ) );
 		add_action( 'rest_api_init', array( 'Tasty_Recipes\Recipe_Explorer', 'action_rest_api_init' ) );
 		add_action( 'rest_api_init', array( 'Tasty_Recipes\Onboarding_Wizard', 'register_api_routes' ) );
 
@@ -342,6 +343,7 @@ class Tasty_Recipes {
 		add_action( 'wp_ajax_tasty_recipes_revert_ignore_type_convert', array( 'Tasty_Recipes\Editor', 'handle_wp_ajax_revert_ignore_type_convert' ) );
 		add_action( 'wp_ajax_tasty_recipes_parse_shortcode', array( 'Tasty_Recipes\Editor', 'handle_wp_ajax_parse_shortcode' ) );
 		add_action( 'wp_ajax_tasty_recipes_modify_recipe', array( 'Tasty_Recipes\Editor', 'handle_wp_ajax_modify_recipe' ) );
+		add_action( 'wp_ajax_tasty_recipes_get_recipe_json', array( 'Tasty_Recipes\Editor', 'handle_wp_ajax_get_recipe_json' ) );
 		add_action( 'wp_ajax_tasty_recipes_dismiss_description_format_tip', array( 'Tasty_Recipes\Editor', 'handle_wp_ajax_dismiss_description_format_tip' ) );
 		add_action( 'rest_api_init', array( 'Tasty_Recipes\Editor', 'action_rest_api_init' ) );
 

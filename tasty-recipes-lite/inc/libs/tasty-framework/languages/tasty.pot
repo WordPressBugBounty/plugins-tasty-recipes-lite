@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later (license.txt)..
 msgid ""
 msgstr ""
-"Project-Id-Version: Tasty Framework 1.1.16\n"
+"Project-Id-Version: Tasty Framework 1.1.17\n"
 "Report-Msgid-Bugs-To: https://wptasty.com/support\n"
 "Last-Translator: support@wptasty.com\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-18T04:45:16+00:00\n"
+"POT-Creation-Date: 2026-10-13T10:01:34+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: tasty\n"
@@ -41,18 +41,18 @@ msgstr ""
 msgid "Something went wrong while activating your license. <a href=\"https://www.wptasty.com/contact-us\"> Please contact support</a> and share the server IP address %s with our team so we can investigate."
 msgstr ""
 
-#: inc/Abstracts/PluginInstaller.php:281
+#: inc/Abstracts/PluginInstaller.php:292
 msgid "Failed to read file content."
 msgstr ""
 
-#: inc/Abstracts/PluginInstaller.php:290
+#: inc/Abstracts/PluginInstaller.php:301
 msgid "Failed to write to new file."
 msgstr ""
 
-#: inc/Abstracts/PluginInstaller.php:501
+#: inc/Abstracts/PluginInstaller.php:512
 #: inc/Admin/License/APIClient.php:281
-#: inc/Admin/License/Manager.php:589
-#: inc/Admin/License/Manager.php:627
+#: inc/Admin/License/Manager.php:782
+#: inc/Admin/License/Manager.php:820
 msgid "That's not a valid license."
 msgstr ""
 
@@ -137,32 +137,53 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: inc/Admin/License/Manager.php:126
+#: inc/Admin/License/Manager.php:131
 msgid "All Plugins"
 msgstr ""
 
-#: inc/Admin/License/Manager.php:192
+#: inc/Admin/License/Manager.php:197
 msgid "Can't download plugin, please reach out to our support."
 msgstr ""
 
-#: inc/Admin/License/Manager.php:199
+#: inc/Admin/License/Manager.php:204
 msgid "Downloaded and activated successfully."
 msgstr ""
 
-#: inc/Admin/License/Manager.php:221
+#: inc/Admin/License/Manager.php:226
 msgid "Activated successfully."
 msgstr ""
 
-#: inc/Admin/License/Manager.php:243
+#: inc/Admin/License/Manager.php:248
 msgid "Deactivated successfully."
 msgstr ""
 
-#: inc/Admin/License/Manager.php:272
+#: inc/Admin/License/Manager.php:313
+msgid "Remove license (debug)"
+msgstr ""
+
+#: inc/Admin/License/Manager.php:314
+#: inc/Admin/Pages/Dashboard.php:277
+msgid "Remove license"
+msgstr ""
+
+#: inc/Admin/License/Manager.php:353
+#: inc/Admin/License/Manager.php:879
+msgid "Not authorized!"
+msgstr ""
+
+#: inc/Admin/License/Manager.php:359
+#: inc/Admin/License/Manager.php:765
+#: inc/Admin/License/Manager.php:862
+msgid "That's not a valid plugin."
+msgstr ""
+
+#: inc/Admin/License/Manager.php:419
+#: inc/Admin/License/Manager.php:465
 msgid "License was removed successfully."
 msgstr ""
 
 #. translators: %1$s Plugin name, %2$d days remaining.
-#: inc/Admin/License/Manager.php:491
+#: inc/Admin/License/Manager.php:684
 #, php-format
 msgid "%1$s license expired. Renew within %2$d day to keep access."
 msgid_plural "%1$s license expired. Renew within %2$d days to keep access."
@@ -170,30 +191,21 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s Plugin name.
-#: inc/Admin/License/Manager.php:506
+#: inc/Admin/License/Manager.php:699
 #, php-format
 msgid "%s is almost ready. Click the \"Enter License\" button above to continue."
 msgstr ""
 
-#: inc/Admin/License/Manager.php:555
+#: inc/Admin/License/Manager.php:748
 msgid "The license was not saved."
 msgstr ""
 
-#: inc/Admin/License/Manager.php:572
-#: inc/Admin/License/Manager.php:669
-msgid "That's not a valid plugin."
-msgstr ""
-
-#: inc/Admin/License/Manager.php:583
+#: inc/Admin/License/Manager.php:776
 msgid "Can't connect to the WP Tasty server. Please try again in a few minutes."
 msgstr ""
 
-#: inc/Admin/License/Manager.php:644
+#: inc/Admin/License/Manager.php:837
 msgid "Can't connect to the WP Tasty server. Please try again later."
-msgstr ""
-
-#: inc/Admin/License/Manager.php:686
-msgid "Not authorized!"
 msgstr ""
 
 #: inc/Admin/Menu.php:100
@@ -246,10 +258,6 @@ msgstr ""
 
 #: inc/Admin/Pages/Dashboard.php:241
 msgid "Get a license"
-msgstr ""
-
-#: inc/Admin/Pages/Dashboard.php:277
-msgid "Remove license"
 msgstr ""
 
 #: inc/Admin/Pages/Dashboard.php:291

@@ -605,19 +605,36 @@ class Content_Model {
 	/**
 	 * Cron callback to generate image sizes for attachments associated with Tasty Recipes.
 	 *
+	 * @since 1.2.11
+	 *
+	 * @param int $after_id Attachment ID to resume from. 0 starts at the beginning.
+	 *
 	 * @return void
 	 */
-	public static function action_tasty_recipes_process_thumbnails() {
+	public static function action_tasty_recipes_process_thumbnails( $after_id = 0 ) {
 		global $wpdb;
+
+		$after_id = (int) $after_id;
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 		$attach_ids = $wpdb->get_col(
-			"SELECT pm.meta_value FROM {$wpdb->postmeta} as pm
-			LEFT JOIN {$wpdb->posts} as p ON p.ID = pm.post_id
-			WHERE pm.meta_key='_thumbnail_id' AND p.post_type='tasty_recipe'"
+			$wpdb->prepare(
+				"SELECT DISTINCT pm.meta_value FROM {$wpdb->postmeta} as pm
+				LEFT JOIN {$wpdb->posts} as p ON p.ID = pm.post_id
+				WHERE pm.meta_key='_thumbnail_id' AND p.post_type='tasty_recipe' AND pm.meta_value != ''
+				AND CAST(pm.meta_value AS UNSIGNED) >= %d
+				ORDER BY CAST(pm.meta_value AS UNSIGNED) ASC",
+				$after_id
+			)
 		);
+		$started    = microtime( true );
 		foreach ( $attach_ids as $attach_id ) {
-			if ( empty( $attach_id ) ) {
+			$attach_id = (int) $attach_id;
+			if ( ! $attach_id ) {
 				continue;
+			}
+			if ( microtime( true ) - $started >= 10 ) {
+				self::schedule_thumbnail_continuation( $attach_id );
+				return;
 			}
 			self::generate_attachment_image_sizes( $attach_id );
 		}
@@ -631,6 +648,14 @@ class Content_Model {
 	 * @return bool Success state.
 	 */
 	public static function generate_attachment_image_sizes( $attachment_id ) {
+		$existing  = get_post_meta( $attachment_id, '_wp_attachment_metadata', true );
+		$new_sizes = self::get_missing_json_ld_image_sizes( $attachment_id, $existing );
+		if ( ! is_array( $existing ) || empty( $existing['sizes'] ) ) {
+			return false;
+		}
+		if ( empty( $new_sizes ) ) {
+			return true;
+		}
 		$file = get_attached_file( $attachment_id );
 		if ( ! $file ) {
 			return false;
@@ -639,10 +664,31 @@ class Content_Model {
 		if ( is_wp_error( $editor ) ) {
 			return false;
 		}
-		$existing = get_post_meta( $attachment_id, '_wp_attachment_metadata', true );
-		// No image sizes so something must've gone wrong.
-		if ( empty( $existing['sizes'] ) ) {
+		$resized = $editor->multi_resize( $new_sizes );
+		if ( is_wp_error( $resized ) || empty( $resized ) || ! is_array( $resized ) ) {
 			return false;
+		}
+		$existing['sizes'] = array_merge( $existing['sizes'], $resized );
+		update_post_meta( $attachment_id, '_wp_attachment_metadata', $existing );
+		return true;
+	}
+
+	/**
+	 * Image sizes still missing from an attachment's metadata.
+	 *
+	 * @since 1.2.11
+	 *
+	 * @param int        $attachment_id Attachment ID.
+	 * @param array|bool $existing      Attachment metadata, when already loaded.
+	 *
+	 * @return array<string, array{width: int, height: int, crop: bool}>
+	 */
+	private static function get_missing_json_ld_image_sizes( $attachment_id, $existing = null ) {
+		if ( null === $existing ) {
+			$existing = get_post_meta( $attachment_id, '_wp_attachment_metadata', true );
+		}
+		if ( ! is_array( $existing ) || empty( $existing['sizes'] ) || ! is_array( $existing['sizes'] ) ) {
+			return array();
 		}
 		$new_sizes = array();
 		foreach ( Distribution_Metadata::get_json_ld_image_sizes( $attachment_id ) as $name => $image_size ) {
@@ -655,12 +701,53 @@ class Content_Model {
 				);
 			}
 		}
-		if ( ! empty( $new_sizes ) ) {
-			$new_sizes         = $editor->multi_resize( $new_sizes );
-			$existing['sizes'] = array_merge( $existing['sizes'], $new_sizes );
+		return $new_sizes;
+	}
+
+	/**
+	 * Queue another thumbnail pass soon, without touching the recurring cron event.
+	 *
+	 * @since 1.2.11
+	 *
+	 * @param int $attach_id Attachment ID the next pass should resume from.
+	 *
+	 * @return void
+	 */
+	private static function schedule_thumbnail_continuation( $attach_id ) {
+		if ( self::thumbnail_continuation_is_queued() ) {
+			return;
 		}
-		update_post_meta( $attachment_id, '_wp_attachment_metadata', $existing );
-		return true;
+		wp_schedule_single_event(
+			time() + MINUTE_IN_SECONDS,
+			'tasty_recipes_process_thumbnails_continue',
+			array( (int) $attach_id )
+		);
+	}
+
+	/**
+	 * Whether a thumbnail continuation is already queued, regardless of its cursor.
+	 *
+	 * @since 1.2.11
+	 *
+	 * @return bool
+	 */
+	private static function thumbnail_continuation_is_queued() {
+		if ( ! function_exists( '_get_cron_array' ) ) {
+			return false;
+		}
+
+		$crons = _get_cron_array();
+		if ( ! is_array( $crons ) ) {
+			return false;
+		}
+
+		foreach ( $crons as $hooks ) {
+			if ( isset( $hooks['tasty_recipes_process_thumbnails_continue'] ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**

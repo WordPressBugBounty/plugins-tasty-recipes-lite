@@ -51,7 +51,7 @@ class Utils {
 	 *
 	 * @param string $amount Existing amount to process.
 	 *
-	 * @return float
+	 * @return float|string Float for a parsed amount, or the original string when it cannot be divided.
 	 */
 	public static function process_amount_into_float( $amount ) {
 		$vulgar_fractions = array(
@@ -114,8 +114,11 @@ class Utils {
 				$base = 0;
 			}
 			if ( isset( $base ) ) {
-				$frac_bits = explode( '/', array_shift( $bits ) );
-				$amount    = $base + ( intval( $frac_bits[0] ) / intval( $frac_bits[1] ) );
+				$frac_bits   = explode( '/', (string) array_shift( $bits ) );
+				$denominator = isset( $frac_bits[1] ) ? (int) $frac_bits[1] : 0;
+				if ( 0 !== $denominator ) {
+					$amount = $base + ( (int) $frac_bits[0] / $denominator );
+				}
 			}
 		}
 		return $amount;

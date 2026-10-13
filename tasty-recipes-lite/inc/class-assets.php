@@ -322,6 +322,56 @@ class Assets {
 	}
 
 	/**
+	 * Let integrations enqueue recipe editor scripts on screens that open it.
+	 *
+	 * @since 1.2.11
+	 *
+	 * @return void
+	 */
+	private static function enqueue_recipe_editor_integration_scripts() {
+		if ( ! self::screen_opens_recipe_editor() ) {
+			return;
+		}
+
+		/**
+		 * Allow Tasty Links to enqueue its scripts.
+		 *
+		 * @since 1.1.1
+		 */
+		do_action( 'tasty_recipes_enqueue_editor_scripts' );
+	}
+
+	/**
+	 * Whether the current screen can open the recipe editor.
+	 *
+	 * @since 1.2.11
+	 *
+	 * @return bool
+	 */
+	private static function screen_opens_recipe_editor() {
+		if ( ! function_exists( 'get_current_screen' ) ) {
+			return false;
+		}
+
+		$screen = get_current_screen();
+		if ( ! $screen ) {
+			return false;
+		}
+
+		if ( Recipe_Explorer::is_current_page( 'tasty_recipe' ) && 'edit' === $screen->base ) {
+			return true;
+		}
+
+		if ( 'post' === $screen->base || 'edit' === $screen->base ) {
+			return true;
+		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$action = isset( $_GET['action'] ) ? sanitize_key( wp_unslash( $_GET['action'] ) ) : '';
+		return 'elementor' === $action;
+	}
+
+	/**
 	 * Enqueues relevant scripts in the editor.
 	 *
 	 * @since 3.12.3
@@ -351,27 +401,6 @@ class Assets {
 		$script_data = array(
 			'recipeDataStore' => array(),
 		);
-		foreach ( $GLOBALS['wp_query']->posts as $post ) {
-			foreach ( Tasty_Recipes::get_recipes_for_post( $post->ID ) as $recipe ) {
-				/**
-				 * Permit modification of the recipe JSON before it's returned.
-				 *
-				 * @param array $recipe_json Existing recipe JSON blob.
-				 */
-				$recipe_json = apply_filters( 'tasty_recipes_shortcode_response_recipe_json', $recipe->to_json() );
-				// These fields are stored without paragraph tags,
-				// so they need to be added for TinyMCE compat.
-				foreach ( array(
-					'description',
-					'ingredients',
-					'instructions',
-					'notes',
-				) as $field ) {
-					$recipe_json[ $field ] = wpautop( $recipe_json[ $field ] );
-				}
-				$script_data['recipeDataStore'][ $recipe->get_id() ] = $recipe_json;
-			}
-		}
 		wp_localize_script( 'tasty-recipes-manage-posts', 'tastyRecipesManagePosts', $script_data );
 		$time = filemtime( dirname( __DIR__ ) . '/assets/dist/editor.css' );
 		wp_enqueue_style(
@@ -397,10 +426,7 @@ class Assets {
 				'pluginURL'         => plugins_url( '', __DIR__ ),
 			)
 		);
-		/**
-		 * Allow Tasty Links to enqueue its scripts.
-		 */
-		do_action( 'tasty_recipes_enqueue_editor_scripts' );
+		self::enqueue_recipe_editor_integration_scripts();
 		if ( ! did_action( 'admin_footer' ) && ! doing_action( 'admin_footer' ) ) {
 			add_action( 'admin_footer', array( __CLASS__, 'action_admin_footer_render_template' ) );
 		} else {
@@ -450,10 +476,7 @@ class Assets {
 				'dismissedConverters' => Editor::get_dismissed_converters(),
 			)
 		);
-		/**
-		 * Allow Tasty Links to enqueue its scripts.
-		 */
-		do_action( 'tasty_recipes_enqueue_editor_scripts' );
+		self::enqueue_recipe_editor_integration_scripts();
 		if ( ! did_action( 'admin_footer' ) && ! doing_action( 'admin_footer' ) ) {
 			add_action( 'admin_footer', array( __CLASS__, 'action_admin_footer_render_template' ) );
 		} else {
@@ -947,7 +970,7 @@ class Assets {
 
 		$vars = array(
 			'ajaxurl'     => esc_url_raw( admin_url( 'admin-ajax.php' ) ),
-			'ratingNonce' => is_user_logged_in() ? wp_create_nonce( 'tasty-recipes-save-rating' ) : '',
+			'ratingNonce' => wp_create_nonce( 'tasty-recipes-save-rating' ),
 			'postId'      => $post ? $post->ID : 0,
 		);
 

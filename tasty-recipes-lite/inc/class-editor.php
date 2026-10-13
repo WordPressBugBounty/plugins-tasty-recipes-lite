@@ -506,6 +506,65 @@ class Editor {
 	}
 
 	/**
+	 * Returns one recipe's editor JSON for the posts list modal.
+	 *
+	 * @since 1.2.11
+	 *
+	 * @return void
+	 */
+	public static function handle_wp_ajax_get_recipe_json() {
+		$recipe_id = Utils::post_param( 'recipe_id', 'intval', 0 );
+		$nonce     = Utils::post_param( 'nonce' );
+
+		if (
+			empty( $recipe_id ) ||
+			empty( $nonce ) ||
+			! wp_verify_nonce( $nonce, 'tasty_recipes_modify_recipe' ) ||
+			! current_user_can( 'edit_post', $recipe_id )
+		) {
+			wp_send_json_error();
+		}
+
+		$recipe = Recipe::get_by_id( $recipe_id );
+		if ( ! $recipe ) {
+			wp_send_json_error();
+		}
+
+		wp_send_json_success(
+			array(
+				'recipe' => self::prepare_editor_recipe_json( $recipe ),
+			)
+		);
+	}
+
+	/**
+	 * Recipe JSON used by the editor modal.
+	 *
+	 * @since 1.2.11
+	 *
+	 * @param Recipe $recipe Recipe instance.
+	 *
+	 * @return array
+	 */
+	private static function prepare_editor_recipe_json( $recipe ) {
+		/**
+		 * Permit modification of the recipe JSON before it's returned.
+		 *
+		 * @param array $recipe_json Existing recipe JSON blob.
+		 */
+		$recipe_json = apply_filters( 'tasty_recipes_shortcode_response_recipe_json', $recipe->to_json() );
+		foreach ( array(
+			'description',
+			'ingredients',
+			'instructions',
+			'notes',
+		) as $field ) {
+			$recipe_json[ $field ] = wpautop( $recipe_json[ $field ] );
+		}
+		return $recipe_json;
+	}
+
+	/**
 	 * Handles an AJAX request to modify a recipe.
 	 *
 	 * @return void
@@ -894,6 +953,7 @@ class Editor {
 							'required'          => true,
 							'type'              => 'string',
 							'sanitize_callback' => 'sanitize_text_field',
+							'validate_callback' => array( __CLASS__, 'rest_validate_taxonomy' ),
 						),
 						'search'   => array(
 							'required'          => false,
@@ -906,12 +966,13 @@ class Editor {
 				array(
 					'methods'             => 'POST',
 					'callback'            => array( __CLASS__, 'rest_create_taxonomy_term' ),
-					'permission_callback' => array( __CLASS__, 'rest_check_permission' ),
+					'permission_callback' => array( __CLASS__, 'rest_check_create_permission' ),
 					'args'                => array(
 						'taxonomy' => array(
 							'required'          => true,
 							'type'              => 'string',
 							'sanitize_callback' => 'sanitize_text_field',
+							'validate_callback' => array( __CLASS__, 'rest_validate_taxonomy' ),
 						),
 						'name'     => array(
 							'required'          => true,
@@ -923,12 +984,13 @@ class Editor {
 				array(
 					'methods'             => 'PUT',
 					'callback'            => array( __CLASS__, 'rest_update_taxonomy_term' ),
-					'permission_callback' => array( __CLASS__, 'rest_check_permission' ),
+					'permission_callback' => array( __CLASS__, 'rest_check_update_permission' ),
 					'args'                => array(
 						'taxonomy' => array(
 							'required'          => true,
 							'type'              => 'string',
 							'sanitize_callback' => 'sanitize_text_field',
+							'validate_callback' => array( __CLASS__, 'rest_validate_taxonomy' ),
 						),
 						'id'       => array(
 							'required'          => true,
@@ -945,12 +1007,13 @@ class Editor {
 				array(
 					'methods'             => 'DELETE',
 					'callback'            => array( __CLASS__, 'rest_delete_taxonomy_term' ),
-					'permission_callback' => array( __CLASS__, 'rest_check_permission' ),
+					'permission_callback' => array( __CLASS__, 'rest_check_delete_permission' ),
 					'args'                => array(
 						'taxonomy' => array(
 							'required'          => true,
 							'type'              => 'string',
 							'sanitize_callback' => 'sanitize_text_field',
+							'validate_callback' => array( __CLASS__, 'rest_validate_taxonomy' ),
 						),
 						'id'       => array(
 							'required'          => true,
@@ -972,6 +1035,66 @@ class Editor {
 	 */
 	public static function rest_check_permission() {
 		return current_user_can( 'edit_posts' );
+	}
+
+	/**
+	 * Validate that a taxonomy is one registered for recipes.
+	 *
+	 * @since 1.2.11
+	 *
+	 * @param string $taxonomy Taxonomy name.
+	 *
+	 * @return bool
+	 */
+	public static function rest_validate_taxonomy( $taxonomy ) {
+		return array_key_exists( $taxonomy, Content_Model::get_taxonomy_definitions() ) && taxonomy_exists( $taxonomy );
+	}
+
+	/**
+	 * Check whether the current user can create a term in the requested taxonomy.
+	 *
+	 * @since 1.2.11
+	 *
+	 * @param \WP_REST_Request $request The request object.
+	 *
+	 * @return bool
+	 */
+	public static function rest_check_create_permission( $request ) {
+		$taxonomy = get_taxonomy( (string) $request->get_param( 'taxonomy' ) );
+
+		if ( ! $taxonomy ) {
+			return false;
+		}
+
+		$capability = $taxonomy->hierarchical ? $taxonomy->cap->edit_terms : $taxonomy->cap->assign_terms;
+
+		return current_user_can( $capability );
+	}
+
+	/**
+	 * Check whether the current user can update the requested term.
+	 *
+	 * @since 1.2.11
+	 *
+	 * @param \WP_REST_Request $request The request object.
+	 *
+	 * @return bool
+	 */
+	public static function rest_check_update_permission( $request ) {
+		return current_user_can( 'edit_term', (int) $request->get_param( 'id' ) );
+	}
+
+	/**
+	 * Check whether the current user can delete the requested term.
+	 *
+	 * @since 1.2.11
+	 *
+	 * @param \WP_REST_Request $request The request object.
+	 *
+	 * @return bool
+	 */
+	public static function rest_check_delete_permission( $request ) {
+		return current_user_can( 'delete_term', (int) $request->get_param( 'id' ) );
 	}
 
 	/**
@@ -1209,6 +1332,8 @@ class Editor {
 			'id'        => $term->term_id,
 			'count'     => $term->count,
 			'isDefault' => Content_Model::is_default_term( $term->term_id, $taxonomy ),
+			'canEdit'   => current_user_can( 'edit_term', $term->term_id ),
+			'canDelete' => current_user_can( 'delete_term', $term->term_id ),
 		);
 	}
 }

@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Tasty Recipes Lite 1.2.10\n"
+"Project-Id-Version: Tasty Recipes Lite 1.2.11\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/tasty-recipes-lite\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-10T05:46:54+00:00\n"
+"POT-Creation-Date: 2026-10-13T17:10:10+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: tasty-recipes-lite\n"
@@ -298,37 +298,37 @@ msgid "Invalid response from provider."
 msgstr ""
 
 #. translators: Individual hour.
-#: inc/class-distribution-metadata.php:1605
+#: inc/class-distribution-metadata.php:1875
 #, php-format
 msgid "%s hour"
 msgstr ""
 
 #. translators: Multiple hours.
-#: inc/class-distribution-metadata.php:1607
+#: inc/class-distribution-metadata.php:1877
 #, php-format
 msgid "%s hours"
 msgstr ""
 
 #. translators: Multiple hours and minutes.
-#: inc/class-distribution-metadata.php:1609
+#: inc/class-distribution-metadata.php:1879
 #, php-format
 msgid "%1$s hours %2$s minutes"
 msgstr ""
 
 #. translators: Individual hour but multiple minutes.
-#: inc/class-distribution-metadata.php:1611
+#: inc/class-distribution-metadata.php:1881
 #, php-format
 msgid "%1$s hour %2$s minutes"
 msgstr ""
 
 #. translators: Individual minute.
-#: inc/class-distribution-metadata.php:1613
+#: inc/class-distribution-metadata.php:1883
 #, php-format
 msgid "%s minute"
 msgstr ""
 
 #. translators: Multiple minutes.
-#: inc/class-distribution-metadata.php:1615
+#: inc/class-distribution-metadata.php:1885
 #, php-format
 msgid "%s minutes"
 msgstr ""
@@ -377,36 +377,36 @@ msgid "Unknown error converting recipe."
 msgstr ""
 
 #: inc/class-editor.php:423
-#: inc/class-ratings.php:634
+#: inc/class-ratings.php:632
 msgid "Invalid request"
 msgstr ""
 
-#: inc/class-editor.php:560
-#: inc/class-editor.php:641
+#: inc/class-editor.php:619
+#: inc/class-editor.php:700
 msgid "No recipe found."
 msgstr ""
 
-#: inc/class-editor.php:993
-#: inc/class-editor.php:1034
-#: inc/class-editor.php:1089
-#: inc/class-editor.php:1136
+#: inc/class-editor.php:1116
+#: inc/class-editor.php:1157
+#: inc/class-editor.php:1212
+#: inc/class-editor.php:1259
 msgid "Invalid taxonomy."
 msgstr ""
 
-#: inc/class-editor.php:1043
-#: inc/class-editor.php:1098
+#: inc/class-editor.php:1166
+#: inc/class-editor.php:1221
 msgid "Invalid term."
 msgstr ""
 
-#: inc/class-editor.php:1051
+#: inc/class-editor.php:1174
 msgid "Cannot edit default terms."
 msgstr ""
 
-#: inc/class-editor.php:1106
+#: inc/class-editor.php:1229
 msgid "Cannot delete default terms."
 msgstr ""
 
-#: inc/class-editor.php:1185
+#: inc/class-editor.php:1308
 #: assets/recipe-editor/components/taxonomy-select/useTaxonomyOptions.js:191
 #: assets/recipe-editor/components/taxonomy-select/utils.js:74
 msgid "Created by you"
@@ -441,40 +441,49 @@ msgstr ""
 msgid "Recipe rating"
 msgstr ""
 
-#: inc/class-ratings.php:726
+#: inc/class-ratings.php:661
+#: inc/class-ratings.php:750
 msgid "Something went wrong. Your rating was not saved."
 msgstr ""
 
-#: inc/class-ratings.php:816
+#: inc/class-ratings.php:723
+msgid "Anonymous"
+msgstr ""
+
+#: inc/class-ratings.php:764
+msgid "Thanks. Your rating will appear after it is approved."
+msgstr ""
+
+#: inc/class-ratings.php:872
 msgid "Thank you for rating!"
 msgstr ""
 
-#: inc/class-ratings.php:821
+#: inc/class-ratings.php:877
 msgid "Update comment"
 msgstr ""
 
-#: inc/class-ratings.php:866
+#: inc/class-ratings.php:922
 msgid "To leave a rating, please share your feedback."
 msgstr ""
 
 #. translators: %1$d star rating.
-#: inc/class-ratings.php:871
+#: inc/class-ratings.php:927
 #, php-format
 msgid "To leave a %1$d-star rating, please share your feedback."
 msgstr ""
 
 #. translators: %1$d star rating.
-#: inc/class-ratings.php:888
+#: inc/class-ratings.php:944
 #, php-format
 msgid "Rating updated to %1$d stars!"
 msgstr ""
 
-#: inc/class-ratings.php:901
+#: inc/class-ratings.php:957
 msgid "Leave a comment"
 msgstr ""
 
 #. translators: Ratings from number of reviews.
-#: inc/class-ratings.php:957
+#: inc/class-ratings.php:1013
 #, php-format
 msgid "%1$s from %2$s review"
 msgid_plural "%1$s from %2$s reviews"
@@ -694,18 +703,18 @@ msgstr ""
 msgid "No Tasty Recipe created yet. Click 'Edit Recipe' in the widget controls to create one."
 msgstr ""
 
-#: inc/libs/tasty-framework/inc/Abstracts/PluginInstaller.php:281
+#: inc/libs/tasty-framework/inc/Abstracts/PluginInstaller.php:292
 msgid "Failed to read file content."
 msgstr ""
 
-#: inc/libs/tasty-framework/inc/Abstracts/PluginInstaller.php:290
+#: inc/libs/tasty-framework/inc/Abstracts/PluginInstaller.php:301
 msgid "Failed to write to new file."
 msgstr ""
 
-#: inc/libs/tasty-framework/inc/Abstracts/PluginInstaller.php:501
+#: inc/libs/tasty-framework/inc/Abstracts/PluginInstaller.php:512
 #: inc/libs/tasty-framework/inc/Admin/License/APIClient.php:281
-#: inc/libs/tasty-framework/inc/Admin/License/Manager.php:589
-#: inc/libs/tasty-framework/inc/Admin/License/Manager.php:627
+#: inc/libs/tasty-framework/inc/Admin/License/Manager.php:782
+#: inc/libs/tasty-framework/inc/Admin/License/Manager.php:820
 msgid "That's not a valid license."
 msgstr ""
 
@@ -790,55 +799,67 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: inc/libs/tasty-framework/inc/Admin/License/Manager.php:126
+#: inc/libs/tasty-framework/inc/Admin/License/Manager.php:131
 msgid "All Plugins"
 msgstr ""
 
-#: inc/libs/tasty-framework/inc/Admin/License/Manager.php:192
+#: inc/libs/tasty-framework/inc/Admin/License/Manager.php:197
 msgid "Can't download plugin, please reach out to our support."
 msgstr ""
 
-#: inc/libs/tasty-framework/inc/Admin/License/Manager.php:199
+#: inc/libs/tasty-framework/inc/Admin/License/Manager.php:204
 msgid "Downloaded and activated successfully."
 msgstr ""
 
-#: inc/libs/tasty-framework/inc/Admin/License/Manager.php:221
+#: inc/libs/tasty-framework/inc/Admin/License/Manager.php:226
 msgid "Activated successfully."
 msgstr ""
 
-#: inc/libs/tasty-framework/inc/Admin/License/Manager.php:243
+#: inc/libs/tasty-framework/inc/Admin/License/Manager.php:248
 msgid "Deactivated successfully."
 msgstr ""
 
-#: inc/libs/tasty-framework/inc/Admin/License/Manager.php:272
+#: inc/libs/tasty-framework/inc/Admin/License/Manager.php:313
+msgid "Remove license (debug)"
+msgstr ""
+
+#: inc/libs/tasty-framework/inc/Admin/License/Manager.php:314
+#: inc/libs/tasty-framework/inc/Admin/Pages/Dashboard.php:277
+msgid "Remove license"
+msgstr ""
+
+#: inc/libs/tasty-framework/inc/Admin/License/Manager.php:353
+#: inc/libs/tasty-framework/inc/Admin/License/Manager.php:879
+msgid "Not authorized!"
+msgstr ""
+
+#: inc/libs/tasty-framework/inc/Admin/License/Manager.php:359
+#: inc/libs/tasty-framework/inc/Admin/License/Manager.php:765
+#: inc/libs/tasty-framework/inc/Admin/License/Manager.php:862
+msgid "That's not a valid plugin."
+msgstr ""
+
+#: inc/libs/tasty-framework/inc/Admin/License/Manager.php:419
+#: inc/libs/tasty-framework/inc/Admin/License/Manager.php:465
 msgid "License was removed successfully."
 msgstr ""
 
 #. translators: %s Plugin name.
-#: inc/libs/tasty-framework/inc/Admin/License/Manager.php:506
+#: inc/libs/tasty-framework/inc/Admin/License/Manager.php:699
 #, php-format
 msgid "%s is almost ready. Click the \"Enter License\" button above to continue."
 msgstr ""
 
-#: inc/libs/tasty-framework/inc/Admin/License/Manager.php:555
+#: inc/libs/tasty-framework/inc/Admin/License/Manager.php:748
 msgid "The license was not saved."
 msgstr ""
 
-#: inc/libs/tasty-framework/inc/Admin/License/Manager.php:572
-#: inc/libs/tasty-framework/inc/Admin/License/Manager.php:669
-msgid "That's not a valid plugin."
-msgstr ""
-
-#: inc/libs/tasty-framework/inc/Admin/License/Manager.php:583
+#: inc/libs/tasty-framework/inc/Admin/License/Manager.php:776
 msgid "Can't connect to the WP Tasty server. Please try again in a few minutes."
 msgstr ""
 
-#: inc/libs/tasty-framework/inc/Admin/License/Manager.php:644
+#: inc/libs/tasty-framework/inc/Admin/License/Manager.php:837
 msgid "Can't connect to the WP Tasty server. Please try again later."
-msgstr ""
-
-#: inc/libs/tasty-framework/inc/Admin/License/Manager.php:686
-msgid "Not authorized!"
 msgstr ""
 
 #: inc/libs/tasty-framework/inc/Admin/Menu.php:100
@@ -886,10 +907,6 @@ msgstr ""
 
 #: inc/libs/tasty-framework/inc/Admin/Pages/Dashboard.php:241
 msgid "Get a license"
-msgstr ""
-
-#: inc/libs/tasty-framework/inc/Admin/Pages/Dashboard.php:277
-msgid "Remove license"
 msgstr ""
 
 #: inc/libs/tasty-framework/inc/Admin/Pages/Dashboard.php:320
@@ -1464,7 +1481,7 @@ msgstr ""
 
 #: templates/recipe-editor.php:26
 #: assets/js/recipe-explorer/modals/permanentDeleteModal.js:60
-#: assets/recipe-editor/components/recipe-row-list/RecipeRowList.jsx:903
+#: assets/recipe-editor/components/recipe-row-list/bulk/BulkEditPanel.jsx:306
 #: assets/recipe-editor/components/taxonomy-select/DeleteConfirmation.jsx:44
 msgid "Cancel"
 msgstr ""
@@ -1713,7 +1730,7 @@ msgid "Not available on Lite plan"
 msgstr ""
 
 #: assets/js/recipe-explorer/modals/permanentDeleteModal.js:40
-#: assets/recipe-editor/components/recipe-row-list/RowActions.jsx:71
+#: assets/recipe-editor/components/recipe-row-list/row/RowActions.jsx:71
 #: assets/recipe-editor/components/taxonomy-select/DeleteConfirmation.jsx:54
 msgid "Delete"
 msgstr ""
@@ -1818,12 +1835,12 @@ msgstr ""
 
 #: assets/recipe-editor/components/ImageField.jsx:20
 #: assets/recipe-editor/components/ImageField.jsx:27
-#: assets/recipe-editor/components/media-library.js:52
+#: assets/recipe-editor/components/media-library.js:101
 msgid "Media Library"
 msgstr ""
 
 #: assets/recipe-editor/components/ImageField.jsx:21
-#: assets/recipe-editor/components/media-library.js:53
+#: assets/recipe-editor/components/media-library.js:102
 msgid "Select Image"
 msgstr ""
 
@@ -1839,116 +1856,140 @@ msgstr ""
 msgid "Remove Image"
 msgstr ""
 
-#: assets/recipe-editor/components/recipe-row-list/BulkToolbar.jsx:545
-#: assets/recipe-editor/components/recipe-row-list/SelectionToolbar.jsx:543
+#: assets/recipe-editor/components/recipe-row-list/bulk/BulkEditPanel.jsx:37
+#: assets/recipe-editor/components/recipe-row-list/row/RecipeRow.jsx:236
+msgid "Edit image"
+msgstr ""
+
+#: assets/recipe-editor/components/recipe-row-list/bulk/BulkEditPanel.jsx:38
+#: assets/recipe-editor/components/recipe-row-list/row/RecipeRow.jsx:247
+msgid "Remove image"
+msgstr ""
+
+#: assets/recipe-editor/components/recipe-row-list/bulk/BulkEditPanel.jsx:299
+msgid "Done"
+msgstr ""
+
+#: assets/recipe-editor/components/recipe-row-list/bulk/BulkToolbar.jsx:901
+#: assets/recipe-editor/components/recipe-row-list/toolbar/SelectionToolbar.jsx:708
 msgid "Bold"
 msgstr ""
 
-#: assets/recipe-editor/components/recipe-row-list/BulkToolbar.jsx:553
-#: assets/recipe-editor/components/recipe-row-list/SelectionToolbar.jsx:551
+#: assets/recipe-editor/components/recipe-row-list/bulk/BulkToolbar.jsx:909
+#: assets/recipe-editor/components/recipe-row-list/toolbar/SelectionToolbar.jsx:716
 msgid "Italic"
 msgstr ""
 
-#: assets/recipe-editor/components/recipe-row-list/BulkToolbar.jsx:561
-#: assets/recipe-editor/components/recipe-row-list/SelectionToolbar.jsx:559
+#: assets/recipe-editor/components/recipe-row-list/bulk/BulkToolbar.jsx:917
+#: assets/recipe-editor/components/recipe-row-list/toolbar/SelectionToolbar.jsx:724
 msgid "Underline"
 msgstr ""
 
-#: assets/recipe-editor/components/recipe-row-list/BulkToolbar.jsx:573
-#: assets/recipe-editor/components/recipe-row-list/SelectionToolbar.jsx:608
-#: assets/recipe-editor/components/recipe-row-list/SelectionToolbar.jsx:616
+#: assets/recipe-editor/components/recipe-row-list/bulk/BulkToolbar.jsx:929
+#: assets/recipe-editor/components/recipe-row-list/toolbar/SelectionToolbar.jsx:773
+#: assets/recipe-editor/components/recipe-row-list/toolbar/SelectionToolbar.jsx:781
 msgid "Add link"
 msgstr ""
 
-#: assets/recipe-editor/components/recipe-row-list/BulkToolbar.jsx:586
-#: assets/recipe-editor/components/recipe-row-list/SelectionToolbar.jsx:579
-msgid "Text formatting"
-msgstr ""
-
-#: assets/recipe-editor/components/recipe-row-list/BulkToolbar.jsx:612
-#: assets/recipe-editor/components/recipe-row-list/BulkToolbar.jsx:618
+#: assets/recipe-editor/components/recipe-row-list/bulk/BulkToolbar.jsx:939
 msgid "Heading"
 msgstr ""
 
-#: assets/recipe-editor/components/recipe-row-list/BulkToolbar.jsx:627
-#: assets/recipe-editor/components/recipe-row-list/BulkToolbar.jsx:631
-#: assets/recipe-editor/components/recipe-row-list/RowActions.jsx:57
+#: assets/recipe-editor/components/recipe-row-list/bulk/BulkToolbar.jsx:946
+msgid "Bulleted list"
+msgstr ""
+
+#: assets/recipe-editor/components/recipe-row-list/bulk/BulkToolbar.jsx:953
+msgid "Numbered list"
+msgstr ""
+
+#: assets/recipe-editor/components/recipe-row-list/bulk/BulkToolbar.jsx:965
+#: assets/recipe-editor/components/recipe-row-list/toolbar/SelectionToolbar.jsx:744
+msgid "Text formatting"
+msgstr ""
+
+#: assets/recipe-editor/components/recipe-row-list/bulk/BulkToolbar.jsx:1008
+#: assets/recipe-editor/components/recipe-row-list/bulk/BulkToolbar.jsx:1012
+#: assets/recipe-editor/components/recipe-row-list/row/RowActions.jsx:57
 msgid "Add image"
 msgstr ""
 
-#: assets/recipe-editor/components/recipe-row-list/BulkToolbar.jsx:644
-#: assets/recipe-editor/components/recipe-row-list/SelectionToolbar.jsx:632
+#: assets/recipe-editor/components/recipe-row-list/bulk/BulkToolbar.jsx:1025
+#: assets/recipe-editor/components/recipe-row-list/toolbar/SelectionToolbar.jsx:797
 msgid "Insert link"
 msgstr ""
 
-#: assets/recipe-editor/components/recipe-row-list/BulkToolbar.jsx:672
-#: assets/recipe-editor/components/recipe-row-list/SelectionToolbar.jsx:662
+#: assets/recipe-editor/components/recipe-row-list/RecipeRowList.jsx:31
+msgid "For the …"
+msgstr ""
+
+#: assets/recipe-editor/components/recipe-row-list/RecipeRowList.jsx:36
+msgid "Add Step"
+msgstr ""
+
+#: assets/recipe-editor/components/recipe-row-list/RecipeRowList.jsx:37
+msgid "Add Ingredient"
+msgstr ""
+
+#: assets/recipe-editor/components/recipe-row-list/row/RecipeRow.jsx:216
+msgid "Drag to reorder"
+msgstr ""
+
+#: assets/recipe-editor/components/recipe-row-list/row/RowActions.jsx:31
+msgid "Convert to step"
+msgstr ""
+
+#: assets/recipe-editor/components/recipe-row-list/row/RowActions.jsx:32
+msgid "Convert to ingredient"
+msgstr ""
+
+#: assets/recipe-editor/components/recipe-row-list/row/RowActions.jsx:35
+msgid "Convert to section title"
+msgstr ""
+
+#: assets/recipe-editor/components/recipe-row-list/row/RowActions.jsx:40
+msgid "Move up"
+msgstr ""
+
+#: assets/recipe-editor/components/recipe-row-list/row/RowActions.jsx:48
+msgid "Move down"
+msgstr ""
+
+#: assets/recipe-editor/components/recipe-row-list/row/RowListFooter.jsx:36
+msgid "Add Section Title"
+msgstr ""
+
+#: assets/recipe-editor/components/recipe-row-list/row/RowListFooter.jsx:50
+msgid "Bulk Edit"
+msgstr ""
+
+#: assets/recipe-editor/components/recipe-row-list/toolbar/LinkPopoverFields.jsx:77
+msgid "Remove link"
+msgstr ""
+
+#: assets/recipe-editor/components/recipe-row-list/toolbar/LinkPopoverFields.jsx:90
 msgid "Update"
 msgstr ""
 
-#: assets/recipe-editor/components/recipe-row-list/BulkToolbar.jsx:673
-#: assets/recipe-editor/components/recipe-row-list/SelectionToolbar.jsx:663
+#: assets/recipe-editor/components/recipe-row-list/toolbar/LinkPopoverFields.jsx:91
 #: assets/recipe-editor/components/taxonomy-select/utils.js:7
 msgid "Add"
 msgstr ""
 
-#: assets/recipe-editor/components/recipe-row-list/BulkToolbar.jsx:681
-#: assets/recipe-editor/components/recipe-row-list/SelectionToolbar.jsx:671
-msgid "Remove"
+#: assets/recipe-editor/components/recipe-row-list/toolbar/LinkPopoverFields.jsx:96
+msgid "Link settings"
 msgstr ""
 
-#: assets/recipe-editor/components/recipe-row-list/RecipeRow.jsx:182
-msgid "Drag to reorder"
+#: assets/recipe-editor/components/recipe-row-list/toolbar/LinkPopoverFields.jsx:105
+msgid "Link attributes"
 msgstr ""
 
-#: assets/recipe-editor/components/recipe-row-list/RecipeRow.jsx:201
-#: assets/recipe-editor/components/recipe-row-list/RecipeRowList.jsx:165
-#: assets/recipe-editor/components/recipe-row-list/RecipeRowList.jsx:731
-msgid "Remove image"
+#: assets/recipe-editor/components/recipe-row-list/toolbar/LinkPopoverFields.jsx:109
+msgid "Sponsored"
 msgstr ""
 
-#: assets/recipe-editor/components/recipe-row-list/RecipeRowList.jsx:72
-msgid "For the …"
-msgstr ""
-
-#: assets/recipe-editor/components/recipe-row-list/RecipeRowList.jsx:77
-msgid "Add Step"
-msgstr ""
-
-#: assets/recipe-editor/components/recipe-row-list/RecipeRowList.jsx:78
-msgid "Add Ingredient"
-msgstr ""
-
-#: assets/recipe-editor/components/recipe-row-list/RecipeRowList.jsx:896
-msgid "Done"
-msgstr ""
-
-#: assets/recipe-editor/components/recipe-row-list/RecipeRowList.jsx:984
-msgid "Add Section Title"
-msgstr ""
-
-#: assets/recipe-editor/components/recipe-row-list/RecipeRowList.jsx:1001
-msgid "Bulk Edit"
-msgstr ""
-
-#: assets/recipe-editor/components/recipe-row-list/RowActions.jsx:31
-msgid "Convert to step"
-msgstr ""
-
-#: assets/recipe-editor/components/recipe-row-list/RowActions.jsx:32
-msgid "Convert to ingredient"
-msgstr ""
-
-#: assets/recipe-editor/components/recipe-row-list/RowActions.jsx:35
-msgid "Convert to section title"
-msgstr ""
-
-#: assets/recipe-editor/components/recipe-row-list/RowActions.jsx:40
-msgid "Move up"
-msgstr ""
-
-#: assets/recipe-editor/components/recipe-row-list/RowActions.jsx:48
-msgid "Move down"
+#: assets/recipe-editor/components/recipe-row-list/toolbar/LinkPopoverFields.jsx:115
+msgid "Nofollow"
 msgstr ""
 
 #: assets/recipe-editor/components/RecipeForm.jsx:108

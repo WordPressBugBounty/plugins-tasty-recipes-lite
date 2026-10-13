@@ -89,6 +89,11 @@ class Manager {
 		add_action( 'current_screen', array( $this, 'remove_all_admin_notices_from_dashboard_page' ) );
 		add_action( 'admin_notices', array( $this, 'show_global_license_grace_notices' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_global_license_grace_notice_assets' ) );
+		add_filter( 'plugin_action_links', array( $this, 'filter_plugin_action_links' ), 20, 2 );
+		add_filter( 'network_admin_plugin_action_links', array( $this, 'filter_plugin_action_links' ), 20, 2 );
+		add_action( 'admin_post_tasty_framework_remove_license', array( $this, 'handle_remove_license' ) );
+		add_action( 'admin_notices', array( $this, 'maybe_show_license_removed_notice' ) );
+		add_action( 'network_admin_notices', array( $this, 'maybe_show_license_removed_notice' ) );
 
 		return $this;
 	}
@@ -250,6 +255,194 @@ class Manager {
 		}
 
 		wp_send_json_success( $data );
+	}
+
+	/**
+	 * Add a Remove license row action on the Plugins screen.
+	 *
+	 * @since x.x
+	 *
+	 * @param array  $links       Existing plugin action links.
+	 * @param string $plugin_file Plugin basename.
+	 *
+	 * @return array
+	 */
+	public function filter_plugin_action_links( $links, $plugin_file ) {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return $links;
+		}
+
+		$plugin = $this->get_licensed_plugin_by_file( $plugin_file );
+		if ( ! $plugin ) {
+			return $links;
+		}
+
+		$admin_post_url = is_network_admin() ? network_admin_url( 'admin-post.php' ) : admin_url( 'admin-post.php' );
+
+		$links['tasty_remove_license'] = $this->get_remove_license_action_link( $plugin, $admin_post_url );
+
+		if ( $this->is_license_debug_requested() ) {
+			$links['tasty_remove_license_debug'] = $this->get_remove_license_action_link( $plugin, $admin_post_url, true );
+		}
+
+		return $links;
+	}
+
+	/**
+	 * Build a Remove license action link.
+	 *
+	 * @since x.x
+	 *
+	 * @param PluginInstaller $plugin         Plugin instance.
+	 * @param string          $admin_post_url Admin-post URL.
+	 * @param bool            $debug          Whether this is the debug dump link.
+	 *
+	 * @return string
+	 */
+	private function get_remove_license_action_link( $plugin, $admin_post_url, $debug = false ) {
+		$query_args = array(
+			'action' => 'tasty_framework_remove_license',
+			'plugin' => $plugin->get_plugin_name(),
+		);
+
+		if ( $debug ) {
+			$query_args['tasty-debug'] = '';
+		}
+
+		$label = $debug
+			? __( 'Remove license (debug)', 'tasty-recipes-lite' )
+			: __( 'Remove license', 'tasty-recipes-lite' );
+
+		$style = $debug ? '' : ' style="color:#b32d2e;"';
+
+		return sprintf(
+			'<a href="%s"%s>%s</a>',
+			esc_url(
+				wp_nonce_url(
+					add_query_arg( $query_args, $admin_post_url ),
+					'tasty_framework_remove_license'
+				)
+			),
+			$style,
+			esc_html( $label )
+		);
+	}
+
+	/**
+	 * Whether the tasty-debug query argument is present.
+	 *
+	 * @since x.x
+	 *
+	 * @return bool
+	 */
+	private function is_license_debug_requested() {
+		return filter_has_var( INPUT_GET, 'tasty-debug' );
+	}
+
+	/**
+	 * Handle a request to remove a license from the Plugins screen.
+	 *
+	 * @since x.x
+	 *
+	 * @return void
+	 */
+	public function handle_remove_license() {
+		check_admin_referer( 'tasty_framework_remove_license' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'Not authorized!', 'tasty-recipes-lite' ) );
+		}
+
+		$plugin_name = Vars::get_param( 'plugin' );
+		$plugin_obj  = Factory::create( $plugin_name );
+		if ( empty( $plugin_obj ) || ! $plugin_obj->is_licensed() ) {
+			wp_die( esc_html__( 'That\'s not a valid plugin.', 'tasty-recipes-lite' ) );
+		}
+
+		$result = $plugin_obj->remove_license();
+
+		if ( $this->is_license_debug_requested() ) {
+			$this->send_remove_license_debug_response( $result );
+		}
+
+		$redirect = is_network_admin() ? network_admin_url( 'plugins.php' ) : admin_url( 'plugins.php' );
+		wp_safe_redirect( add_query_arg( 'tasty-license-removed', '1', $redirect ) );
+		exit;
+	}
+
+	/**
+	 * Output the raw deactivation API response for support debugging.
+	 *
+	 * @since x.x
+	 *
+	 * @param array|WP_Error|null $result Deactivation response.
+	 *
+	 * @return void
+	 */
+	private function send_remove_license_debug_response( $result ) {
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error(
+				array(
+					'message' => $result->get_error_message(),
+					'code'    => $result->get_error_code(),
+					'data'    => $result->get_error_data(),
+				)
+			);
+		}
+
+		wp_send_json_success( $result );
+	}
+
+	/**
+	 * Show a success notice after removing a license from the Plugins screen.
+	 *
+	 * @since x.x
+	 *
+	 * @return void
+	 */
+	public function maybe_show_license_removed_notice() {
+		if ( Url::is_wpt_page() ) {
+			return;
+		}
+
+		if ( '1' !== Vars::get_param( 'tasty-license-removed' ) ) {
+			return;
+		}
+
+		$screen = get_current_screen();
+		if ( ! $screen || ( 'plugins' !== $screen->id && 'plugins-network' !== $screen->id ) ) {
+			return;
+		}
+
+		printf(
+			'<div class="notice notice-success is-dismissible"><p>%s</p></div>',
+			esc_html__( 'License was removed successfully.', 'tasty-recipes-lite' )
+		);
+	}
+
+	/**
+	 * Get an active licensed plugin matching a plugin basename.
+	 *
+	 * @since x.x
+	 *
+	 * @param string $plugin_file Plugin basename.
+	 *
+	 * @return PluginInstaller|null
+	 */
+	private function get_licensed_plugin_by_file( $plugin_file ) {
+		foreach ( Factory::create_active_plugins() as $plugin ) {
+			if ( $plugin->get_plugin_basename() !== $plugin_file ) {
+				continue;
+			}
+
+			if ( ! $plugin->is_licensed() ) {
+				return null;
+			}
+
+			return $plugin;
+		}
+
+		return null;
 	}
 
 	/**

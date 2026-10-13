@@ -23,6 +23,35 @@ window.tastyRecipesInitPosthog = () => {
 	posthog.group( 'site', config.siteId );
 };
 
+window.tastyRecipesTrackEvent = ( event, properties ) => {
+	if ( ! event ) {
+		return;
+	}
+
+	if ( 'function' === typeof window.tastyRecipesInitPosthog ) {
+		window.tastyRecipesInitPosthog();
+	}
+
+	if (
+		! window.tastyRecipesPosthogLoaded ||
+		'undefined' === typeof posthog ||
+		'function' !== typeof posthog.capture
+	) {
+		return;
+	}
+
+	const config = window.tastyRecipesPosthog || {};
+	const common = config.eventProperties && 'object' === typeof config.eventProperties
+		? config.eventProperties
+		: {};
+	const extra = properties && 'object' === typeof properties ? properties : {};
+
+	posthog.capture( event, {
+		...common,
+		...extra,
+	} );
+};
+
 if ( window.tastyRecipesPosthog && window.tastyRecipesPosthog.autoInit ) {
 	window.tastyRecipesInitPosthog();
 }

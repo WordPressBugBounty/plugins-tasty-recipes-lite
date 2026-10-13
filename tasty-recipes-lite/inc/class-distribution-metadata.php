@@ -51,6 +51,13 @@ class Distribution_Metadata {
 	);
 
 	/**
+	 * Per-request cache of video URLs found in content, keyed by an md5 of the input.
+	 *
+	 * @var array<string, false|string>
+	 */
+	private static $video_url_from_content_cache = array();
+
+	/**
 	 * Looks wp_head hooks so markup is added later.
 	 *
 	 * @return void
@@ -102,8 +109,15 @@ class Distribution_Metadata {
 		}
 
 		foreach ( $schemas as $schema ) {
+			$json = wp_json_encode(
+				$schema,
+				JSON_HEX_TAG | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT
+			);
+			if ( false === $json ) {
+				continue;
+			}
 			echo wp_get_inline_script_tag(
-				wp_json_encode( $schema, JSON_PRETTY_PRINT ),
+				$json,
 				array(
 					'type' => 'application/ld+json',
 				)
@@ -792,15 +806,72 @@ class Distribution_Metadata {
 	 * @return false|string
 	 */
 	public static function get_video_url_from_content( $content ) {
+		if ( ! is_string( $content ) || '' === $content ) {
+			return false;
+		}
+
+		$cache_key = md5( $content );
+		if ( array_key_exists( $cache_key, self::$video_url_from_content_cache ) ) {
+			return self::$video_url_from_content_cache[ $cache_key ];
+		}
+
+		self::$video_url_from_content_cache[ $cache_key ] = false;
 
 		// Transform any AdThrive shortcodes into a special format
 		// that only Tasty Recipes will process.
 		$content = str_replace( '[adthrive-in-post-video-player ', '[tr-adthrive-in-post-video-player ', $content );
 
-		// Process any AdThrive, YouTube, or Vimeo videos within the post content.
-		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-		$content = apply_filters( 'the_content', $content );
+		$video_url = false;
+		if ( self::content_may_contain_video( $content ) ) {
+			$video_url = self::match_video_url_in_markup( $content );
+			if ( ! $video_url ) {
+				$video_url = self::match_video_url_in_markup( self::build_video_detection_markup( $content ) );
+			}
+		}
 
+		self::$video_url_from_content_cache[ $cache_key ] = $video_url;
+		return $video_url;
+	}
+
+	/**
+	 * Whether a string has any marker worth scanning for a video.
+	 *
+	 * @since 1.2.11
+	 *
+	 * @param string $content Content to inspect.
+	 *
+	 * @return bool
+	 */
+	private static function content_may_contain_video( $content ) {
+		$markers = array(
+			'http',
+			'<iframe',
+			'<script',
+			'[embed',
+			'adthrive-in-post-video-player',
+			'mv-video-target',
+			'wp:embed',
+			'wp:video',
+			'wp:html',
+		);
+		foreach ( $markers as $marker ) {
+			if ( false !== stripos( $content, $marker ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Find a supported video URL already present in markup.
+	 *
+	 * @since 1.2.11
+	 *
+	 * @param string $content Markup to search.
+	 *
+	 * @return false|string
+	 */
+	private static function match_video_url_in_markup( $content ) {
 		if ( false === stripos( $content, '<iframe ' )
 			&& false === stripos( $content, '<script ' )
 			&& false === stripos( $content, 'adthrive-in-post-video-player' )
@@ -857,6 +928,107 @@ class Distribution_Metadata {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Build markup that can expose embeds without rendering recipe cards.
+	 *
+	 * @since 1.2.11
+	 *
+	 * @param string $content Content that did not already contain a matched video.
+	 *
+	 * @return string
+	 */
+	private static function build_video_detection_markup( $content ) {
+		$content = self::strip_recipe_shortcodes_for_video_detection( $content );
+
+		if ( has_blocks( $content ) ) {
+			$content = self::render_blocks_for_video_detection( parse_blocks( $content ) );
+		}
+
+		return self::embed_classic_markup_for_video_detection( $content );
+	}
+
+	/**
+	 * Remove tasty-recipe shortcodes so detection cannot render their cards.
+	 *
+	 * @since 1.2.11
+	 *
+	 * @param string $content Content to strip.
+	 *
+	 * @return string
+	 */
+	private static function strip_recipe_shortcodes_for_video_detection( $content ) {
+		if ( false === stripos( $content, '[tasty-recipe' ) ) {
+			return $content;
+		}
+
+		$stripped = preg_replace( '/\[\/?tasty-recipe\b[^\]]*\]/', '', $content );
+		return is_string( $stripped ) ? $stripped : $content;
+	}
+
+	/**
+	 * Render only embed, video, and HTML blocks. Skip recipe card blocks.
+	 *
+	 * @since 1.2.11
+	 *
+	 * @param array $blocks Parsed blocks.
+	 *
+	 * @return string
+	 */
+	private static function render_blocks_for_video_detection( $blocks ) {
+		$markup = '';
+		foreach ( $blocks as $block ) {
+			if ( ! is_array( $block ) ) {
+				continue;
+			}
+
+			$name = $block['blockName'] ?? '';
+			if ( 'wp-tasty/tasty-recipe' === $name ) {
+				continue;
+			}
+
+			if ( in_array( $name, array( 'core/embed', 'core/video', 'core/html' ), true ) ) {
+				$markup .= render_block( $block );
+				// render_block() keeps the saved URL for these blocks. Put it on its own line so autoembed can resolve it.
+				if ( 'core/embed' === $name && ! empty( $block['attrs']['url'] ) ) {
+					$markup .= "\n" . $block['attrs']['url'] . "\n";
+				} elseif ( 'core/video' === $name && ! empty( $block['attrs']['src'] ) ) {
+					$markup .= "\n" . $block['attrs']['src'] . "\n";
+				}
+				continue;
+			}
+
+			if ( ! empty( $block['innerBlocks'] ) ) {
+				$markup .= self::render_blocks_for_video_detection( $block['innerBlocks'] );
+			}
+			if ( ! empty( $block['innerHTML'] ) ) {
+				$markup .= $block['innerHTML'];
+			}
+		}
+		return $markup;
+	}
+
+	/**
+	 * Convert classic embed shortcodes and bare URLs into embed HTML.
+	 *
+	 * @since 1.2.11
+	 *
+	 * @param string $content Markup to embed.
+	 *
+	 * @return string
+	 */
+	private static function embed_classic_markup_for_video_detection( $content ) {
+		global $wp_embed;
+		if ( ! $wp_embed instanceof \WP_Embed ) {
+			return $content;
+		}
+
+		if ( false !== stripos( $content, '[embed' ) ) {
+			$content = $wp_embed->run_shortcode( $content );
+		}
+
+		return $wp_embed->autoembed( $content );
 	}
 
 	/**
@@ -1178,20 +1350,17 @@ class Distribution_Metadata {
 	public static function apply_instruction_step_numbers( $component ) {
 		$step           = 0;
 		$step_set_regex = '#^(\s*)(<[a-z]+)([^>]*>)#';
-		if ( preg_match_all( self::LI_MATCH_REGEX, $component, $matches ) ) {
-			$component = preg_replace_callback(
-				self::LI_MATCH_REGEX,
-				function ( $matches ) use ( &$step, $step_set_regex ) {
-					$step++;
-					$matches[0] = preg_replace(
-						$step_set_regex,
-						'$1$2 id="instruction-step-' . $step . '"$3',
-						$matches[0]
-					);
-					return $matches[0];
-				},
-				$component
-			);
+		$list_items     = self::get_top_level_list_items( $component );
+		if ( $list_items ) {
+			// Replace from the end so earlier byte offsets stay valid.
+			foreach ( array_reverse( $list_items, true ) as $index => $list_item ) {
+				$open_tag  = preg_replace(
+					$step_set_regex,
+					'$1$2 id="instruction-step-' . ( $index + 1 ) . '"$3',
+					$list_item['tag']
+				);
+				$component = substr_replace( $component, $open_tag, $list_item['offset'], strlen( $list_item['tag'] ) );
+			}
 		} elseif ( preg_match_all( self::UNSTRUCTURED_LIST_MATCH_REGEX, $component, $matches, PREG_OFFSET_CAPTURE ) > 1 ) {
 			// Intro text before the first number, so set that as the first step.
 			if ( $matches[0][0][1] > 0 ) {
@@ -1238,6 +1407,105 @@ class Distribution_Metadata {
 	}
 
 	/**
+	 * Finds top-level list items, keeping nested lists inside their parent item.
+	 *
+	 * @since 1.2.11
+	 *
+	 * @param string $component Component HTML.
+	 *
+	 * @return array[] Items with `full`, `tag`, `offset`, `inner` and `inner_offset` keys. Offsets are in bytes.
+	 */
+	private static function get_top_level_list_items( $component ) {
+		if ( ! preg_match_all( '#<li[^>]*>|</li>|<(?:ul|ol)\b[^>]*>|</(?:ul|ol)>#', $component, $tags, PREG_OFFSET_CAPTURE ) ) {
+			return array();
+		}
+
+		$items   = array();
+		$current = null;
+		$nested  = 0;
+		foreach ( $tags[0] as $tag ) {
+			// PREG_OFFSET_CAPTURE yields [markup, byte offset]. Mago types the match as a string.
+			$markup = is_array( $tag ) ? $tag[0] : $tag; // @phpstan-ignore function.alreadyNarrowedType
+			$offset = is_array( $tag ) ? $tag[1] : 0; // @phpstan-ignore function.alreadyNarrowedType
+
+			if ( null === $current ) {
+				if ( 0 === strpos( $markup, '<li' ) ) {
+					$current = array(
+						'tag'    => $markup,
+						'offset' => $offset,
+					);
+					$nested  = 0;
+				}
+				continue;
+			}
+
+			if ( '</li>' === $markup ) {
+				if ( $nested ) {
+					continue;
+				}
+
+				$inner_offset = $current['offset'] + strlen( $current['tag'] );
+				$items[]      = array_merge(
+					$current,
+					array(
+						'full'         => substr( $component, $current['offset'], $offset + strlen( $markup ) - $current['offset'] ),
+						'inner'        => substr( $component, $inner_offset, $offset - $inner_offset ),
+						'inner_offset' => $inner_offset,
+					)
+				);
+				$current      = null;
+				continue;
+			}
+
+			if ( 0 === strpos( $markup, '</' ) ) {
+				$nested = max( 0, $nested - 1 );
+			} elseif ( 0 !== strpos( $markup, '<li' ) ) {
+				++$nested;
+			}
+		}
+
+		if ( null === $current ) {
+			return $items;
+		}
+
+		$items = array();
+		if ( preg_match_all( self::LI_MATCH_REGEX, $component, $matches, PREG_OFFSET_CAPTURE ) ) {
+			foreach ( $matches[0] as $i => $match ) {
+				$items[] = array(
+					'full'         => $match[0],
+					'tag'          => substr( $match[0], 0, $matches[1][ $i ][1] - $match[1] ),
+					'offset'       => $match[1],
+					'inner'        => $matches[1][ $i ][0],
+					'inner_offset' => $matches[1][ $i ][1],
+				);
+			}
+		}
+
+		return $items;
+	}
+
+	/**
+	 * Splits a list item into its own markup and the text of any nested list.
+	 *
+	 * @since 1.2.11
+	 *
+	 * @param array $list_item Item from get_top_level_list_items().
+	 *
+	 * @return string[] List item markup without the nested list, and nested items joined by line breaks.
+	 */
+	private static function split_nested_list_item( $list_item ) {
+		if ( ! preg_match( '#<(?:ul|ol)\b#', $list_item['inner'], $match, PREG_OFFSET_CAPTURE ) ) {
+			return array( $list_item['full'], '' );
+		}
+
+		$own_markup  = substr( $list_item['inner'], 0, $match[0][1] );
+		$nested_text = preg_replace( '#\s*</?(?:li|ul|ol)\b[^>]*>\s*#', PHP_EOL, substr( $list_item['inner'], $match[0][1] ) );
+		$nested_text = trim( (string) preg_replace( '#\R+#', PHP_EOL, (string) $nested_text ) );
+
+		return array( $list_item['tag'] . rtrim( $own_markup ) . '</li>', $nested_text );
+	}
+
+	/**
 	 * Get a list from a string of ingredients or instructions.
 	 *
 	 * @param string $component   Existing text to parse.
@@ -1247,10 +1515,11 @@ class Distribution_Metadata {
 	 */
 	public static function parse_recipe_component_list( $component, $parse_names = false ) { // phpcs:ignore SlevomatCodingStandard
 		$component_list = array();
-		if ( preg_match_all( self::LI_MATCH_REGEX, $component, $matches, PREG_OFFSET_CAPTURE ) ) {
+		$list_items     = self::get_top_level_list_items( $component );
+		if ( $list_items ) {
 			$prev_offset = 0;
-			foreach ( $matches[1] as $i => $match ) {
-				$maybe_heading = mb_substr( $component, $prev_offset, $match[1] - $prev_offset, 'UTF-8' );
+			foreach ( $list_items as $list_item ) {
+				$maybe_heading = mb_substr( $component, $prev_offset, $list_item['inner_offset'] - $prev_offset, 'UTF-8' );
 				$maybe_heading = str_replace( array( '<ul>', '</ul>', '<ol>', '</ol>', '<li>', '</li>' ), '', $maybe_heading );
 				$heading_bits  = explode( PHP_EOL, $maybe_heading );
 				foreach ( $heading_bits as $bit ) {
@@ -1262,7 +1531,8 @@ class Distribution_Metadata {
 						);
 					}
 				}
-				$bit  = $matches[0][ $i ][0];
+				list( $bit, $nested_text ) = self::split_nested_list_item( $list_item );
+
 				$item = array(
 					'type' => 'item',
 				);
@@ -1278,9 +1548,9 @@ class Distribution_Metadata {
 						$bit = $name_matches['li'] . $bit;
 					}
 				}
-				$item['value']    = $bit;
+				$item['value']    = '' === $nested_text ? $bit : $bit . PHP_EOL . $nested_text;
 				$component_list[] = $item;
-				$prev_offset      = $match[1] + mb_strlen( $match[0], 'UTF-8' );
+				$prev_offset      = $list_item['inner_offset'] + mb_strlen( $list_item['inner'], 'UTF-8' );
 			}
 		} elseif ( preg_match_all( self::UNSTRUCTURED_LIST_MATCH_REGEX, $component, $matches, PREG_OFFSET_CAPTURE ) > 1 ) {
 			// Intro text before the first number, so save that as the first list item.

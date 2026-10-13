@@ -5,7 +5,9 @@
  * Description: Common functionality between all WP Tasty plugins.
  * Author:      WP Tasty team
  * Author URI:  https://wptasty.com/
- * Version:     1.1.16
+ * Version:     1.1.17
+ * Requires at least: 5.7
+ * Requires PHP: 7.4
  * License:     GPLv2 or later (license.txt).
  *
  * @package Tasty/Framework
@@ -18,22 +20,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 use Tasty\Framework\Versions;
 use Tasty\Framework\Main;
 
-if ( ! function_exists( 'tasty_register_1_dot_1_dot_16' ) ) {
+if ( ! function_exists( 'tasty_register_1_dot_1_dot_17' ) ) {
 
 	if ( ! class_exists( Versions::class ) ) {
 		require_once __DIR__ . '/inc/Versions.php';
 		add_action( 'plugins_loaded', array( Versions::class, 'initialize_latest_version' ), 1 );
 	}
 
-	add_action( 'plugins_loaded', 'tasty_register_1_dot_1_dot_16', 0 );
+	add_action( 'plugins_loaded', 'tasty_register_1_dot_1_dot_17', 0 );
 
 	/**
 	 * Register current version of the framework.
 	 *
 	 * @return void
 	 */
-	function tasty_register_1_dot_1_dot_16() {
-		Versions::instance()->register( '1.1.16', 'tasty_initialize_1_dot_1_dot_16' );
+	function tasty_register_1_dot_1_dot_17() {
+		Versions::instance()->register( '1.1.17', 'tasty_initialize_1_dot_1_dot_17' );
 	}
 
 	/**
@@ -41,7 +43,7 @@ if ( ! function_exists( 'tasty_register_1_dot_1_dot_16' ) ) {
 	 *
 	 * @return void
 	 */
-	function tasty_initialize_1_dot_1_dot_16() {
+	function tasty_initialize_1_dot_1_dot_17() {
 		if ( class_exists( Main::class ) ) {
 			return;
 		}

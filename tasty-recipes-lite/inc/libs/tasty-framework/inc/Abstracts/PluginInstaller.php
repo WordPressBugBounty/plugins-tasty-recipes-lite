@@ -105,6 +105,17 @@ abstract class PluginInstaller {
 	abstract public function get_plugin_name();
 
 	/**
+	 * Get current plugin basename (dir/file.php).
+	 *
+	 * @since x.x
+	 *
+	 * @return string
+	 */
+	public function get_plugin_basename() {
+		return $this->get_plugin_file();
+	}
+
+	/**
 	 * Get EDD download ID for this plugin.
 	 *
 	 * @since x.x
@@ -461,7 +472,7 @@ abstract class PluginInstaller {
 	/**
 	 * Remove and deactivate license key.
 	 *
-	 * @return void
+	 * @return array|WP_Error|null API response when a key existed, null otherwise.
 	 */
 	public function remove_license() {
 		$license_key = $this->get_license_key();
@@ -470,10 +481,10 @@ abstract class PluginInstaller {
 		delete_transient( $this->get_license_check_cache_key() );
 
 		if ( empty( $license_key ) ) {
-			return;
+			return null;
 		}
 
-		$this->api_client->deactivate_plugin_license( $license_key, $this->get_plugin_name(), $this->plugin_version() );
+		return $this->api_client->deactivate_plugin_license( $license_key, $this->get_plugin_name(), $this->plugin_version() );
 	}
 
 	/**

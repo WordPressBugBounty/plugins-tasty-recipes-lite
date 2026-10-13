@@ -5,6 +5,27 @@
 		container = null,
 		editorInstance = null;
 
+	const trackUsage = ( event, properties ) => {
+		if ( 'function' !== typeof window.tastyRecipesTrackEvent ) {
+			return;
+		}
+
+		window.tastyRecipesTrackEvent( event, properties );
+	};
+
+	const getModalContext = () => {
+		const recipeType = $( 'input[name="recipe_type"]', container ).val()
+			|| container.attr( 'data-recipe-type' )
+			|| 'recipe';
+
+		return {
+			recipe_type: recipeType,
+			operation: container.hasClass( 'tasty-recipes-state-editing' )
+				? 'edit'
+				: 'create',
+		};
+	};
+
 	const onModalUndoKeydown = ( event ) => {
 		if ( ! event.metaKey && ! event.ctrlKey ) {
 			return;
@@ -113,6 +134,10 @@
 			} else {
 				container.addClass('tasty-recipes-state-creating');
 			}
+			if ( typeof data === 'object' && data && data.recipe_type ) {
+				container.attr( 'data-recipe-type', data.recipe_type );
+			}
+			trackUsage( 'recipe_modal_opened', getModalContext() );
 			$('body').addClass('tasty-recipes-modal-open');
 			container.on( 'dragover.tastyRecipesDrop drop.tastyRecipesDrop', ( event ) => {
 				event.preventDefault();
@@ -150,6 +175,7 @@
 		 * @param {boolean} save Whether or not to save the recipe.
 		 */
 		close( save ) {
+			const context = getModalContext();
 			isOpen = false;
 			$('body').removeClass('tasty-recipes-modal-open');
 			container.off('dragover.tastyRecipesDrop drop.tastyRecipesDrop');
@@ -187,18 +213,33 @@
 					recipe: paramObj
 				} ).done( function( response ) {
 					hideContainer();
+					if ( 'create' === context.operation ) {
+						trackUsage( 'recipe_created', context );
+					}
+					trackUsage( 'recipe_modal_closed', Object.assign( {}, context, {
+						saved: true,
+						save_successful: true,
+					} ) );
 					if ( updateCallback ) {
 						updateCallback( response );
 					}
 				} )
 				.fail( function( response ) {
 					hideContainer();
+					trackUsage( 'recipe_modal_closed', Object.assign( {}, context, {
+						saved: true,
+						save_successful: false,
+					} ) );
 					if ( updateCallback ) {
 						updateCallback( response );
 					}
 				} );
 			} else {
 				hideContainer();
+				trackUsage( 'recipe_modal_closed', Object.assign( {}, context, {
+					saved: false,
+					save_successful: false,
+				} ) );
 			}
 		},
 	};
